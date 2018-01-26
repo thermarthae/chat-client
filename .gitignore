@@ -1,0 +1,5 @@
+node_modules
+cdn
+.babelrc
+package-lock.json
+Thumbs.db

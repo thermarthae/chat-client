@@ -1,0 +1,6 @@
+#chat {
+	display: grid;
+	grid-template-columns: 1fr 1fr 4fr 1fr;
+	grid-template-rows: 100%;
+	height: inherit;
+}

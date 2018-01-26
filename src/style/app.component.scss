@@ -1,0 +1,38 @@
+#application {
+	display: flex;
+	height: 100%;
+
+	.head {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		flex-basis: 70px;
+		flex-shrink: 0;
+	}
+
+	.separator {
+		margin: 9.5px 0;
+		border-bottom: 1px $divider-light-color solid;
+	}
+
+	.btn {
+		user-select: none;
+		cursor: pointer;
+		color: inherit;
+		text-decoration: none;
+
+		&.btn-big{
+			position: relative;
+			height: 70px;
+			width: 70px;
+			padding: 15px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			box-sizing: border-box;
+			line-height: 0;
+			font-size: 26px;
+		}
+	}
+
+}
