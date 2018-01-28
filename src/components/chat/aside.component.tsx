@@ -1,11 +1,24 @@
 import * as React from "react";
 
+import { connect } from "react-redux";
+import { IChatReducerState } from "../../reducers/chat.reducer";
+
 import "../../style/aside.component.scss";
 
-export default class Aside extends React.Component {
-	public render() {
-		return (
-			<div id="aside"></div>
-		);
-	}
+interface IAsideProps {
+	chat: IChatReducerState;
 }
+
+const Aside = (props: IAsideProps) => {
+	return (
+		<div id="aside" className={props.chat.asideIsOpen ? "active" : ""}></div>
+	);
+};
+
+const mapStateToProps = (state: any) => {
+	return {
+		chat: state.Chat
+	};
+};
+
+export default connect(mapStateToProps, {})(Aside);

@@ -1,37 +1,61 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { Provider } from 'react-redux';
+
 import { AppContainer } from "react-hot-loader";
+import { ApolloProvider } from "react-apollo";
+import { ApolloClient } from "apollo-client";
+import { HttpLink } from "apollo-link-http";
+import { InMemoryCache } from "apollo-cache-inmemory";
+import { Provider } from "react-redux";
+import { MuiThemeProvider, createMuiTheme } from "material-ui/styles";
 
 import "./style/index.scss";
-import App from "./containers/app.container";
-import store from "./stores/app.store";
+import App from "./components/app.component";
+import store from "./stores";
 
+const theme = createMuiTheme({
+	palette: {
+		primary: {
+			main: "#3a3d5a"
+		},
+		secondary: {
+			main: "#ff0000"
+		}
+	}
+});
 
+const httpLink = new HttpLink({ uri: "http://localhost:3000" });
+const client = new ApolloClient({
+	link: httpLink,
+	cache: new InMemoryCache(),
+	connectToDevTools: false //TODO
+});
 
 const rootEl = document.getElementById("root");
 
-const render = (Component:any) => {
+const render = (Component: any) => {
 	ReactDOM.render(
 		<AppContainer>
-			<Provider store={store}>
-				<Component/>
-			</Provider>
+			<ApolloProvider client={client}>
+				<Provider store={store}>
+					<MuiThemeProvider theme={theme}>
+						<Component />
+					</MuiThemeProvider>
+				</Provider>
+			</ApolloProvider>
 		</AppContainer>,
 		rootEl
-	)
-}
-
-render(App)
+	);
+};
+render(App);
 
 // Webpack Hot Module Replacement API
 declare let module: {
-	hot: any
-};
+	hot: any;
+	};
 
-if (module.hot) {
-	module.hot.accept("./containers/app.container", () => {
-		const NewApp = require("./containers/app.container").default;
-		render(NewApp)
-	})
-}
+if (module.hot)
+	module.hot.accept("./components/app.component", () => {
+		const NewApp = require("./components/app.component").default;
+		render(NewApp);
+	});

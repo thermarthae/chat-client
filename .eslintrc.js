@@ -20,15 +20,16 @@ module.exports = {
 		"brace-style": [
 			"error", "stroustrup"
 		],
-		// "indent": [
-		// 	"error", "tab"
-		// ],
+		"indent": [
+			"error", "tab"
+		],
 		"linebreak-style": [
 			"error", "windows"
 		],
 		"quotes": [
 			"error", "double"
 		],
-		"semi": ["error", "always"]
+		"semi": ["error", "always"],
+		"no-unused-vars": 0,
 	}
 };

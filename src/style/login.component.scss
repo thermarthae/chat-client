@@ -1,0 +1,37 @@
+#login {
+	background-color: #26283b;
+	background: linear-gradient(to right, #26283b, #3a1848);
+	background: linear-gradient(to right, #3a1848, #b74b4b);
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	.container {
+		color: $text-primary__color--dark;
+		width: 380px;
+
+		.title {
+			font-size: 1.75em;
+			margin: 10px 0 8px 0;
+		}
+
+		.subtitle {
+			color: $text-secondary__color--dark;
+		}
+
+		.form {
+			margin: 8px 0;
+
+			>*:not(:first-child) {
+				margin-top: 8px;
+			}
+		}
+	}
+
+	.buttons {
+		display: flex;
+		justify-content: space-between;
+		background-color: rgba($bg-primary__color-30, 0.05);
+	}
+}

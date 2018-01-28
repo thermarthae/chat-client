@@ -3,3 +3,7 @@ cdn
 .babelrc
 package-lock.json
 Thumbs.db
+yarn.lock
+yarn-error.log
+concept
+.cache-loader

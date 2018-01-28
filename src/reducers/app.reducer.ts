@@ -1,23 +1,37 @@
-import { IAction } from "../actions/app.actions"
+import { IAppAction } from "../actions/app.actions";
 
-export interface IReducerState {
-	nickname?: string,
-	message?: string,
+export interface IAppReducerState {
+	language: string;
+	isAuthenticated: boolean;
+	menuIsOpen: boolean;
 }
 
-const initialState: IReducerState = {
-	nickname: localStorage.nick,
-	message: localStorage.message,
-}
+const initialState: IAppReducerState = {
+	language: "en",
+	isAuthenticated: true,
+	menuIsOpen: true,
+};
 
-export default (state: IReducerState = initialState, action: IAction) => {
+export default (state: IAppReducerState = initialState, action: IAppAction) => {
 	switch (action.type) {
-		case "SET_NICKNAME":
+		case "CHANGE_LANGUAGE":
 			state = {
 				...state,
-				nickname: action.payload
-			}
+				language: action.payload
+			};
+			break;
+		case "IS_AUTHENTICATED":
+			state = {
+				...state,
+				isAuthenticated: action.payload
+			};
+			break;
+		case "TOGGLE_MENU":
+			state = {
+				...state,
+				menuIsOpen: !state.menuIsOpen
+			};
 			break;
 	}
 	return state;
-}
+};

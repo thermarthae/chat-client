@@ -1,59 +1,84 @@
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
+
+import { connect, Dispatch } from "react-redux";
+import { IAppReducerState } from "../../reducers/app.reducer";
+import { IChatAction, ChatActions, TInboxFilter } from "../../actions/chat.actions";
+import { IChatReducerState } from "../../reducers/chat.reducer";
+
+import IconButton from "material-ui/IconButton";
+import PersonAdd from "material-ui-icons/PersonAdd";
+import List, { ListItem } from "material-ui/List";
 
 import "../../style/menu.component.scss";
 
-export default class Menu extends React.Component {
-	public render() {
-		return (
-			<div id="menu">
-				<div className="head">
-					<span className="title">Inbox</span>
-					<span className="btn">I</span>
-				</div>
-				<div className="wrapper">
-					<div className="container">
-						<div className="line btn">
-							<span className="name">All Messages</span>
-							<span className="count">0</span>
-						</div>
-						<div className="line btn">
-							<span className="name">Unread</span>
-							<span className="count">0</span>
-						</div>
-						<div className="line btn">
-							<span className="name">Important</span>
-							<span className="count">0</span>
-						</div>
-						<div className="line btn">
-							<span className="name">Draft</span>
-							<span className="count">0</span>
-						</div>
-					</div>
-					<div className="separator"></div>
-					<div className="container">
-						<div className="line btn">
-							<span className="name">Teams</span>
-							<span className="count">0</span>
-						</div>
-						<div className="line btn">
-							<span className="name">Groups</span>
-							<span className="count">0</span>
-						</div>
-						<div className="line btn">
-							<span className="name">Locations</span>
-						</div>
-					</div>
-					<div className="separator"></div>
-					<div className="container">
-						<div className="line btn">
-							<span className="name">Help</span>
-						</div>
-						<div className="line btn">
-							<span className="name">Settings</span>
-						</div>
-					</div>
-				</div>
-			</div>
-		);
-	}
+interface IMenuProps {
+	app: IAppReducerState;
+	chat: IChatReducerState;
+	setInboxFilter: (filter: TInboxFilter) => IChatAction;
 }
+
+const Menu = (props: IMenuProps) => {
+	return (
+		<div
+			id="menu"
+			className={props.app.menuIsOpen ? "active" : ""}
+		>
+			<div className="head">
+				<span className="title">
+					<FormattedMessage id="chat.menu.title"  defaultMessage="Inbox"/>
+				</span>
+				<IconButton className="btn">
+					<PersonAdd style={{ fontSize: "inherit" }}/>
+				</IconButton>
+			</div>
+			<div className="wrapper">
+				<List className="container">
+					<ListItem button className="line" onClick={() => props.setInboxFilter(null)}>
+						<span className="name"><FormattedMessage id="chat.menu.allMessages" defaultMessage="All messages"/></span>
+						<span className="count">{(props.chat.inbox || []).length}</span>
+					</ListItem>
+					<ListItem button className="line" onClick={() => props.setInboxFilter("unread")}>
+						<span className="name"><FormattedMessage id="chat.menu.unread" defaultMessage="Unread"/></span>
+						<span className="count">{props.chat.unread}</span>
+					</ListItem>
+					<ListItem button className="line" onClick={() => props.setInboxFilter("draft")}>
+						<span className="name"><FormattedMessage id="chat.menu.draft" defaultMessage="Draft"/></span>
+						<span className="count">{props.chat.draft}</span>
+					</ListItem>
+				</List>
+				<div className="separator" />
+				<List className="container">
+					<ListItem button className="line" onClick={() => props.setInboxFilter("groups")}>
+						<span className="name"><FormattedMessage id="chat.menu.groups" defaultMessage="Groups"/></span>
+						<span className="count">{props.chat.groups}</span>
+					</ListItem>
+				</List>
+				<div className="separator" />
+				<List className="container">
+					<ListItem button className="line">
+						<span className="name"><FormattedMessage id="chat.menu.help" defaultMessage="Help"/></span>
+					</ListItem>
+					<ListItem button className="line">
+						<span className="name"><FormattedMessage id="chat.menu.settings" defaultMessage="Settings"/></span>
+					</ListItem>
+				</List>
+			</div>
+		</div>
+	);
+};
+
+const mapStateToProps = (state: any) => {
+	return {
+		app: state.App,
+		chat: state.Chat
+	};
+};
+
+const mapDispatchToProps = (dispatch: Dispatch<IChatAction>) => {
+	return {
+		setInboxFilter: (filter: TInboxFilter) => dispatch(ChatActions.setInboxFilter(filter)),
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Menu);

@@ -1,15 +1,24 @@
-export type IActionFunction = (id: string, arg?: string) => IAction;
-
-export interface IAction {
-	type: "SET_NICKNAME",
-	payload?: any,
+export interface IAppAction {
+	type: "CHANGE_LANGUAGE" | "IS_AUTHENTICATED"| "TOGGLE_MENU";
+	payload?: any;
 }
 
-export abstract class Actions {
-	public static setNickname(payload: string): IAction {
+export abstract class AppActions {
+	public static changeLanguage(payload: string): IAppAction {
 		return {
-			type: "SET_NICKNAME",
+			type: "CHANGE_LANGUAGE",
 			payload
+		};
+	}
+	public static isAuthenticated(payload: boolean): IAppAction {
+		return {
+			type: "IS_AUTHENTICATED",
+			payload
+		};
+	}
+	public static toggleMenu(): IAppAction {
+		return {
+			type: "TOGGLE_MENU"
 		};
 	}
 }

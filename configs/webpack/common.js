@@ -1,66 +1,84 @@
 const Path = require("path");
-const AwesomeTS = require("awesome-typescript-loader");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+//const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 //const CopyWebpackPlugin = require("copy-webpack-plugin");
 const PACKAGE = require("../../package.json");
 
 module.exports = {
+	entry: "./index.tsx",
 	resolve: {
 		extensions: [".ts", ".tsx", ".js", ".jsx"]
 	},
 	context: Path.resolve(__dirname, "../../src"),
 	module: {
-		rules: [{
-				test: /\.js$/,
-				use: [
-					"babel-loader", "source-map-loader"
-				],
-				exclude: /node_modules/
-			},
+		rules: [
 			{
 				test: /\.tsx?$/,
-				use: "awesome-typescript-loader"
+				exclude: /node_modules/,
+				use: [
+					"cache-loader",
+					{
+						loader: "thread-loader",
+						options: {
+							workers: require("os").cpus().length - 1
+						}
+					},
+					{
+						loader: "ts-loader",
+						options: {
+							configFile: Path.resolve(__dirname, "../tsconfig.json"),
+							happyPackMode: true
+						}
+					}
+				]
 			},
 			{
 				test: /\.css$/,
-				use: ExtractTextPlugin.extract({
-					fallback: "style-loader",
-					use: [{
-							loader: "css-loader",
-							options: {
-								sourceMap: true,
-								importLoaders: 1
-							}
-						},
-						"postcss-loader",
-					]
-				})
+				use: [
+					//MiniCssExtractPlugin.loader,
+					{
+						loader: "style-loader",
+						options: {
+							sourceMap: true
+						}
+					},
+					{
+						loader: "css-loader",
+						options: {
+							sourceMap: true
+						}
+					}
+				]
 			},
+
 			{
 				test: /\.scss$/,
-				use: ExtractTextPlugin.extract({
-					fallback: "style-loader",
-					use: [{
-							loader: "css-loader",
-							options: {
-								sourceMap: true,
-								importLoaders: 1
-							}
-						},
-						{
-							loader: "sass-loader",
-							options: {
-									data: "@import 'variables';",
-									sourceMap: true,
-									includePaths: [
-										Path.join(__dirname, "../../src/style")
-									]
-							}
-						},
-						"postcss-loader",
-					]
-				})
+				use: [
+					//MiniCssExtractPlugin.loader,
+					{
+						loader: "style-loader",
+						options: {
+							sourceMap: true
+						}
+					},
+					{
+						loader: "css-loader",
+						options: {
+							sourceMap: true
+						}
+					},
+					{
+						loader: "sass-loader",
+						options: {
+							sourceMap: true,
+							data: "@import \"variables\";",
+							includePaths: [
+								Path.resolve(__dirname, "../../src/style")
+							]
+						}
+					}
+				]
 			},
 			{
 				test: /\.(jpe?g|png|gif|svg)$/i,
@@ -72,16 +90,20 @@ module.exports = {
 		]
 	},
 	plugins: [
-		new AwesomeTS.CheckerPlugin(),
-		//new CopyWebpackPlugin([{ from: "assets/img", to: "assets/img" },]),
+		new ForkTsCheckerWebpackPlugin({
+			checkSyntacticErrors: true,
+			async: false,
+			tsconfig: Path.resolve(__dirname, "../tsconfig.json")
+		}),
 		new HtmlWebpackPlugin({
 			title: PACKAGE.name,
 			template: "index.html.ejs"
-		}),
-		new ExtractTextPlugin("css/[name].css")
-	],
-	externals: {
-		"react": "React",
-		"react-dom": "ReactDOM"
-	}
+		})
+
+		// new CopyWebpackPlugin([{ from: "assets/img", to: "assets/img" },]),
+		// new MiniCssExtractPlugin({
+		// 	filename: "css/[name].css",
+		// 	chunkFilename: "css/[id].css"
+		// })
+	]
 };
