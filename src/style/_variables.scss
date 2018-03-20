@@ -2,14 +2,15 @@ $bg-primary__color-30: #3a3d5a;
 $bg-primary__color-20: darken($bg-primary__color-30, 10%);
 $bg-primary__color-18: darken($bg-primary__color-30, 12%);
 $bg-primary__color-14: darken($bg-primary__color-30, 16%);
-$bg-secondary__color: #0084ff;
+$bg-secondary__color: #283593;
 $bg-accent__color-1: #ebedf1;
 $bg-accent__color-2: #2dd505;
+$bg-accent__color-3: #0084ff;
 $shadow-1: 0 0 10px 0 rgba(0, 0, 0, 0.1);
 $shadow-2: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
 /* ///////////////////////////////////////////////// */
 $transparent-primary__color--light: rgba(255, 255, 255, 0.1);
-$transparent-secondary__color--light: rgba(255, 255, 255, 0.5);
+$transparent-secondary__color--light: rgba(255, 255, 255, 0.57);
 
 $text-primary__color--light: #ffffff;
 $text-secondary__color--light: rgba(255, 255, 255, 0.7);

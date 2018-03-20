@@ -28,7 +28,7 @@ const Chat = (props: RouteComponentProps<IChatRouteProps>) => {
 	return (
 		<div id="chat">
 			<Menu />
-			<Users />
+			<Users oponentId={props.match.params.id} />
 			<Inbox oponentId={props.match.params.id} />
 			<Aside />
 		</div>

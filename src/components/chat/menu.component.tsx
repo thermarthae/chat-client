@@ -26,41 +26,63 @@ const Menu = (props: IMenuProps) => {
 		>
 			<div className="head">
 				<span className="title">
-					<FormattedMessage id="chat.menu.title"  defaultMessage="Inbox"/>
+					<FormattedMessage id="chat.menu.title" defaultMessage="Inbox" />
 				</span>
 				<IconButton className="btn">
-					<PersonAdd style={{ fontSize: "inherit" }}/>
+					<PersonAdd style={{ fontSize: "inherit" }} />
 				</IconButton>
 			</div>
 			<div className="wrapper">
 				<List className="container">
-					<ListItem button className="line" onClick={() => props.setInboxFilter(null)}>
-						<span className="name"><FormattedMessage id="chat.menu.allMessages" defaultMessage="All messages"/></span>
+					<ListItem
+						button
+						onClick={() => props.setInboxFilter(null)}
+						className={"line" + (props.chat.inboxFilter === null ? " active" : "")}
+					>
+						<span className="name"><FormattedMessage id="chat.menu.allMessages" defaultMessage="All messages" /></span>
 						<span className="count">{(props.chat.inbox || []).length}</span>
 					</ListItem>
-					<ListItem button className="line" onClick={() => props.setInboxFilter("unread")}>
-						<span className="name"><FormattedMessage id="chat.menu.unread" defaultMessage="Unread"/></span>
+					<ListItem
+						button
+						onClick={() => props.setInboxFilter("unread")}
+						className={"line" + (props.chat.inboxFilter === "unread" ? " active" : "")}
+					>
+						<span className="name"><FormattedMessage id="chat.menu.unread" defaultMessage="Unread" /></span>
 						<span className="count">{props.chat.unread}</span>
 					</ListItem>
-					<ListItem button className="line" onClick={() => props.setInboxFilter("draft")}>
-						<span className="name"><FormattedMessage id="chat.menu.draft" defaultMessage="Draft"/></span>
+					<ListItem
+						button
+						onClick={() => props.setInboxFilter("draft")}
+						className={"line" + (props.chat.inboxFilter === "draft" ? " active" : "")}
+					>
+						<span className="name"><FormattedMessage id="chat.menu.draft" defaultMessage="Draft" /></span>
 						<span className="count">{props.chat.draft}</span>
 					</ListItem>
 				</List>
 				<div className="separator" />
 				<List className="container">
-					<ListItem button className="line" onClick={() => props.setInboxFilter("groups")}>
-						<span className="name"><FormattedMessage id="chat.menu.groups" defaultMessage="Groups"/></span>
+					<ListItem
+						button
+						onClick={() => props.setInboxFilter("groups")}
+						className={"line" + (props.chat.inboxFilter === "groups" ? " active" : "")}
+					>
+						<span className="name"><FormattedMessage id="chat.menu.groups" defaultMessage="Groups" /></span>
 						<span className="count">{props.chat.groups}</span>
 					</ListItem>
 				</List>
 				<div className="separator" />
 				<List className="container">
-					<ListItem button className="line">
-						<span className="name"><FormattedMessage id="chat.menu.help" defaultMessage="Help"/></span>
+					<ListItem
+						button
+						className="line"
+					>
+						<span className="name"><FormattedMessage id="chat.menu.help" defaultMessage="Help" /></span>
 					</ListItem>
-					<ListItem button className="line">
-						<span className="name"><FormattedMessage id="chat.menu.settings" defaultMessage="Settings"/></span>
+					<ListItem
+						button
+						className="line"
+					>
+						<span className="name"><FormattedMessage id="chat.menu.settings" defaultMessage="Settings" /></span>
 					</ListItem>
 				</List>
 			</div>

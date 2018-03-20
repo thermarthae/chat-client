@@ -9,6 +9,7 @@ import { TInboxFilter } from "../../actions/chat.actions";
 
 import Avatar from "material-ui/Avatar";
 import { ListItem } from "material-ui/List";
+import Menu, { MenuItem } from "material-ui/Menu";
 import IconButton from "material-ui/IconButton";
 import MoreHoriz from "material-ui-icons/MoreHoriz";
 import Search from "material-ui-icons/Search";
@@ -20,6 +21,11 @@ import "../../style/users.component.scss";
 
 interface IUsersProps extends InjectedIntlProps {
 	chat: IChatReducerState;
+	oponentId: string;
+}
+
+interface IUsersStates {
+	menuAnchorEl: HTMLElement | undefined;
 }
 
 const filterItem = (item: IInbox, filter: TInboxFilter) => {
@@ -29,98 +35,124 @@ const filterItem = (item: IInbox, filter: TInboxFilter) => {
 	return false;
 };
 
-const Users = (props: IUsersProps) => {
-	const filteredItems = props.chat.inbox.filter((item: IInbox) => filterItem(item, props.chat.inboxFilter));
-	return (
-		<div id="users">
-			<div className="head">
-				{/* <div className="searchbar">
-					<Search className="btn"/>
-					<input placeholder={props.intl.formatMessage({ id: "chat.users.search", defaultMessage: "Search..." })} />
-				</div> */}
+class Users extends React.PureComponent<IUsersProps, IUsersStates> {
+	public state = {
+		menuAnchorEl: undefined,
+	};
 
-				<Input
-					classes={{ root: "searchbar" }}
-					disableUnderline
-					/* value={this.state.password}
-					onChange={this.handleChange("password")} */
-					placeholder={props.intl.formatMessage({
-						id: "chat.users.search",
-						defaultMessage: "Search..."
-					})}
-					startAdornment={
-						<Search className="btn" />
-					}
-					endAdornment={
-						<IconButton
-							className="cancel"
-							onClick={e => e.preventDefault()}
-							onMouseDown={e => e.preventDefault()}
-						>
-							<Cancel style={{ fontSize: "inherit" }} />
-						</IconButton>
-					}
-				/>
-			</div>
-			{!props.chat.inbox[0] ?
-				<div className="list empty">
-					<span>{props.intl.formatMessage({ id: "chat.users.inboxIsEmpty", defaultMessage: "Inbox is empty..." })}</span>
+	public handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+		event.preventDefault();
+		this.setState({ menuAnchorEl: event.currentTarget });
+	}
+
+	public handleMenuClose = () => {
+		this.setState({ menuAnchorEl: undefined });
+	}
+
+	public render() {
+		const { oponentId } = this.props;
+		const { menuAnchorEl } = this.state;
+		const filteredItems = this.props.chat.inbox.filter((item: IInbox) => filterItem(item, this.props.chat.inboxFilter));
+
+		return (
+			<div id="users">
+				<div className="head">
+					<Input
+						classes={{ root: "searchbar" }}
+						disableUnderline
+						/* value={this.state.password}
+						onChange={this.handleChange("password")} */
+						placeholder={this.props.intl.formatMessage({
+							id: "chat.users.search",
+							defaultMessage: "Search..."
+						})}
+						startAdornment={
+							<Search className="btn" />
+						}
+						endAdornment={
+							<IconButton
+								className="cancel"
+								onClick={e => e.preventDefault()}
+								onMouseDown={e => e.preventDefault()}
+							>
+								<Cancel style={{ fontSize: "inherit" }} />
+							</IconButton>
+						}
+					/>
 				</div>
-				:
-				!filteredItems[0] ?
+				{!this.props.chat.inbox[0] ?
 					<div className="list empty">
-						<span>{props.intl.formatMessage({ id: "chat.users.nothingToShow", defaultMessage: "Nothing to show..." })}</span>
+						<span>
+							{this.props.intl.formatMessage({ id: "chat.users.inboxIsEmpty", defaultMessage: "Inbox is empty..." })}
+						</span>
 					</div>
 					:
-					<div className="list">
-						{filteredItems.map(item =>
-							<Link
-								to={"/chat/" + item.user.id}
-								key={item.lastMessage.id}
-							>
-								<ListItem
-									component="div"
-									className={
-										"line" +
-										(item.user.online ? " online" : "") +
-										(item.lastMessage.seen ? "" : " unseen")
-									}
+					!filteredItems[0] ?
+						<div className="list empty">
+							<span>
+								{this.props.intl.formatMessage({ id: "chat.users.nothingToShow", defaultMessage: "Nothing to show..." })}
+							</span>
+						</div>
+						:
+						<div className="list">
+							{filteredItems.map(item =>
+								<Link
+									to={"/chat/" + item.user.id}
+									key={item.lastMessage.id}
 								>
-									<div className="left">
-										<div className="avatar">
-											<div className="status" />
-											<Avatar onClick={e => e.preventDefault()}>
-												{item.user.name[0] + item.user.surname[0]}
-											</Avatar>
+									<ListItem
+										component="div"
+										className={
+											"line" +
+											(item.user.online ? " online" : "") +
+											(item.lastMessage.seen ? "" : " unseen") +
+											(item.user.id === oponentId ? " active" : "")
+										}
+									>
+										<div className="left">
+											<div className="avatar">
+												<div className="status" />
+												<Avatar onClick={e => e.preventDefault()}>
+													{item.user.name[0] + item.user.surname[0]}
+												</Avatar>
+											</div>
 										</div>
-									</div>
-									<div className="center">
-										<span className="name">
-											{item.user.name + " " + item.user.surname}
-										</span>
-										<span className="message">
-											{item.lastMessage.content}
-										</span>
-									</div>
-									<div className="right">
-										<IconButton className="menu" onClick={e => e.preventDefault()}>
-											<MoreHoriz style={{ fontSize: "inherit" }} />
-										</IconButton>
-									</div>
-								</ListItem>
-							</Link>
-						)}
-					</div>
-			}
-		</div>
-	);
-};
+										<div className="center">
+											<span className="name">
+												{item.user.name + " " + item.user.surname}
+											</span>
+											<span className="message">
+												{item.lastMessage.content}
+											</span>
+										</div>
+										<div className="right">
+											<IconButton className="menu" onClick={this.handleMenuClick} >
+												<MoreHoriz style={{ fontSize: "inherit" }} />
+											</IconButton>
+										</div>
+									</ListItem>
+								</Link>
+							)}
+							<Menu
+								open={Boolean(menuAnchorEl)}
+								onClose={this.handleMenuClose}
+								anchorEl={menuAnchorEl}
+							>
+								<MenuItem className="menuItem" onClick={this.handleMenuClose}>
+									{this.props.intl.formatMessage({ id: "chat.users.menuItem.delete", defaultMessage: "Delete" })}
+								</MenuItem>
+							</Menu>
+						</div>
+				}
+			</div>
+		);
+	}
+}
 
 const mapStateToProps = (state: any) => {
 	return {
 		chat: state.Chat,
-		//TODO
-		intl: {},
+		intl: {}, //TODO
 	};
 };
 
