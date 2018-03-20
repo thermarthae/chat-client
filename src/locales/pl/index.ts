@@ -5,6 +5,15 @@ addLocaleData(pl);
 export default {
 	"error": `Błąd 404 - ${location.pathname}`,
 
+	"login.title": "Zaloguj się",
+	"login.subtitle": "Zaloguj się aby kontynuować",
+	"login.email": "Email",
+	"login.incorrentEmail": "Niepoprawny adres email",
+	"login.password": "Hasło",
+	"login.incorrentPassword": "Niepoprawne hasło",
+	"login.forgotPasswordButton": "Zapomniałem hasła",
+	"login.loginButton": "Zaloguj",
+
 	"chat.inbox.nothingSelected": "Nic nie wybrano...",
 	"chat.inbox.isTyping": " piszę...",
 	"chat.inbox.seen": "Widziano, ",

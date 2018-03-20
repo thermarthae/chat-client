@@ -1,4 +1,5 @@
 import * as React from "react";
+import { injectIntl, InjectedIntlProps } from "react-intl";
 
 //import TextField from "material-ui/TextField";
 import Button from "material-ui/Button";
@@ -11,6 +12,8 @@ import IconButton from "material-ui/IconButton";
 import Visibility from "material-ui-icons/Visibility";
 import VisibilityOff from "material-ui-icons/VisibilityOff";
 
+interface ILoginProps extends InjectedIntlProps { }
+
 interface ILoginStates {
 	username: string;
 	password: string;
@@ -19,7 +22,7 @@ interface ILoginStates {
 	showPassword: boolean;
 }
 
-export default class Login extends React.PureComponent<{}, ILoginStates> {
+class Login extends React.PureComponent<ILoginProps, ILoginStates> {
 	public state = {
 		username: "",
 		password: "",
@@ -36,10 +39,6 @@ export default class Login extends React.PureComponent<{}, ILoginStates> {
 		this.setState({ username: event.target.value });
 	}
 
-	private handleMouseDownPassword = (event: React.MouseEvent<HTMLElement>) => {
-		event.preventDefault();
-	}
-
 	private handleShowPassswordClick = () => {
 		this.setState({ showPassword: !this.state.showPassword });
 	}
@@ -49,21 +48,54 @@ export default class Login extends React.PureComponent<{}, ILoginStates> {
 			<div id="login">
 				<Card className="container">
 					<CardContent>
-						<div className="title">Zaloguj się</div>
-						<div className="subtitle">Zaloguj się aby kontynuować</div>
+						<div className="title">
+							{this.props.intl.formatMessage({
+								id: "login.title",
+								defaultMessage: "Login"
+							})}
+						</div>
+						<div className="subtitle">
+							{this.props.intl.formatMessage({
+								id: "login.subtitle",
+								defaultMessage: "Login to continue"
+							})}
+						</div>
 						<form className="form">
-							<FormControl fullWidth error={this.state.loginError} >
-								<InputLabel>Adres email</InputLabel>
+							<FormControl
+								fullWidth
+								error={this.state.loginError}
+							>
+								<InputLabel>
+									{this.props.intl.formatMessage({
+										id: "login.email",
+										defaultMessage: "Email"
+									})}
+								</InputLabel>
 								<Input
 									autoComplete="email"
 									type="text"
 									value={this.state.username}
 									onChange={this.handleUsernameChange}
 								/>
-								<FormHelperText>{this.state.loginError ? "Niepoprawny email" : ""}</FormHelperText>
+								<FormHelperText>
+									{this.state.loginError
+										? this.props.intl.formatMessage({
+											id: "login.incorrentEmail",
+											defaultMessage:
+												"Incorrent email"
+										}) : ""}
+								</FormHelperText>
 							</FormControl>
-							<FormControl fullWidth error={this.state.loginError}>
-								<InputLabel>Hasło</InputLabel>
+							<FormControl
+								fullWidth
+								error={this.state.loginError}
+							>
+								<InputLabel>
+									{this.props.intl.formatMessage({
+										id: "login.password",
+										defaultMessage: "Password"
+									})}
+								</InputLabel>
 								<Input
 									autoComplete="password"
 									type={this.state.showPassword ? "text" : "password"}
@@ -73,27 +105,56 @@ export default class Login extends React.PureComponent<{}, ILoginStates> {
 										<InputAdornment position="end">
 											<IconButton
 												onClick={this.handleShowPassswordClick}
-												onMouseDown={this.handleMouseDownPassword}
+												onMouseDown={e => e.preventDefault()}
 											>
 												{this.state.showPassword ? <VisibilityOff /> : <Visibility />}
 											</IconButton>
 										</InputAdornment>
 									}
 								/>
-								<FormHelperText>{this.state.passwordError ? "Niepoprawne hasło" : ""}</FormHelperText>
+								<FormHelperText>
+									{this.state.passwordError
+										? this.props.intl.formatMessage({
+											id: "login.incorrentPassword",
+											defaultMessage:
+												"Incorrent password"
+										}) : ""}
+								</FormHelperText>
 							</FormControl>
 						</form>
 					</CardContent>
 					<CardActions className="buttons">
-						<Button variant="flat" color="primary" className="btn" size="small">Zapomniałem hasła</Button>
-						<Button color="primary" variant="raised" className="btn" size="small">Zaloguj</Button>
+						<Button
+							variant="flat"
+							color="primary"
+							className="btn"
+							size="small"
+						>
+							{this.props.intl.formatMessage({
+								id: "login.forgotPasswordButton",
+								defaultMessage: "Forgot password"
+							})}
+						</Button>
+						<Button
+							color="primary"
+							variant="raised"
+							className="btn"
+							size="small"
+						>
+							{this.props.intl.formatMessage({
+								id: "login.loginButton",
+								defaultMessage: "Login"
+							})}
+						</Button>
 					</CardActions>
 				</Card>
 			</div>
 		);
 	}
 }
-{/*
+export default injectIntl(Login);
+{
+	/*
 <div className="title">Zaloguj się</div>
 <div className="subtitle">Zaloguj się aby kontynuować</div>
 <div className="form">
@@ -116,4 +177,5 @@ export default class Login extends React.PureComponent<{}, ILoginStates> {
 	<Button variant="flat" color="primary" className="btn" size="small">Zapomniałem hasła</Button>
 	<Button color="primary" variant="raised" className="btn" size="small">Zaloguj</Button>
 </div>
-*/}
+*/
+}
