@@ -33,5 +33,15 @@
 		display: flex;
 		justify-content: space-between;
 		background-color: rgba($bg-primary__color-30, 0.05);
+
+		.buttonWrapper {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			.progress {
+				position: absolute
+			}
+		}
 	}
 }

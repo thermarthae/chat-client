@@ -1,34 +1,86 @@
 import * as React from "react";
 import { injectIntl, InjectedIntlProps } from "react-intl";
 
-//import TextField from "material-ui/TextField";
+import { gql, ApolloClient } from "apollo-boost";
+import { withApollo } from "react-apollo";
+
 import Button from "material-ui/Button";
 import Card, { CardActions, CardContent } from "material-ui/Card";
 import "../../style/login.component.scss";
 
+import TextField from "material-ui/TextField";
 import Input, { InputLabel, InputAdornment } from "material-ui/Input";
+import { CircularProgress } from "material-ui/Progress";
 import { FormControl, FormHelperText } from "material-ui/Form";
 import IconButton from "material-ui/IconButton";
 import Visibility from "material-ui-icons/Visibility";
 import VisibilityOff from "material-ui-icons/VisibilityOff";
 
-interface ILoginProps extends InjectedIntlProps { }
+const getAccessQuery = gql`
+	query ($username: String!, $password: String!){
+		getAccess(username: $username, password: $password) {
+			user {
+				_id
+				name
+				email
+				isAdmin
+			}
+			access_token
+			refresh_token
+			error {
+				code
+				message
+			}
+		}
+	}
+`;
+
+const loginStatusMutation = gql`
+	mutation ($isLoggedIn: Boolean!, $_id: String!, $name: String!, $email: String!, $isAdmin: Boolean!){
+		logIn(isLoggedIn: $isLoggedIn, _id: $_id, name: $name, email: $email, isAdmin: $isAdmin) @client
+	}
+`;
+
+interface IGetAccessQueryResponse {
+	getAccess: {
+		user: {
+			_id: string
+			name: string
+			email: string
+			isAdmin: boolean
+		}
+		access_token: string;
+		refresh_token: string;
+		error?: {
+			code: number;
+			message: string;
+		}
+	};
+}
+
+///////////////////////////////////////////////////////////
+
+interface ILoginProps extends InjectedIntlProps {
+	client: ApolloClient<any>;
+}
 
 interface ILoginStates {
 	username: string;
 	password: string;
-	loginError: boolean;
+	usernameError: boolean;
 	passwordError: boolean;
 	showPassword: boolean;
+	waitingForServer: boolean;
 }
 
 class Login extends React.PureComponent<ILoginProps, ILoginStates> {
 	public state = {
 		username: "",
 		password: "",
-		loginError: false,
+		usernameError: false,
 		passwordError: false,
 		showPassword: false,
+		waitingForServer: false,
 	};
 
 	private handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,63 +95,116 @@ class Login extends React.PureComponent<ILoginProps, ILoginStates> {
 		this.setState({ showPassword: !this.state.showPassword });
 	}
 
+	// private timer: any;
+	private handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		this.setState({ waitingForServer: true });
+
+		try {
+			const { username, password } = this.state;
+			const { data: { getAccess } } = await this.props.client.query<IGetAccessQueryResponse>({
+				query: getAccessQuery,
+				fetchPolicy: "network-only",
+				variables: { username, password }
+			});
+			if (getAccess.error) throw getAccess;
+			this.setState({ waitingForServer: false });
+
+			this.props.client.mutate<IGetAccessQueryResponse>({
+				mutation: loginStatusMutation,
+				variables: {
+					isLoggedIn: true,
+					_id: getAccess.user._id,
+					name: getAccess.user.name,
+					email: getAccess.user.email,
+					isAdmin: getAccess.user.isAdmin
+				}
+			});
+
+			localStorage.setItem("access_token", getAccess.access_token); //TODO
+			localStorage.setItem("refresh_token", getAccess.refresh_token); //TODO
+			console.log("login success", getAccess);
+		} catch (err) {
+			let usernameErr = false;
+			let passwordErr = false;
+			if (err.error && err.error.code === 100) usernameErr = true;
+			else if (err.error && err.error.code === 200) passwordErr = true;
+
+			this.setState({
+				usernameError: usernameErr,
+				passwordError: passwordErr,
+				waitingForServer: false
+			});
+			console.error("login failed!", err);
+		}
+	}
+
 	public render() {
+		const { waitingForServer, usernameError, passwordError, username, password, showPassword } = this.state;
+		const { formatMessage } = this.props.intl;
+
+		const usernameHelper = (usernameError) ?
+			formatMessage({
+				id: "error.Err100",
+				defaultMessage: "Username doesn't belong to any account",
+			})
+			: "";
+
+		const passwordHelper = (passwordError) ?
+			<FormHelperText>
+				{formatMessage({
+					id: "error.Err200",
+					defaultMessage: "Password is incorrect"
+				})}
+			</FormHelperText>
+			: "";
+
 		return (
-			<div id="login">
+			<form action="" id="login" onSubmit={this.handleSubmit}>
 				<Card className="container">
 					<CardContent>
 						<div className="title">
-							{this.props.intl.formatMessage({
+							{formatMessage({
 								id: "login.title",
 								defaultMessage: "Login"
 							})}
 						</div>
 						<div className="subtitle">
-							{this.props.intl.formatMessage({
+							{formatMessage({
 								id: "login.subtitle",
 								defaultMessage: "Login to continue"
 							})}
 						</div>
-						<form className="form">
+						<div className="form">
+							<TextField
+								required
+								fullWidth
+								type="text"
+								autoComplete="username"
+								value={username}
+								onChange={this.handleUsernameChange}
+								error={usernameError}
+								label={formatMessage({
+									id: "login.username",
+									defaultMessage: "Email"
+								})}
+								helperText={usernameHelper}
+							/>
 							<FormControl
 								fullWidth
-								error={this.state.loginError}
+								required
+								error={passwordError}
 							>
 								<InputLabel>
-									{this.props.intl.formatMessage({
-										id: "login.email",
-										defaultMessage: "Email"
-									})}
-								</InputLabel>
-								<Input
-									autoComplete="email"
-									type="text"
-									value={this.state.username}
-									onChange={this.handleUsernameChange}
-								/>
-								<FormHelperText>
-									{this.state.loginError
-										? this.props.intl.formatMessage({
-											id: "login.incorrentEmail",
-											defaultMessage:
-												"Incorrent email"
-										}) : ""}
-								</FormHelperText>
-							</FormControl>
-							<FormControl
-								fullWidth
-								error={this.state.loginError}
-							>
-								<InputLabel>
-									{this.props.intl.formatMessage({
+									{formatMessage({
 										id: "login.password",
 										defaultMessage: "Password"
 									})}
 								</InputLabel>
 								<Input
 									autoComplete="password"
-									type={this.state.showPassword ? "text" : "password"}
-									value={this.state.password}
+									type={showPassword ? "text" : "password"}
+									value={password}
 									onChange={this.handlePasswordChange}
 									endAdornment={
 										<InputAdornment position="end">
@@ -107,21 +212,14 @@ class Login extends React.PureComponent<ILoginProps, ILoginStates> {
 												onClick={this.handleShowPassswordClick}
 												onMouseDown={e => e.preventDefault()}
 											>
-												{this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+												{showPassword ? <VisibilityOff /> : <Visibility />}
 											</IconButton>
 										</InputAdornment>
 									}
 								/>
-								<FormHelperText>
-									{this.state.passwordError
-										? this.props.intl.formatMessage({
-											id: "login.incorrentPassword",
-											defaultMessage:
-												"Incorrent password"
-										}) : ""}
-								</FormHelperText>
+								{passwordHelper}
 							</FormControl>
-						</form>
+						</div>
 					</CardContent>
 					<CardActions className="buttons">
 						<Button
@@ -130,52 +228,31 @@ class Login extends React.PureComponent<ILoginProps, ILoginStates> {
 							className="btn"
 							size="small"
 						>
-							{this.props.intl.formatMessage({
+							{formatMessage({
 								id: "login.forgotPasswordButton",
 								defaultMessage: "Forgot password"
 							})}
 						</Button>
-						<Button
-							color="primary"
-							variant="raised"
-							className="btn"
-							size="small"
-						>
-							{this.props.intl.formatMessage({
-								id: "login.loginButton",
-								defaultMessage: "Login"
-							})}
-						</Button>
+						<div className="buttonWrapper">
+							<Button
+								color="primary"
+								variant="raised"
+								className="btn"
+								size="small"
+								type="submit"
+								disabled={waitingForServer}
+							>
+								{formatMessage({
+									id: "login.loginButton",
+									defaultMessage: "Login"
+								})}
+							</Button>
+							{waitingForServer && <CircularProgress size="1.5em" className="progress" />}
+						</div>
 					</CardActions>
 				</Card>
-			</div>
+			</form>
 		);
 	}
 }
-export default injectIntl(Login);
-{
-	/*
-<div className="title">Zaloguj się</div>
-<div className="subtitle">Zaloguj się aby kontynuować</div>
-<div className="form">
-	<TextField
-		fullWidth
-		autoComplete="email"
-		helperText=" "
-		label="Adres email"
-		type="text"
-	/>
-	<TextField
-		fullWidth
-		autoComplete="password"
-		helperText=" "
-		label="Hasło"
-		type="password"
-	/>
-</div>
-<div className="buttons">
-	<Button variant="flat" color="primary" className="btn" size="small">Zapomniałem hasła</Button>
-	<Button color="primary" variant="raised" className="btn" size="small">Zaloguj</Button>
-</div>
-*/
-}
+export default injectIntl(withApollo(Login));
