@@ -4,6 +4,10 @@ import { NavLink, withRouter, RouteComponentProps } from "react-router-dom";
 import { connect, Dispatch } from "react-redux";
 import { IAppAction, AppActions } from "../actions/app.actions";
 
+import { ApolloClient } from "apollo-boost";
+import { withApollo } from "react-apollo";
+import * as StateUserMutations from "../apollo/state/mutations/user.mutations";
+
 import IconButton from "material-ui/IconButton";
 import Menu from "@material-ui/icons/Menu";
 import Chat from "@material-ui/icons/Chat";
@@ -13,9 +17,16 @@ import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
 import "../style/navigator.component.scss";
 
 interface INavigatorProps extends RouteComponentProps<any> {
-	toggleMenu: () => IAppAction;
-	changeLanguage: (x: string) => IAppAction;
+	client: ApolloClient<any>;
+	toggleMenu: () => IAppAction; //REDUX
+	changeLanguage: (x: string) => IAppAction; //REDUX
 }
+
+const handleLogout = async (client: ApolloClient<any>) => {
+	await client.mutate({
+		mutation: StateUserMutations.logOut,
+	});
+};
 
 const Navigator = (prop: INavigatorProps) => (
 	<nav id="navigator">
@@ -25,7 +36,7 @@ const Navigator = (prop: INavigatorProps) => (
 			</IconButton>
 		</div>
 		<div className="btn btn-big">
-			<IconButton className="btn" >
+			<IconButton className="btn" onClick={() => handleLogout(prop.client)}>
 				<PowerSettingsNew style={{ fontSize: "inherit" }}/>
 			</IconButton>
 		</div>
@@ -64,4 +75,4 @@ const mapDispatchToProps = (dispatch: Dispatch<IAppAction>) => {
 	};
 };
 
-export default withRouter(connect(undefined, mapDispatchToProps)(Navigator));
+export default withRouter(connect(undefined, mapDispatchToProps)(withApollo(Navigator)));
