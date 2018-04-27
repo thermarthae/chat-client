@@ -11,9 +11,9 @@ import Avatar from "material-ui/Avatar";
 import { ListItem } from "material-ui/List";
 import Menu, { MenuItem } from "material-ui/Menu";
 import IconButton from "material-ui/IconButton";
-import MoreHoriz from "material-ui-icons/MoreHoriz";
-import Search from "material-ui-icons/Search";
-import Cancel from "material-ui-icons/Cancel";
+import MoreHoriz from "@material-ui/icons/MoreHoriz";
+import Search from "@material-ui/icons/Search";
+import Cancel from "@material-ui/icons/Cancel";
 
 import Input from "material-ui/Input";
 
@@ -50,7 +50,7 @@ class Users extends React.PureComponent<IUsersProps, IUsersStates> {
 	}
 
 	public render() {
-		const { oponentId } = this.props;
+		const { oponentId, intl: { formatMessage } } = this.props;
 		const { menuAnchorEl } = this.state;
 		const filteredItems = this.props.chat.inbox.filter((item: IInbox) => filterItem(item, this.props.chat.inboxFilter));
 
@@ -62,10 +62,7 @@ class Users extends React.PureComponent<IUsersProps, IUsersStates> {
 						disableUnderline
 						/* value={this.state.password}
 						onChange={this.handleChange("password")} */
-						placeholder={this.props.intl.formatMessage({
-							id: "chat.users.search",
-							defaultMessage: "Search..."
-						})}
+						placeholder={formatMessage({ id: "chat.users.search" })}
 						startAdornment={
 							<Search className="btn" />
 						}
@@ -83,14 +80,14 @@ class Users extends React.PureComponent<IUsersProps, IUsersStates> {
 				{!this.props.chat.inbox[0] ?
 					<div className="list empty">
 						<span>
-							{this.props.intl.formatMessage({ id: "chat.users.inboxIsEmpty", defaultMessage: "Inbox is empty..." })}
+							{formatMessage({ id: "chat.users.inboxIsEmpty" })}
 						</span>
 					</div>
 					:
 					!filteredItems[0] ?
 						<div className="list empty">
 							<span>
-								{this.props.intl.formatMessage({ id: "chat.users.nothingToShow", defaultMessage: "Nothing to show..." })}
+								{formatMessage({ id: "chat.users.nothingToShow" })}
 							</span>
 						</div>
 						:
@@ -139,7 +136,7 @@ class Users extends React.PureComponent<IUsersProps, IUsersStates> {
 								anchorEl={menuAnchorEl}
 							>
 								<MenuItem className="menuItem" onClick={this.handleMenuClose}>
-									{this.props.intl.formatMessage({ id: "chat.users.menuItem.delete", defaultMessage: "Delete" })}
+									{formatMessage({ id: "chat.users.menuItem.delete" })}
 								</MenuItem>
 							</Menu>
 						</div>

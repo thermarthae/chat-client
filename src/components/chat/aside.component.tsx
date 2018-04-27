@@ -9,7 +9,7 @@ interface IAsideProps {
 	chat: IChatReducerState;
 }
 
-const Aside = (props: IAsideProps) => {
+const Aside: React.SFC<IAsideProps> = props => {
 	return (
 		<div id="aside" className={props.chat.asideIsOpen ? "active" : ""}></div>
 	);

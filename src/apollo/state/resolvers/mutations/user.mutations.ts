@@ -11,10 +11,23 @@ export const logIn = (_: undefined, { isLoggedIn, _id, name, email, isAdmin }: a
 			isAdmin
 		},
 	};
+
 	cache.writeData({ data });
 	return null;
 };
 
-export const logOut = (_: undefined, { id, name, isLoggedIn }: any, { cache }: ApolloClient<any>) => {
+export const logOut = (_: undefined, {}: any, { cache }: ApolloClient<any>) => { //TODO
+	const data = {
+		isLoggedIn: false,
+		currentUser: {
+			__typename: "User",
+			_id: null,
+			name: null,
+			email: null,
+			isAdmin: null
+		},
+	};
+
+	cache.writeData({ data });
 	return null;
 };

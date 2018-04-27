@@ -39,6 +39,15 @@
 			align-items: center;
 			justify-content: center;
 
+			&.success {
+				color: $text-primary__color--light;
+
+				.btn {
+					background-color: $bg-primary__color-30;
+					color: rgba($text-primary__color--light, 0.2);
+				}
+			}
+
 			.progress {
 				position: absolute
 			}

@@ -10,7 +10,6 @@ import "../../style/chat.component.scss";
 import Menu from "./menu.component";
 import Users from "./users.component";
 import Inbox from "./inbox.component";
-import Aside from "./aside.component";
 
 //interface IChatProps {
 // app: IAppReducerState;
@@ -30,7 +29,6 @@ const Chat = (props: RouteComponentProps<IChatRouteProps>) => {
 			<Menu />
 			<Users oponentId={props.match.params.id} />
 			<Inbox oponentId={props.match.params.id} />
-			<Aside />
 		</div>
 	);
 };

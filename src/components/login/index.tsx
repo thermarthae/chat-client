@@ -1,8 +1,12 @@
 import * as React from "react";
 import { injectIntl, InjectedIntlProps } from "react-intl";
+import { Redirect } from "react-router";
 
-import { gql, ApolloClient } from "apollo-boost";
+import { ApolloClient } from "apollo-boost";
 import { withApollo } from "react-apollo";
+import * as ServerUserQueries from "../../apollo/server/queries/user.queries";
+import * as StateUserMutations from "../../apollo/state/mutations/user.mutations";
+
 
 import Button from "material-ui/Button";
 import Card, { CardActions, CardContent } from "material-ui/Card";
@@ -13,52 +17,8 @@ import Input, { InputLabel, InputAdornment } from "material-ui/Input";
 import { CircularProgress } from "material-ui/Progress";
 import { FormControl, FormHelperText } from "material-ui/Form";
 import IconButton from "material-ui/IconButton";
-import Visibility from "material-ui-icons/Visibility";
-import VisibilityOff from "material-ui-icons/VisibilityOff";
-
-const getAccessQuery = gql`
-	query ($username: String!, $password: String!){
-		getAccess(username: $username, password: $password) {
-			user {
-				_id
-				name
-				email
-				isAdmin
-			}
-			access_token
-			refresh_token
-			error {
-				code
-				message
-			}
-		}
-	}
-`;
-
-const loginStatusMutation = gql`
-	mutation ($isLoggedIn: Boolean!, $_id: String!, $name: String!, $email: String!, $isAdmin: Boolean!){
-		logIn(isLoggedIn: $isLoggedIn, _id: $_id, name: $name, email: $email, isAdmin: $isAdmin) @client
-	}
-`;
-
-interface IGetAccessQueryResponse {
-	getAccess: {
-		user: {
-			_id: string
-			name: string
-			email: string
-			isAdmin: boolean
-		}
-		access_token: string;
-		refresh_token: string;
-		error?: {
-			code: number;
-			message: string;
-		}
-	};
-}
-
-///////////////////////////////////////////////////////////
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
 interface ILoginProps extends InjectedIntlProps {
 	client: ApolloClient<any>;
@@ -71,6 +31,7 @@ interface ILoginStates {
 	passwordError: boolean;
 	showPassword: boolean;
 	waitingForServer: boolean;
+	loginSuccess: boolean;
 }
 
 class Login extends React.PureComponent<ILoginProps, ILoginStates> {
@@ -81,6 +42,7 @@ class Login extends React.PureComponent<ILoginProps, ILoginStates> {
 		passwordError: false,
 		showPassword: false,
 		waitingForServer: false,
+		loginSuccess: false,
 	};
 
 	private handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,23 +57,22 @@ class Login extends React.PureComponent<ILoginProps, ILoginStates> {
 		this.setState({ showPassword: !this.state.showPassword });
 	}
 
-	// private timer: any;
 	private handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+		const { username, password } = this.state;
+		const { client } = this.props;
 		this.setState({ waitingForServer: true });
 
 		try {
-			const { username, password } = this.state;
-			const { data: { getAccess } } = await this.props.client.query<IGetAccessQueryResponse>({
-				query: getAccessQuery,
-				fetchPolicy: "network-only",
+			const { data: { getAccess } } = await client.query<ServerUserQueries.IGetAccessResponse>({
+				query: ServerUserQueries.getAccess,
+				fetchPolicy: "no-cache",
 				variables: { username, password }
 			});
 			if (getAccess.error) throw getAccess;
-			this.setState({ waitingForServer: false });
 
-			this.props.client.mutate<IGetAccessQueryResponse>({
-				mutation: loginStatusMutation,
+			client.mutate({
+				mutation: StateUserMutations.setLoginStatus,
 				variables: {
 					isLoggedIn: true,
 					_id: getAccess.user._id,
@@ -121,59 +82,66 @@ class Login extends React.PureComponent<ILoginProps, ILoginStates> {
 				}
 			});
 
+			this.setState({
+				waitingForServer: false,
+				loginSuccess: true
+			});
+
+			console.log("Login success!:", getAccess);
 			localStorage.setItem("access_token", getAccess.access_token); //TODO
 			localStorage.setItem("refresh_token", getAccess.refresh_token); //TODO
-			console.log("login success", getAccess);
 		} catch (err) {
-			let usernameErr = false;
-			let passwordErr = false;
-			if (err.error && err.error.code === 100) usernameErr = true;
-			else if (err.error && err.error.code === 200) passwordErr = true;
+			const errorInfo = err.error ? `Error ${err.error.code}: ${err.error.message}` : err;
+			console.error(errorInfo);
+
+			let usernameErr = true;
+			let passwordErr = true;
+			if (err.error && err.error.code === 100) passwordErr = false; // 100 => username
+			else if (err.error && err.error.code === 200) usernameErr = false; // 200 => password
 
 			this.setState({
 				usernameError: usernameErr,
 				passwordError: passwordErr,
 				waitingForServer: false
 			});
-			console.error("login failed!", err);
 		}
 	}
 
 	public render() {
-		const { waitingForServer, usernameError, passwordError, username, password, showPassword } = this.state;
+		const {
+			username,
+			password,
+			usernameError,
+			passwordError,
+			showPassword,
+			waitingForServer,
+			loginSuccess,
+		} = this.state;
 		const { formatMessage } = this.props.intl;
+		let loginButtonProgress;
+		let usernameHelper;
+		let passwordHelper;
 
-		const usernameHelper = (usernameError) ?
-			formatMessage({
-				id: "error.Err100",
-				defaultMessage: "Username doesn't belong to any account",
-			})
-			: "";
-
-		const passwordHelper = (passwordError) ?
-			<FormHelperText>
-				{formatMessage({
-					id: "error.Err200",
-					defaultMessage: "Password is incorrect"
-				})}
-			</FormHelperText>
-			: "";
+		if (loginSuccess) return <Redirect to="/" />;
+		if (waitingForServer) loginButtonProgress = <CircularProgress size="1.5em" className="progress" />;
+		if (usernameError && passwordError) {
+			usernameHelper = formatMessage({ id: "error.Err999" });
+			passwordHelper = <FormHelperText>{usernameHelper}</FormHelperText>;
+		}
+		else if (usernameError) usernameHelper = formatMessage({ id: "error.Err100" });
+		else if (passwordError) passwordHelper = <FormHelperText>
+			{formatMessage({ id: "error.Err200" })}
+		</FormHelperText>;
 
 		return (
 			<form action="" id="login" onSubmit={this.handleSubmit}>
 				<Card className="container">
 					<CardContent>
 						<div className="title">
-							{formatMessage({
-								id: "login.title",
-								defaultMessage: "Login"
-							})}
+							{formatMessage({ id: "login.title" })}
 						</div>
 						<div className="subtitle">
-							{formatMessage({
-								id: "login.subtitle",
-								defaultMessage: "Login to continue"
-							})}
+							{formatMessage({ id: "login.subtitle" })}
 						</div>
 						<div className="form">
 							<TextField
@@ -184,10 +152,7 @@ class Login extends React.PureComponent<ILoginProps, ILoginStates> {
 								value={username}
 								onChange={this.handleUsernameChange}
 								error={usernameError}
-								label={formatMessage({
-									id: "login.username",
-									defaultMessage: "Email"
-								})}
+								label={formatMessage({ id: "login.username" })}
 								helperText={usernameHelper}
 							/>
 							<FormControl
@@ -196,10 +161,7 @@ class Login extends React.PureComponent<ILoginProps, ILoginStates> {
 								error={passwordError}
 							>
 								<InputLabel>
-									{formatMessage({
-										id: "login.password",
-										defaultMessage: "Password"
-									})}
+									{formatMessage({ id: "login.password" })}
 								</InputLabel>
 								<Input
 									autoComplete="password"
@@ -228,26 +190,20 @@ class Login extends React.PureComponent<ILoginProps, ILoginStates> {
 							className="btn"
 							size="small"
 						>
-							{formatMessage({
-								id: "login.forgotPasswordButton",
-								defaultMessage: "Forgot password"
-							})}
+							{formatMessage({ id: "login.forgotPasswordButton" })}
 						</Button>
-						<div className="buttonWrapper">
+						<div className={"buttonWrapper" + (loginSuccess ? " success" : "")}>
 							<Button
 								color="primary"
 								variant="raised"
 								className="btn"
 								size="small"
 								type="submit"
-								disabled={waitingForServer}
+								disabled={loginButtonProgress !== undefined}
 							>
-								{formatMessage({
-									id: "login.loginButton",
-									defaultMessage: "Login"
-								})}
+								{formatMessage({ id: "login.loginButton" })}
 							</Button>
-							{waitingForServer && <CircularProgress size="1.5em" className="progress" />}
+							{loginButtonProgress}
 						</div>
 					</CardActions>
 				</Card>

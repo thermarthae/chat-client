@@ -5,9 +5,10 @@ addLocaleData(pl);
 export default {
 	"error": `Błąd 404 - ${location.pathname}`,
 	"error.Err100": "Użytkownik z podanym adresem nie istnieje",
-	"error.Err101": "Nie znaleziono użytkowników",
+	"error.Err101": "Nie znaleziono użytkownika",
+	"error.Err102": "Nie znaleziono użytkowników",
 	"error.Err200": "Niepoprawne hasło",
-	"error.Err999": "Wystąpił nieznany błąd",
+	"error.Err999": "Wystąpił nieznany błąd. Sprawdz połączenie",
 
 	"login.title": "Zaloguj się",
 	"login.subtitle": "Zaloguj się aby kontynuować",

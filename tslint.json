@@ -14,7 +14,11 @@
 		"trailing-comma": false,
 		"member-ordering": false,
 		"no-empty-interface": false,
-		"max-classes-per-file": [true, 2]
+		"max-classes-per-file": [true, 2],
+		"object-literal-sort-keys": [true, "match-declaration-order"],
+		"one-line": [true, "check-catch", "check-finally"],
+		"no-trailing-whitespace": [true, "ignore-blank-lines"]
+
 	},
 	"rulesDirectory": []
 }
