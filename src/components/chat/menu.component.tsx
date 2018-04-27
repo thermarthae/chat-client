@@ -20,10 +20,7 @@ interface IMenuProps {
 
 const Menu = (props: IMenuProps) => {
 	return (
-		<div
-			id="menu"
-			className={props.app.menuIsOpen ? "active" : ""}
-		>
+		<div id="menu">
 			<div className="head">
 				<span className="title">
 					<FormattedMessage id="chat.menu.title"/>
