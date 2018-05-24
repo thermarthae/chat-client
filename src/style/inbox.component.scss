@@ -47,7 +47,7 @@
 		flex-grow: 1;
 		display: flex;
 
-		.left {
+		.main {
 			flex-grow: 1;
 			display: flex;
 			flex-direction: column;
@@ -201,7 +201,7 @@
 			}
 		}
 
-		.right {
+		.aside {
 			margin-right: -300px;
 			flex-basis: 300px;
 			flex-grow: 0;

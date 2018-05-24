@@ -1,14 +1,8 @@
 import { gql } from "apollo-boost";
 
-export const getAccess = gql`
+export const LOG_IN = gql`
 	query ($username: String!, $password: String!){
 		getAccess(username: $username, password: $password) {
-			user {
-				_id
-				name
-				email
-				isAdmin
-			}
 			access_token
 			refresh_token
 			error {
@@ -18,15 +12,8 @@ export const getAccess = gql`
 		}
 	}
 `;
-
-export interface IGetAccessResponse {
+export interface ILogInResponse {
 	getAccess: {
-		user: {
-			_id: string
-			name: string
-			email: string
-			isAdmin: boolean
-		}
 		access_token: string;
 		refresh_token: string;
 		error?: {
@@ -35,3 +22,9 @@ export interface IGetAccessResponse {
 		}
 	};
 }
+
+export const SET_LOGIN_STATUS = gql`
+	mutation {
+		setLoginStatus(loginStatus: true) @client
+	}
+`;

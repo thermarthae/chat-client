@@ -1,103 +1,92 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 
-import { connect, Dispatch } from "react-redux";
-import { IAppReducerState } from "../../reducers/app.reducer";
-import { IChatAction, ChatActions, TInboxFilter } from "../../actions/chat.actions";
-import { IChatReducerState } from "../../reducers/chat.reducer";
+import { Query, Mutation } from "react-apollo";
+import { SET_INBOX_FILTER, GET_CURRENT_USER, IGetCurrentUserResponse } from "../../apollo/chat/menu.apollo";
 
-import IconButton from "material-ui/IconButton";
-import PersonAdd from "@material-ui/icons/PersonAdd";
-import List, { ListItem } from "material-ui/List";
+import { IconButton, List, ListItem } from "@material-ui/core";
+import { PersonAdd } from "@material-ui/icons";
 
 import "../../style/menu.component.scss";
 
-interface IMenuProps {
-	app: IAppReducerState;
-	chat: IChatReducerState;
-	setInboxFilter: (filter: TInboxFilter) => IChatAction;
-}
-
-const Menu = (props: IMenuProps) => {
+const Menu = () => {
 	return (
 		<div id="menu">
 			<div className="head">
 				<span className="title">
-					<FormattedMessage id="chat.menu.title"/>
+					<FormattedMessage id="chat.menu.title" />
 				</span>
 				<IconButton className="btn">
 					<PersonAdd style={{ fontSize: "inherit" }} />
 				</IconButton>
 			</div>
-			<div className="wrapper">
-				<List className="container">
-					<ListItem
-						button
-						onClick={() => props.setInboxFilter(null)}
-						className={"line" + (props.chat.inboxFilter === null ? " active" : "")}
-					>
-						<span className="name"><FormattedMessage id="chat.menu.allMessages"/></span>
-						<span className="count">{(props.chat.inbox || []).length}</span>
-					</ListItem>
-					<ListItem
-						button
-						onClick={() => props.setInboxFilter("unread")}
-						className={"line" + (props.chat.inboxFilter === "unread" ? " active" : "")}
-					>
-						<span className="name"><FormattedMessage id="chat.menu.unread"/></span>
-						<span className="count">{props.chat.unread}</span>
-					</ListItem>
-					<ListItem
-						button
-						onClick={() => props.setInboxFilter("draft")}
-						className={"line" + (props.chat.inboxFilter === "draft" ? " active" : "")}
-					>
-						<span className="name"><FormattedMessage id="chat.menu.draft"/></span>
-						<span className="count">{props.chat.draft}</span>
-					</ListItem>
-				</List>
-				<div className="separator" />
-				<List className="container">
-					<ListItem
-						button
-						onClick={() => props.setInboxFilter("groups")}
-						className={"line" + (props.chat.inboxFilter === "groups" ? " active" : "")}
-					>
-						<span className="name"><FormattedMessage id="chat.menu.groups"/></span>
-						<span className="count">{props.chat.groups}</span>
-					</ListItem>
-				</List>
-				<div className="separator" />
-				<List className="container">
-					<ListItem
-						button
-						className="line"
-					>
-						<span className="name"><FormattedMessage id="chat.menu.help"/></span>
-					</ListItem>
-					<ListItem
-						button
-						className="line"
-					>
-						<span className="name"><FormattedMessage id="chat.menu.settings"/></span>
-					</ListItem>
-				</List>
-			</div>
+			<Query query={GET_CURRENT_USER}>
+				{({ loading, error, data }) => {
+					if (error) return `Error! ${error.message}`;
+					if (loading) return "Loading...";
+
+					const {
+						currentUser: { conversationData: {
+							conversationCount,
+							draftCount,
+							unreadCount
+						} },
+						chat: {
+							inboxFilter
+						}
+					}: IGetCurrentUserResponse = data;
+
+					return <Mutation mutation={SET_INBOX_FILTER}>
+						{setInboxFilter =>
+							<div className="wrapper">
+								<List className="container">
+									<ListItem
+										button
+										onClick={() => setInboxFilter({ variables: { inboxFilter: "UNREAD" } })}
+										className={"line" + (inboxFilter === "UNREAD" ? " active" : "")}
+									>
+										<span className="name"><FormattedMessage id="chat.menu.inbox" /></span>
+										<span className="count">{unreadCount}</span>
+									</ListItem>
+									<ListItem
+										button
+										onClick={() => setInboxFilter({ variables: { inboxFilter: "ALL" } })}
+										className={"line" + (inboxFilter === "ALL" ? " active" : "")}
+									>
+										<span className="name"><FormattedMessage id="chat.menu.allMessages" /></span>
+										<span className="count">{conversationCount}</span>
+									</ListItem>
+									<ListItem
+										button
+										onClick={() => setInboxFilter({ variables: { inboxFilter: "DRAFT" } })}
+										className={"line" + (inboxFilter === "DRAFT" ? " active" : "")}
+									>
+										<span className="name"><FormattedMessage id="chat.menu.draft" /></span>
+										<span className="count">{draftCount}</span>
+									</ListItem>
+								</List>
+								<div className="separator" />
+								<List className="container">
+									<ListItem
+										button
+										className="line"
+									>
+										<span className="name"><FormattedMessage id="chat.menu.help" /></span>
+									</ListItem>
+									<ListItem
+										button
+										className="line"
+									>
+										<span className="name"><FormattedMessage id="chat.menu.settings" /></span>
+									</ListItem>
+								</List>
+							</div>
+						}
+					</Mutation>;
+				}}
+			</Query>
 		</div>
 	);
 };
 
-const mapStateToProps = (state: any) => {
-	return {
-		app: state.App,
-		chat: state.Chat
-	};
-};
-
-const mapDispatchToProps = (dispatch: Dispatch<IChatAction>) => {
-	return {
-		setInboxFilter: (filter: TInboxFilter) => dispatch(ChatActions.setInboxFilter(filter)),
-	};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Menu);
+export default Menu;

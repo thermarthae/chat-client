@@ -4,12 +4,9 @@ import { BrowserRouter, Switch } from "react-router-dom";
 import { IntlProvider } from "react-intl";
 import messages from "../locales";
 
-import { ApolloClient } from "apollo-boost";
-import { Query, withApollo } from "react-apollo";
-import * as LocalUserQueries from "../apollo/state/queries/user.queries";
-
-import { connect } from "react-redux";
-import { IAppReducerState } from "../reducers/app.reducer";
+import { Query } from "react-apollo";
+import { WithApolloClient } from "react-apollo/withApollo";
+import { GET_APP_DATA } from "../apollo/app.apollo";
 
 import "../style/app.component.scss";
 
@@ -18,10 +15,7 @@ import Navigator from "./navigator.component";
 import Chat from "./chat";
 import Login from "./login";
 
-interface IAppProps {
-	app: IAppReducerState; //TODO REDUX
-	client: ApolloClient<any>;
-}
+interface IAppProps { }
 
 const PrivateRoute = ({ isLoggedIn, component: Component, accessWhenUnlogged, ...rest }: any) => (
 	<Route
@@ -49,12 +43,12 @@ const PrivateRoute = ({ isLoggedIn, component: Component, accessWhenUnlogged, ..
 	/>
 );
 
-const App: React.SFC<IAppProps> = props => {
+const App: React.SFC<WithApolloClient<IAppProps>> = props => {
 	return (
-		<IntlProvider locale={props.app.language} messages={messages[props.app.language]}>
-			<BrowserRouter>
-				<Query query={LocalUserQueries.getLoginStatus}>{
-					({ data: { isLoggedIn } }) =>
+		<Query query={GET_APP_DATA}>{
+			({ data: { app: { language, isLoggedIn } } }) =>
+				<IntlProvider locale={language} messages={messages[language]}>
+					<BrowserRouter>
 						<div id="app">
 							{isLoggedIn && <Navigator />}
 							<Switch>
@@ -67,16 +61,10 @@ const App: React.SFC<IAppProps> = props => {
 								/>
 							</Switch>
 						</div>
-				}</Query>
-			</BrowserRouter>
-		</IntlProvider>
+					</BrowserRouter>
+				</IntlProvider>
+		}</Query>
 	);
 };
 
-const mapStateToProps = (state: any) => {
-	return {
-		app: state.App,
-	};
-};
-
-export default withApollo(connect(mapStateToProps)(App));
+export default App;

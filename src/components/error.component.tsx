@@ -6,7 +6,7 @@ import "../style/error.component.scss";
 const Error = ({ location }: any) => {
 	return (
 		<div id="error">
-			<FormattedMessage id="error"/>
+			<FormattedMessage id="error" />
 		</div>
 	);
 };

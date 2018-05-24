@@ -19,20 +19,17 @@ export default {
 
 	"chat.inbox.nothingSelected": "Nic nie wybrano...",
 	"chat.inbox.isTyping": " pisze...",
-	"chat.inbox.seen": "Widziano, ",
 	"chat.inbox.typeYourMessage": "Napisz wiadomość...",
 	"chat.inbox.menuItem.delete": "Usuń",
 
 	"chat.menu.title": "Poczta",
-	"chat.menu.allMessages": "Odebrane",
-	"chat.menu.unread": "Nieprzeczytane",
+	"chat.menu.inbox": "Odebrane",
+	"chat.menu.allMessages": "Wszystkie",
 	"chat.menu.draft": "Robocze",
-	"chat.menu.groups": "Grupy",
 	"chat.menu.help": "Pomoc",
 	"chat.menu.settings": "Ustawienia",
 
 	"chat.users.search": "Szukaj...",
-	"chat.users.inboxIsEmpty": "Skrzynka jest pusta...",
 	"chat.users.nothingToShow": "Brak elementów do wyświetlenia...",
 	"chat.users.menuItem.delete": "Usuń",
 };

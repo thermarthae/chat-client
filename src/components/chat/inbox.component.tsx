@@ -1,43 +1,36 @@
 import * as React from "react";
 import { FormattedMessage, FormattedRelative, injectIntl, InjectedIntlProps } from "react-intl";
-import { connect, Dispatch } from "react-redux";
-import { IChatAction, ChatActions } from "../../actions/chat.actions";
-import { IChatReducerState, IInbox } from "../../reducers/chat.reducer";
 
-import Avatar from "material-ui/Avatar";
-import TextField from "material-ui/TextField";
-import ButtonBase from "material-ui/ButtonBase";
-import IconButton from "material-ui/IconButton";
-import Menu, { MenuItem } from "material-ui/Menu";
-import MoreVert from "@material-ui/icons/MoreVert";
-import Send from "@material-ui/icons/Send";
-import InsertEmoticon from "@material-ui/icons/InsertEmoticon";
-import Settings from "@material-ui/icons/Settings";
+import { ApolloClient } from "apollo-boost";
+import { withApollo, Query } from "react-apollo";
+import { WithApolloClient } from "react-apollo/withApollo";
+import {
+	TOGGLE_ASIDE, GET_ASIDE_STATUS,
+	GET_CONVERSATION, IGetConversationResponse,
+} from "../../apollo/chat/inbox.apollo";
+
+import { Avatar, TextField, ButtonBase, IconButton, Menu, MenuItem } from "@material-ui/core";
+import { MoreVert, Send, InsertEmoticon, Settings } from "@material-ui/icons";
 
 import "../../style/inbox.component.scss";
 
-interface IInboxProps extends InjectedIntlProps {
-	chat: IChatReducerState;
-	toggleAside: () => IChatAction;
-	oponentId: string;
+interface IInboxProps {
+	oponentId?: string;
 }
 
 interface IInboxStates {
 	menuAnchorEl: HTMLElement | undefined;
 }
 
-const EmptyInbox = (message: string) => {
-	return (
-		<div id="inbox">
-			<div className="empty">
-				{message}
-			</div>
+const EmptyInbox = () => {
+	return <div id="inbox">
+		<div className="empty">
+			<FormattedMessage id="chat.inbox.nothingSelected" />
 		</div>
-	);
+	</div>;
 };
 
-
-class Inbox extends React.PureComponent<IInboxProps, IInboxStates> {
+class Inbox extends React.PureComponent<WithApolloClient<IInboxProps & InjectedIntlProps>, IInboxStates> {
 	public state = {
 		menuAnchorEl: undefined,
 	};
@@ -51,120 +44,116 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxStates> {
 		this.setState({ menuAnchorEl: undefined });
 	}
 
-	public render() {
-		const { chat: { asideIsOpen }, intl: { formatMessage } } = this.props;
-		const { menuAnchorEl } = this.state;
-		const currentChat = (this.props.chat.inbox as IInbox[]).find(
-			oneInbox => oneInbox.user.id === this.props.oponentId
-		);
+	public handleAsideToggle = async (client: ApolloClient<any>) => {
+		await client.mutate({
+			mutation: TOGGLE_ASIDE,
+		});
+	}
 
-		if (!currentChat) return EmptyInbox(
-			formatMessage({ id: "chat.inbox.nothingSelected" })
-		);
+	public render() {
+		const { intl: { formatMessage }, oponentId } = this.props;
+		const { menuAnchorEl } = this.state;
+
 		return (
-			<div id="inbox">
-				<div className="head">
-					<div className="id">
-						<span className="name">
-							{currentChat.user.name + " " + currentChat.user.surname}
-						</span>
-						{currentChat.user.isTypping &&
-							<span className="typing">
-								{formatMessage({ id: "chat.inbox.isTyping" })}
-							</span>}
-					</div>
-					<ButtonBase
-						focusRipple
-						className="btn btn-big"
-						onClick={this.props.toggleAside}
-					>
-						<Settings style={{ fontSize: "inherit" }} />
-					</ButtonBase>
-				</div>
-				<div className="content">
-					<div className="left">
-						<div className="top">
-							{currentChat.messages.map(item =>
-								<div
-									className={
-										"message" +
-										(item.me ? " me" : "") +
-										(item.seen ? " seen" : "")
-									}
-									key={item.time}
+			!oponentId ? <EmptyInbox /> :
+				<Query query={GET_CONVERSATION} variables={{ id: oponentId }}>{
+					({ loading, error, data }) => {
+						if (error) return `Error! ${error.message}`;
+						if (loading) return "Loading...";
+						if (!data) return <EmptyInbox />;
+
+						const {
+							getConversation: {
+								name,
+								messages,
+								draft
+							}
+						}: IGetConversationResponse = data;
+
+						return <div id="inbox">
+							<div className="head">
+								<div className="id">
+									<span className="name">{name}</span>
+									{/* {currentChat.user.isTypping && //TODO
+									<span className="typing">
+										<FormattedMessage id="chat.inbox.isTyping"/>
+									</span>} */}
+								</div>
+								<ButtonBase
+									focusRipple
+									className="btn btn-big"
+									onClick={() => this.handleAsideToggle(this.props.client)}
 								>
-									{!item.me && (
-										<div className="author">
-											<Avatar>
-												{currentChat.user.name[0] +
-													currentChat.user.surname[0]}
-											</Avatar>
-										</div>
-									)}
-									<div className="wrapper">
-										<div className="content">
-											<span>{item.content}</span>
-										</div>
-										<div className="time">
-											{item.seen && <FormattedMessage id="chat.inbox.seen" />}
-											<FormattedRelative value={item.time} />
-										</div>
+									<Settings style={{ fontSize: "inherit" }} />
+								</ButtonBase>
+							</div>
+							<div className="content">
+								<div className="main">
+									<div className="top">
+										{messages.map(item =>
+											<div
+												key={item._id}
+												className={
+													"message"
+													+ (item.me ? " me" : "")
+												}
+											>
+												{!item.me && <div className="author">
+													<Avatar>{item.authorName[0]}</Avatar>
+												</div>}
+												<div className="wrapper">
+													<div className="content">
+														<span>{item.content}</span>
+													</div>
+													<div className="time">
+														<FormattedRelative value={parseInt(item.time, 10)} />
+													</div>
+												</div>
+												<div className="options">
+													<IconButton className="btn" onClick={this.handleMenuClick}>
+														<MoreVert style={{ fontSize: "inherit" }} />
+													</IconButton>
+												</div>
+											</div>
+										)}
+										<Menu
+											open={Boolean(menuAnchorEl)}
+											onClose={this.handleMenuClose}
+											anchorEl={menuAnchorEl}
+										>
+											<MenuItem className="menuItem" onClick={this.handleMenuClose}>
+												<FormattedMessage id="chat.inbox.menuItem.delete" />
+											</MenuItem>
+										</Menu>
 									</div>
-									<div className="options">
-										<IconButton className="btn" onClick={this.handleMenuClick}>
-											<MoreVert style={{ fontSize: "inherit" }} />
+
+									<div className="bottom">
+										<TextField
+											className="input"
+											placeholder={formatMessage({ id: "chat.inbox.typeYourMessage" })}
+											multiline
+											rowsMax={3}
+											InputProps={{ disableUnderline: true }}
+											value={draft.content}
+										/>
+										<IconButton className="btn emoticon">
+											<InsertEmoticon style={{ fontSize: "inherit" }} />
+										</IconButton>
+										<IconButton className="btn send">
+											<Send style={{ fontSize: "inherit" }} />
 										</IconButton>
 									</div>
 								</div>
-							)}
-							<Menu
-								open={Boolean(menuAnchorEl)}
-								onClose={this.handleMenuClose}
-								anchorEl={menuAnchorEl}
-							>
-								<MenuItem className="menuItem" onClick={this.handleMenuClose}>
-									{formatMessage({ id: "chat.inbox.menuItem.delete" })}
-								</MenuItem>
-							</Menu>
-						</div>
-
-						<div className="bottom">
-							<TextField
-								className="input"
-								placeholder={formatMessage({ id: "chat.inbox.typeYourMessage" })}
-								multiline
-								rowsMax={3}
-								InputProps={{
-									disableUnderline: true
-								}}
-							/>
-							<IconButton className="btn emoticon">
-								<InsertEmoticon style={{ fontSize: "inherit" }} />
-							</IconButton>
-							<IconButton className="btn send">
-								<Send style={{ fontSize: "inherit" }} />
-							</IconButton>
-						</div>
-					</div>
-					<div className={"right" + (asideIsOpen ? " active" : "")}></div>
-				</div>
-			</div>
+								<Query query={GET_ASIDE_STATUS}>{
+									({ data: { chat: { isAsideOpen } } }) =>
+										<div className={"aside" + (isAsideOpen ? " active" : "")}></div>
+								}</Query>
+							</div>
+						</div>;
+					}
+				}</Query>
 		);
 	}
 }
 
-const mapStateToProps = (state: any) => {
-	return {
-		chat: state.Chat,
-		//TODO
-		intl: {},
-	};
-};
-
-const mapDispatchToProps = (dispatch: Dispatch<IChatAction>) => {
-	return {
-		toggleAside: () => dispatch(ChatActions.toggleAside()),
-	};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Inbox));
+export default injectIntl(withApollo(Inbox));

@@ -2,19 +2,17 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { AppContainer } from "react-hot-loader";
 
-import { Provider } from "react-redux";
 import { ApolloProvider } from "react-apollo";
 import ApolloClient from "apollo-boost";
 
-import defaults from "./apollo/state/defaults";
-import mutations from "./apollo/state/resolvers/mutations";
-import queries from "./apollo/state/resolvers/queries";
+import defaults from "./state/defaults";
+import mutations from "./state/mutations";
+// import queries from "./apollo/state/resolvers/queries";
 
-import { MuiThemeProvider, createMuiTheme } from "material-ui/styles";
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core";
 
 import "./style/index.scss";
 import App from "./components/app.component";
-import store from "./stores";
 
 export const client = new ApolloClient({
 	uri: "http://localhost:3000/graphql",
@@ -22,7 +20,7 @@ export const client = new ApolloClient({
 		credentials: "include" //TODO CORS
 	},
 	request: async operation => {
-		const token = localStorage.getItem("token") || "";
+		const token = localStorage.getItem("access_token") || "";
 		operation.setContext({
 			headers: {
 				authorization: "bearer " + token
@@ -32,12 +30,16 @@ export const client = new ApolloClient({
 	clientState: {
 		defaults,
 		resolvers: {
-			Query: { ...queries },
+			// Query: { ...queries },
 			Mutation: { ...mutations },
 		},
-		typeDefs: [
-
-		]
+		typeDefs: `
+			enum conversationFilter {
+				ALL
+				UNREAD
+				DRAFT
+			}
+		`
 	},
 	onError: ({ graphQLErrors, networkError }) => {
 		if (graphQLErrors) console.warn("graphQLErrors (to log)", graphQLErrors); // sendToLoggingService(graphQLErrors);
@@ -62,13 +64,11 @@ const rootEl = document.getElementById("root");
 const render = (Component: any) => {
 	ReactDOM.render(
 		<AppContainer>
-			<Provider store={store}>
-				<ApolloProvider client={client}>
-					<MuiThemeProvider theme={theme}>
-						<Component />
-					</MuiThemeProvider>
-				</ApolloProvider>
-			</Provider>
+			<ApolloProvider client={client}>
+				<MuiThemeProvider theme={theme}>
+					<Component />
+				</MuiThemeProvider>
+			</ApolloProvider>
 		</AppContainer>,
 		rootEl
 	);
