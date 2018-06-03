@@ -1,25 +1,21 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 
-import { Query, Mutation } from "react-apollo";
-import { SET_INBOX_FILTER, GET_CURRENT_USER, IGetCurrentUserResponse } from "../../apollo/chat/menu.apollo";
+import Query from "react-apollo/Query";
+import Mutation from "react-apollo/Mutation";
+import { SET_INBOX_FILTER, GET_CURRENT_USER, IGetCurrentUserResponse } from "./index.apollo";
 
-import { IconButton, List, ListItem } from "@material-ui/core";
-import { PersonAdd } from "@material-ui/icons";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
 
-import "../../style/menu.component.scss";
+import "../../../style/menu.component.scss";
+
+import Head from "./head.component";
 
 const Menu = () => {
 	return (
 		<div id="menu">
-			<div className="head">
-				<span className="title">
-					<FormattedMessage id="chat.menu.title" />
-				</span>
-				<IconButton className="btn">
-					<PersonAdd style={{ fontSize: "inherit" }} />
-				</IconButton>
-			</div>
+			<Head />
 			<Query query={GET_CURRENT_USER}>
 				{({ loading, error, data }) => {
 					if (error) return `Error! ${error.message}`;

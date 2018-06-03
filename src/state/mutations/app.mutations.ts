@@ -1,4 +1,4 @@
-import ApolloClient from "apollo-boost";
+import ApolloClient from "apollo-client";
 
 export const setLoginStatus = (_: undefined, { loginStatus }: any, { cache }: ApolloClient<any>) => {
 	const data = {

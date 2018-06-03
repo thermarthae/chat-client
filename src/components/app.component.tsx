@@ -4,9 +4,9 @@ import { BrowserRouter, Switch } from "react-router-dom";
 import { IntlProvider } from "react-intl";
 import messages from "../locales";
 
-import { Query } from "react-apollo";
+import Query from "react-apollo/Query";
 import { WithApolloClient } from "react-apollo/withApollo";
-import { GET_APP_DATA } from "../apollo/app.apollo";
+import { GET_APP_DATA } from "./app.apollo";
 
 import "../style/app.component.scss";
 
@@ -56,9 +56,7 @@ const App: React.SFC<WithApolloClient<IAppProps>> = props => {
 								<PrivateRoute isLoggedIn={isLoggedIn} path="/chat/:id" component={Chat} />
 								<PrivateRoute isLoggedIn={isLoggedIn} path="/chat" component={Chat} />
 								<PrivateRoute isLoggedIn={isLoggedIn} path="/login" accessWhenUnlogged component={Login} />
-								<Route
-									component={() => Error({ location })}
-								/>
+								<Route component={() => Error({ location })} />
 							</Switch>
 						</div>
 					</BrowserRouter>

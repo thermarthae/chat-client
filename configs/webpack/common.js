@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 //const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 //const CopyWebpackPlugin = require("copy-webpack-plugin");
 const PACKAGE = require("../../package.json");
+const Stylish = require("webpack-stylish");
 
 module.exports = {
 	entry: "./index.tsx",
@@ -90,15 +91,16 @@ module.exports = {
 		]
 	},
 	plugins: [
+		new HtmlWebpackPlugin({
+			title: PACKAGE.name,
+			template: "index.html.ejs"
+		}),
 		new ForkTsCheckerWebpackPlugin({
 			checkSyntacticErrors: true,
 			async: false,
 			tsconfig: Path.resolve(__dirname, "../tsconfig.json")
 		}),
-		new HtmlWebpackPlugin({
-			title: PACKAGE.name,
-			template: "index.html.ejs"
-		})
+		new Stylish(),
 
 		// new CopyWebpackPlugin([{ from: "assets/img", to: "assets/img" },]),
 		// new MiniCssExtractPlugin({

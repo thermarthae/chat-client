@@ -1,4 +1,4 @@
-import { gql } from "apollo-boost";
+import gql from "graphql-tag";
 
 export const SET_INBOX_FILTER = gql`
 	mutation ($inboxFilter: String!){
@@ -20,6 +20,7 @@ export const GET_CURRENT_USER = gql`
 		}
 	}
 `;
+export type TInboxFilter = "UNREAD" | "ALL" | "DRAFT";
 export interface IGetCurrentUserResponse {
 	currentUser: {
 		conversationData: {
@@ -29,6 +30,6 @@ export interface IGetCurrentUserResponse {
 		}
 	};
 	chat: {
-		inboxFilter: "UNREAD" | "ALL" | "DRAFT"
+		inboxFilter: TInboxFilter
 	};
 }

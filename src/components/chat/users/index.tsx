@@ -3,17 +3,43 @@ import { Link } from "react-router-dom";
 
 import { injectIntl, InjectedIntlProps } from "react-intl";
 
-import { Query } from "react-apollo";
+import Query from "react-apollo/Query";
 import {
 	GET_INBOX_FILTER,
 	GET_CONVERSATION_LIST, IGetConversationListResponse
-} from "../../apollo/chat/users.apollo";
+} from "./index.apollo";
 
-import { Avatar, ListItem, IconButton, Menu, MenuItem, Input } from "@material-ui/core";
-import { MoreHoriz, Search, Cancel } from "@material-ui/icons";
+import Avatar from "@material-ui/core/Avatar";
+import ListItem from "@material-ui/core/ListItem";
+import IconButton from "@material-ui/core/IconButton";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 
+import MoreHoriz from "@material-ui/icons/MoreHoriz";
 
-import "../../style/users.component.scss";
+import "../../../style/users.component.scss";
+
+import Searchbox from "./searchbox.component";
+
+const FakeMessage = () => {
+	return (
+		<div className="fake">
+			<div className="content">
+				<div className="avatar"></div>
+				<div className="clear"></div>
+				<div className="center">
+					<div className="top">
+						<div className="clear"></div>
+					</div>
+					<div className="bottom">
+						<div className="clear"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	);
+};
 
 interface IUsersProps {
 	oponentId?: string;
@@ -42,31 +68,20 @@ class Users extends React.PureComponent<IUsersProps & InjectedIntlProps, IUsersS
 		const { menuAnchorEl } = this.state;
 
 		return <div id="users">
-			<div className="head">
-				<Input
-					classes={{ root: "searchbar" }}
-					disableUnderline
-					placeholder={formatMessage({ id: "chat.users.search" })}
-					startAdornment={
-						<Search className="btn" />
-					}
-					endAdornment={
-						<IconButton
-							className="cancel"
-							onClick={e => e.preventDefault()}
-							onMouseDown={e => e.preventDefault()}
-						>
-							<Cancel style={{ fontSize: "inherit" }} />
-						</IconButton>
-					}
-				/>
-			</div>
+			<Searchbox/>
 			<Query query={GET_INBOX_FILTER}>{
-				({data: { chat: { inboxFilter } }}) =>
+				({ data: { chat: { inboxFilter } } }) =>
 					<Query query={GET_CONVERSATION_LIST} variables={{ filter: inboxFilter }}>
 						{({ loading, error, data }) => {
 							if (error) return `Error! ${error.message}`;
-							if (loading) return "Loading...";
+							if (loading) return (
+								<div className="list">
+									<FakeMessage/>
+									<FakeMessage/>
+									<FakeMessage/>
+									<div className="background"/>
+								</div>
+							);
 
 							const {
 								currentUser: { conversationData: {

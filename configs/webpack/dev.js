@@ -10,6 +10,7 @@ module.exports = merge(commonConfig, {
 		publicPath: "/"
 	},
 	devServer: {
+		stats: "none",
 		hot: true,
 		historyApiFallback: true,
 		inline: true,
@@ -37,6 +38,6 @@ module.exports = merge(commonConfig, {
 		// }),
 		new webpack.DefinePlugin({
 			"process.env.NODE_ENV": JSON.stringify("development")
-		})
+		}),
 	],
 });

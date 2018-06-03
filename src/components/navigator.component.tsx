@@ -1,20 +1,21 @@
 import * as React from "react";
 import { NavLink, withRouter, RouteComponentProps } from "react-router-dom";
 
-import { ApolloClient } from "apollo-boost";
-import { ApolloConsumer } from "react-apollo";
-import { SET_LOGOUT_STATUS } from "../apollo/navigator.apollo";
+import ApolloClient from "apollo-client/ApolloClient";
+import ApolloConsumer from "react-apollo/ApolloConsumer";
 
-import { IconButton } from "@material-ui/core";
-import { AccountCircle, Chat, PowerSettingsNew } from "@material-ui/icons";
+import IconButton from "@material-ui/core/IconButton";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import Chat from "@material-ui/icons/Chat";
+import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
 
 import "../style/navigator.component.scss";
 
 interface INavigatorProps extends RouteComponentProps<any> { }
 
-const handleLogout = async (client: ApolloClient<any>) => {//TODO
-	await client.mutate({ mutation: SET_LOGOUT_STATUS });
+const handleLogout = (client: ApolloClient<any>) => {
 	client.resetStore();
+	localStorage.clear();
 };
 
 const Navigator = (prop: INavigatorProps) => (

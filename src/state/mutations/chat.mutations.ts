@@ -1,11 +1,11 @@
-import ApolloClient from "apollo-boost";
-import { gql } from "apollo-boost";
+import ApolloClient from "apollo-client";
+import gql from "graphql-tag";
 
 export const toggleAside = (_: undefined, { }: any, { cache }: ApolloClient<any>) => {
 	const query = gql`
 		query {
-			chat {
-				isAsideOpen @client
+			chat @client {
+				isAsideOpen
 			}
 		}
 	`;

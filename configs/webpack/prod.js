@@ -2,7 +2,10 @@ const merge = require("webpack-merge");
 const webpack = require("webpack");
 const commonConfig = require("./common");
 const Path = require("path");
+const CompressionPlugin = require("compression-webpack-plugin");
 //const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
+
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = merge(commonConfig, {
 	mode: "production",
@@ -11,6 +14,11 @@ module.exports = merge(commonConfig, {
 		filename: "js/bundle.min.js",
 		path: Path.resolve(__dirname, "../../dist"),
 		publicPath: "/"
+	},
+	optimization: {
+		splitChunks: {
+			chunks: "all"
+		},
 	},
 	plugins: [
 		// new FaviconsWebpackPlugin({
@@ -31,6 +39,10 @@ module.exports = merge(commonConfig, {
 		// 		windows: true
 		// 	}
 		// }),
-		new webpack.DefinePlugin({"process.env.NODE_ENV": JSON.stringify("production")})
+		new webpack.DefinePlugin({
+			"process.env.NODE_ENV": JSON.stringify("production")
+		}),
+		new CompressionPlugin(),
+		new BundleAnalyzerPlugin(),
 	]
 });

@@ -52,11 +52,11 @@
 			display: flex;
 			flex-direction: column;
 
-			.top {
+			.messageList {
 				overflow: auto;
 				flex-grow: 1;
 
-				.message {
+				.messageItem {
 					display: flex;
 					flex-direction: row;
 					color: $text-primary__color--dark;

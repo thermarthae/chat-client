@@ -1,4 +1,4 @@
-import { gql } from "apollo-boost";
+import gql from "graphql-tag";
 
 export const GET_INBOX_FILTER = gql`
 	query {
@@ -31,18 +31,19 @@ export const GET_CONVERSATION_LIST = gql`
 		}
 	}
 `;
+export interface IConversation {
+	_id: string;
+	name: string | null;
+	seen: boolean;
+	lastMessage: {
+		content: string;
+		time: string;
+	};
+}
 export interface IGetConversationListResponse {
 	currentUser: {
 		conversationData: {
-			conversationArr: [{
-				_id: string;
-				name: string | null;
-				seen: boolean;
-				lastMessage: {
-					content: string;
-					time: string;
-				}
-			}]
+			conversationArr: [IConversation];
 		}
 	};
 }

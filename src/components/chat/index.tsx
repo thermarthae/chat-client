@@ -3,9 +3,9 @@ import { RouteComponentProps } from "react-router-dom";
 
 import "../../style/chat.component.scss";
 
-import Menu from "./menu.component";
-import Users from "./users.component";
-import Inbox from "./inbox.component";
+import Menu from "./menu";
+import Users from "./users";
+import Inbox from "./inbox";
 
 interface IChatRouteProps {
 	id: string;
