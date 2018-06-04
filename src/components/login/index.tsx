@@ -66,9 +66,6 @@ class Login extends React.PureComponent<WithApolloClient<ILoginProps>, ILoginSta
 			});
 			if (getAccess.error) throw getAccess;
 
-			localStorage.setItem("access_token", getAccess.access_token); //TODO
-			localStorage.setItem("refresh_token", getAccess.refresh_token); //TODO
-
 			client.mutate({ mutation: SET_LOGIN_STATUS });
 			history.push("/");
 		} catch (err) {

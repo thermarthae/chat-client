@@ -8,7 +8,7 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 import { HttpLink } from "apollo-link-http";
 import { onError } from "apollo-link-error";
 import { withClientState } from "apollo-link-state";
-import { ApolloLink, Observable } from "apollo-link";
+import { ApolloLink } from "apollo-link";
 import defaults from "./state/defaults";
 import mutations from "./state/mutations";
 // import queries from "./apollo/state/resolvers/queries";
@@ -18,32 +18,28 @@ import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import "./style/index.scss";
 import App from "./components/app.component";
 
-const request = (operation: any) => {
-	const token = localStorage.getItem("access_token") || "";
+const getTokenLink = new ApolloLink((operation, forward: any) => {
 	operation.setContext({
 		headers: {
-			authorization: "bearer " + token
+			"x-token": localStorage.getItem("token") || null,
+			"x-refresh-token": localStorage.getItem("refreshToken") || null,
 		}
 	});
-};
+	if (forward) return forward(operation);
+	return null;
+});
 
-const requestLink = new ApolloLink((operation, forward: any) =>
-	new Observable(observer => {
-		let handle: any;
-		Promise.resolve(operation)
-			.then(oper => request(oper))
-			.then(() => {
-				handle = forward(operation).subscribe({
-					next: observer.next.bind(observer),
-					error: observer.error.bind(observer),
-					complete: observer.complete.bind(observer),
-				});
-			})
-			.catch(observer.error.bind(observer));
+const setTokenLink = new ApolloLink((operation, forward) => {
+	if (forward) return forward(operation).map(response => {
+		try {
+			localStorage.setItem("token", response.data!.getAccess.access_token);
+			localStorage.setItem("refreshToken", response.data!.getAccess.refresh_token);
+		} catch (err) {} // tslint:disable-line
 
-		return () => { if (handle) handle.unsubscribe(); };
-	})
-);
+		return response;
+	});
+	return null;
+});
 
 const cache = new InMemoryCache();
 
@@ -70,10 +66,12 @@ const client = new ApolloClient({
 			if (graphQLErrors) console.warn("graphQLErrors (to log)", graphQLErrors); // sendToLoggingService(graphQLErrors);
 			if (networkError) console.warn("networkError (logout)", networkError); // logoutUser();
 		}),
-		requestLink,
+		getTokenLink,
+		setTokenLink,
 		stateLink,
 		new HttpLink({
-			uri: "http://localhost:3000/graphql"
+			uri: "http://localhost:3000/graphql",
+			credentials: "include"
 		})
 	])
 });
