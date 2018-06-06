@@ -5,10 +5,10 @@ import { AppContainer } from "react-hot-loader";
 import { ApolloProvider } from "react-apollo";
 import { ApolloClient } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
-import { HttpLink } from "apollo-link-http";
 import { onError } from "apollo-link-error";
 import { withClientState } from "apollo-link-state";
 import { ApolloLink } from "apollo-link";
+import { BatchHttpLink } from "apollo-link-batch-http";
 import defaults from "./state/defaults";
 import mutations from "./state/mutations";
 // import queries from "./apollo/state/resolvers/queries";
@@ -69,7 +69,7 @@ const client = new ApolloClient({
 		getTokenLink,
 		setTokenLink,
 		stateLink,
-		new HttpLink({
+		new BatchHttpLink({
 			uri: "http://localhost:3000/graphql",
 			credentials: "include"
 		})
