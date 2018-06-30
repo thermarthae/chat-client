@@ -18,29 +18,6 @@ import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import "./style/index.scss";
 import App from "./components/app.component";
 
-const getTokenLink = new ApolloLink((operation, forward: any) => {
-	operation.setContext({
-		headers: {
-			"x-token": localStorage.getItem("token") || null,
-			"x-refresh-token": localStorage.getItem("refreshToken") || null,
-		}
-	});
-	if (forward) return forward(operation);
-	return null;
-});
-
-const setTokenLink = new ApolloLink((operation, forward) => {
-	if (forward) return forward(operation).map(response => {
-		try {
-			localStorage.setItem("token", response.data!.getAccess.access_token);
-			localStorage.setItem("refreshToken", response.data!.getAccess.refresh_token);
-		} catch (err) {} // tslint:disable-line
-
-		return response;
-	});
-	return null;
-});
-
 const cache = new InMemoryCache();
 
 const stateLink = withClientState({
@@ -66,8 +43,6 @@ const client = new ApolloClient({
 			if (graphQLErrors) console.warn("graphQLErrors (to log)", graphQLErrors); // sendToLoggingService(graphQLErrors);
 			if (networkError) console.warn("networkError (logout)", networkError); // logoutUser();
 		}),
-		getTokenLink,
-		setTokenLink,
 		stateLink,
 		new BatchHttpLink({
 			uri: "http://localhost:3000/graphql",

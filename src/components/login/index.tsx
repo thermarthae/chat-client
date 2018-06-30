@@ -66,7 +66,7 @@ class Login extends React.PureComponent<WithApolloClient<ILoginProps>, ILoginSta
 			});
 			if (getAccess.error) throw getAccess;
 
-			client.mutate({ mutation: SET_LOGIN_STATUS });
+			await client.mutate({ mutation: SET_LOGIN_STATUS });
 			history.push("/");
 		} catch (err) {
 			const errorInfo = err.error ? `Error ${err.error.code}: ${err.error.message}` : err;
