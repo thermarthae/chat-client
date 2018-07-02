@@ -115,13 +115,13 @@ class Users extends React.PureComponent<IUsersProps & InjectedIntlProps, IUsersS
 												<div className="avatar">
 													<div className="status" />
 													<Avatar onClick={e => e.preventDefault()}>
-														{(item.name) ? item.name[0] : "UPS"}
+														{item.name ? item.name[0] : ""}
 													</Avatar>
 												</div>
 											</div>
 											<div className="center">
 												<span className="name">
-													{item.name || "Nazwa Konwersacji"}
+													{item.name || formatMessage({ id: "chat.users.conversationName" })}
 												</span>
 												<span className="message">
 													{item.lastMessage.content}

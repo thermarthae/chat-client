@@ -31,5 +31,6 @@ export default {
 
 	"chat.users.search": "Search...",
 	"chat.users.nothingToShow": "Nothing to show...",
+	"chat.users.conversationName": "Conversation name",
 	"chat.users.menuItem.delete": "Delete",
 };
