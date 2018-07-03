@@ -62,7 +62,7 @@ class App extends React.PureComponent<IAppPropsType> {
 									<PrivateRoute auth={isLoggedIn} path="/chat/:id" Component={Chat} />
 									<PrivateRoute auth={isLoggedIn} path="/chat" Component={Chat} />
 									<PrivateRoute auth={isLoggedIn} path="/login" Component={Login} whenUnlogged />
-									<Route component={() => Error({ location })} />
+									<Route component={Error} />
 								</Switch>
 							</div>
 						</BrowserRouter>
