@@ -15,11 +15,11 @@ interface IInboxProps {
 	oponentId?: string;
 }
 
-const EmptyInbox = () => {
+const Empty = ({ i18nID }: { i18nID: string }) => {
 	return (
 		<div id="inbox">
 			<div className="empty">
-				<FormattedMessage id="chat.inbox.nothingSelected" />
+				<FormattedMessage id={i18nID} />
 			</div>
 		</div>
 	);
@@ -29,12 +29,16 @@ const Inbox: React.SFC<IInboxProps> = props => {
 	const { oponentId } = props;
 
 	return (
-		!oponentId ? <EmptyInbox /> :
+		!oponentId ? <Empty i18nID="chat.inbox.nothingSelected" /> :
 			<Query query={GET_CONVERSATION} variables={{ id: oponentId }}>{
 				({ loading, error, data }) => {
-					if (error) return `Error! ${error.message}`;
-					if (loading) return "Loading...";
-					if (!data) return <EmptyInbox />;
+					if (error) return (
+						<div id="inbox">
+							<div className="empty">{error}</div>
+						</div>
+					);
+					if (loading) return <Empty i18nID="chat.inbox.loading" />;
+					if (!data) return <Empty i18nID="chat.inbox.nothingSelected" />;
 
 					const {
 						getConversation: {

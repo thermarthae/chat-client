@@ -18,6 +18,7 @@ export default {
 	"login.loginButton": "Login",
 
 	"chat.inbox.nothingSelected": "Nothing is selected...",
+	"chat.inbox.loading": "Loading...",
 	"chat.inbox.isTyping": " is typing...",
 	"chat.inbox.typeYourMessage": "Type your message...",
 	"chat.inbox.menuItem.delete": "Delete",
