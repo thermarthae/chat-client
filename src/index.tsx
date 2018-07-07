@@ -42,8 +42,11 @@ const client = new ApolloClient({
 	cache,
 	link: ApolloLink.from([
 		onError(({ graphQLErrors, networkError }) => {
-			if (graphQLErrors) console.warn("graphQLErrors (to log)", graphQLErrors); // sendToLoggingService(graphQLErrors);
-			if (networkError) console.warn("networkError (logout)", networkError); // logoutUser();
+			if (graphQLErrors)
+				graphQLErrors.map(({ message, locations, path }) =>
+					console.warn(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
+				);
+			if (networkError) console.log(`[Network error (logout)]: ${networkError}`);
 		}),
 		stateLink,
 		ApolloLink.split(

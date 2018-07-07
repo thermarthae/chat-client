@@ -34,9 +34,10 @@ const Inbox: React.SFC<IInboxProps> = props => {
 				({ loading, error, data }) => {
 					if (error) return (
 						<div id="inbox">
-							<div className="empty">{error}</div>
+							<div className="empty">{error.message ? error.message : "Error"}</div>
 						</div>
 					);
+
 					if (loading) return <Empty i18nID="chat.inbox.loading" />;
 					if (!data) return <Empty i18nID="chat.inbox.nothingSelected" />;
 
