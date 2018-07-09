@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 //const CopyWebpackPlugin = require('copy-webpack-plugin');
 const PACKAGE = require('../../package.json');
 const Stylish = require('webpack-stylish');
+const tsconfigPath = Path.resolve(__dirname, '../../tsconfig.json');
 
 module.exports = {
 	entry: './index.tsx',
@@ -28,7 +29,7 @@ module.exports = {
 					{
 						loader: 'ts-loader',
 						options: {
-							configFile: Path.resolve(__dirname, '../tsconfig.json'),
+							configFile: tsconfigPath,
 							happyPackMode: true
 						}
 					}
@@ -98,7 +99,7 @@ module.exports = {
 		new ForkTsCheckerWebpackPlugin({
 			checkSyntacticErrors: true,
 			async: false,
-			tsconfig: Path.resolve(__dirname, '../tsconfig.json')
+			tsconfig: tsconfigPath
 		}),
 		new Stylish(),
 
