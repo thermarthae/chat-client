@@ -1,11 +1,11 @@
-import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import * as React from 'react';
+import { FormattedMessage } from 'react-intl';
 
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
-import MessageItem from "./message-item.component";
-import { IMessage } from "./index.apollo";
+import MessageItem from './message-item.component';
+import { IMessage } from './index.apollo';
 
 interface IMessageListProps {
 	messages: [IMessage];
@@ -34,7 +34,7 @@ class MessageList extends React.PureComponent<IMessageListProps, IMessageListSta
 		const { menuAnchorEl } = this.state;
 
 		return (
-			<div className="messageList">
+			<div className='messageList'>
 				{messages.map(
 					msg => <MessageItem key={msg._id} message={msg} handleMenuClick={this.handleMenuClick} />
 				)}
@@ -43,8 +43,8 @@ class MessageList extends React.PureComponent<IMessageListProps, IMessageListSta
 					onClose={this.handleMenuClick}
 					anchorEl={menuAnchorEl}
 				>
-					<MenuItem className="menuItem" onClick={this.handleMenuClick}>
-						<FormattedMessage id="chat.inbox.menuItem.delete" />
+					<MenuItem className='menuItem' onClick={this.handleMenuClick}>
+						<FormattedMessage id='chat.inbox.menuItem.delete' />
 					</MenuItem>
 				</Menu>
 			</div>

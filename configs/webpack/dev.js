@@ -1,16 +1,16 @@
-const merge = require("webpack-merge");
-const webpack = require("webpack");
-const commonConfig = require("./common");
-//const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
+const merge = require('webpack-merge');
+const webpack = require('webpack');
+const commonConfig = require('./common');
+//const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 module.exports = merge(commonConfig, {
-	mode: "development",
-	devtool: "cheap-module-eval-source-map",
+	mode: 'development',
+	devtool: 'cheap-module-eval-source-map',
 	output: {
-		publicPath: "/"
+		publicPath: '/'
 	},
 	devServer: {
-		stats: "none",
+		stats: 'none',
 		hot: true,
 		historyApiFallback: true,
 		inline: true,
@@ -19,8 +19,8 @@ module.exports = merge(commonConfig, {
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
 		// new FaviconsWebpackPlugin({
-		// 	logo: "./assets/img/favicon.png",
-		// 	prefix: "icons/",
+		// 	logo: './assets/img/favicon.png',
+		// 	prefix: 'icons/',
 		// 	inject: true,
 		// 	persistentCache: true,
 		// 	icons: {
@@ -37,7 +37,7 @@ module.exports = merge(commonConfig, {
 		// 	}
 		// }),
 		new webpack.DefinePlugin({
-			"process.env.NODE_ENV": JSON.stringify("development")
+			'process.env.NODE_ENV': JSON.stringify('development')
 		}),
 	],
 });

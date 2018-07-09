@@ -1,12 +1,12 @@
 export default {
 	app: {
-		__typename: "App",
-		language: "pl",
+		__typename: 'App',
+		language: 'pl',
 		isLoggedIn: false,
 	},
 	chat: {
-		__typename: "Chat",
+		__typename: 'Chat',
 		isAsideOpen: false,
-		inboxFilter: "ALL",
+		inboxFilter: 'ALL',
 	}
 };

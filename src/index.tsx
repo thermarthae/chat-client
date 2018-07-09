@@ -1,24 +1,24 @@
-import * as React from "react";
-import { render } from "react-dom";
-import { AppContainer } from "react-hot-loader";
+import * as React from 'react';
+import { render } from 'react-dom';
+import { AppContainer } from 'react-hot-loader';
 
-import { ApolloProvider } from "react-apollo";
-import { ApolloClient } from "apollo-client";
-import { InMemoryCache } from "apollo-cache-inmemory";
-import { ApolloLink } from "apollo-link";
-import { onError } from "apollo-link-error";
-import { withClientState } from "apollo-link-state";
-import { BatchHttpLink } from "apollo-link-batch-http";
-import { WebSocketLink } from "apollo-link-ws";
-import { getOperationAST } from "graphql/utilities/getOperationAST";
+import { ApolloProvider } from 'react-apollo';
+import { ApolloClient } from 'apollo-client';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloLink } from 'apollo-link';
+import { onError } from 'apollo-link-error';
+import { withClientState } from 'apollo-link-state';
+import { BatchHttpLink } from 'apollo-link-batch-http';
+import { WebSocketLink } from 'apollo-link-ws';
+import { getOperationAST } from 'graphql/utilities/getOperationAST';
 
-import defaults from "./state/defaults";
-import mutations from "./state/mutations";
-// import queries from "./apollo/state/resolvers/queries";
+import defaults from './state/defaults';
+import mutations from './state/mutations';
+// import queries from './apollo/state/resolvers/queries';
 
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import "./style/index.scss";
-import App from "./components/app.component";
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import './style/index.scss';
+import App from './components/app.component';
 
 const cache = new InMemoryCache();
 
@@ -52,20 +52,20 @@ const client = new ApolloClient({
 		ApolloLink.split(
 			operation => {
 				const operationAST = getOperationAST(operation.query, operation.operationName);
-				return !!operationAST && operationAST.operation === "subscription";
+				return !!operationAST && operationAST.operation === 'subscription';
 			},
 			new WebSocketLink({
 				uri: `ws://localhost:3000/graphql`,
 				options: {
 					reconnect: true,
 					connectionParams: {
-						authToken: "user.authToken",
+						authToken: 'user.authToken',
 					}
 				}
 			}),
 			new BatchHttpLink({
-				uri: "http://localhost:3000/graphql",
-				credentials: "include"
+				uri: 'http://localhost:3000/graphql',
+				credentials: 'include'
 			}),
 		)
 	])
@@ -75,15 +75,15 @@ client.onResetStore(stateLink.writeDefaults as any);
 const theme = createMuiTheme({
 	palette: {
 		primary: {
-			main: "#3a3d5a"
+			main: '#3a3d5a'
 		},
 		secondary: {
-			main: "#ff0000"
+			main: '#ff0000'
 		}
 	}
 });
 
-const rootEl = document.getElementById("root");
+const rootEl = document.getElementById('root');
 
 const renderComponent = (Component: any) => {
 	render(
@@ -105,7 +105,7 @@ declare let module: {
 };
 
 if (module.hot)
-	module.hot.accept("./components/app.component", () => {
-		const NewApp = require("./components/app.component").default;
+	module.hot.accept('./components/app.component', () => {
+		const NewApp = require('./components/app.component').default;
 		renderComponent(NewApp);
 	});

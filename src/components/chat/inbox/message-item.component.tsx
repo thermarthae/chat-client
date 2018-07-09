@@ -1,12 +1,12 @@
-import * as React from "react";
-import { FormattedRelative } from "react-intl";
+import * as React from 'react';
+import { FormattedRelative } from 'react-intl';
 
-import Avatar from "@material-ui/core/Avatar";
-import IconButton from "@material-ui/core/IconButton";
+import Avatar from '@material-ui/core/Avatar';
+import IconButton from '@material-ui/core/IconButton';
 
-import MoreVert from "@material-ui/icons/MoreVert";
+import MoreVert from '@material-ui/icons/MoreVert';
 
-import { IMessage } from "./index.apollo";
+import { IMessage } from './index.apollo';
 
 interface IMessageItemProps {
 	handleMenuClick: (event: React.MouseEvent<HTMLElement>) => void;
@@ -18,24 +18,24 @@ const MessageItem: React.SFC<IMessageItemProps> = props => {
 	return (
 		<div
 			className={
-				"messageItem"
-				+ (message.me ? " me" : "")
+				'messageItem'
+				+ (message.me ? ' me' : '')
 			}
 		>
-			{!message.me && <div className="author">
+			{!message.me && <div className='author'>
 				<Avatar>{message.authorName[0]}</Avatar>
 			</div>}
-			<div className="wrapper">
-				<div className="content">
+			<div className='wrapper'>
+				<div className='content'>
 					<span>{message.content}</span>
 				</div>
-				<div className="time">
+				<div className='time'>
 					<FormattedRelative value={parseInt(message.time, 10)} />
 				</div>
 			</div>
-			<div className="options">
-				<IconButton className="btn" onClick={props.handleMenuClick}>
-					<MoreVert style={{ fontSize: "inherit" }} />
+			<div className='options'>
+				<IconButton className='btn' onClick={props.handleMenuClick}>
+					<MoreVert style={{ fontSize: 'inherit' }} />
 				</IconButton>
 			</div>
 		</div>

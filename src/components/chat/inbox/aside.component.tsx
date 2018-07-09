@@ -1,13 +1,13 @@
-import * as React from "react";
+import * as React from 'react';
 
-import Query from "react-apollo/Query";
-import { GET_ASIDE_STATUS } from "./aside.apollo";
+import Query from 'react-apollo/Query';
+import { GET_ASIDE_STATUS } from './aside.apollo';
 
-const Aside: React.SFC<{}> = props => {
+const Aside: React.SFC<{}> = () => {
 	return (
 		<Query query={GET_ASIDE_STATUS}>
 			{({ data: { chat: { isAsideOpen } } }) =>
-				<div className={"aside" + (isAsideOpen ? " active" : "")}></div>
+				<div className={'aside' + (isAsideOpen ? ' active' : '')}></div>
 			}
 		</Query>
 	);

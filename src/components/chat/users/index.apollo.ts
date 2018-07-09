@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 export const GET_INBOX_FILTER = gql`
 	query {
@@ -9,7 +9,7 @@ export const GET_INBOX_FILTER = gql`
 `;
 // export interface IGetInboxFilterResponse {
 // 	chat: {
-// 		inboxFilter: "unread" | null | "draft"
+// 		inboxFilter: 'unread' | null | 'draft'
 // 	};
 // }
 

@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 export const SET_INBOX_FILTER = gql`
 	mutation ($inboxFilter: String!){
@@ -20,7 +20,7 @@ export const GET_CURRENT_USER = gql`
 		}
 	}
 `;
-export type TInboxFilter = "UNREAD" | "ALL" | "DRAFT";
+export type TInboxFilter = 'UNREAD' | 'ALL' | 'DRAFT';
 export interface IGetCurrentUserResponse {
 	currentUser: {
 		conversationData: {

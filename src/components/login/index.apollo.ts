@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 export const LOG_IN = gql`
 	query ($username: String!, $password: String!){

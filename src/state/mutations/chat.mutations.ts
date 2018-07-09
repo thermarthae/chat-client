@@ -1,5 +1,5 @@
-import ApolloClient from "apollo-client";
-import gql from "graphql-tag";
+import ApolloClient from 'apollo-client';
+import gql from 'graphql-tag';
 
 export const toggleAside = (_: undefined, { }: any, { cache }: ApolloClient<any>) => {
 	const query = gql`
@@ -12,7 +12,7 @@ export const toggleAside = (_: undefined, { }: any, { cache }: ApolloClient<any>
 	const { chat: { isAsideOpen } }: any = cache.readQuery({ query });
 	const data = {
 		chat: {
-			__typename: "Chat",
+			__typename: 'Chat',
 			isAsideOpen: !isAsideOpen
 		}
 	};
@@ -24,7 +24,7 @@ export const toggleAside = (_: undefined, { }: any, { cache }: ApolloClient<any>
 export const setInboxFilter = (_: undefined, { inboxFilter }: any, { cache }: ApolloClient<any>) => {
 	const data = {
 		chat: {
-			__typename: "Chat",
+			__typename: 'Chat',
 			inboxFilter
 		}
 	};

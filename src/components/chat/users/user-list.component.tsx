@@ -1,12 +1,12 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { injectIntl, InjectedIntlProps } from "react-intl";
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
-import UserItem from "./user-item.component";
-import { IConversation } from "./index.apollo";
+import UserItem from './user-item.component';
+import { IConversation } from './index.apollo';
 
 
 interface IUserListProps {
@@ -38,7 +38,7 @@ class UserList extends React.PureComponent<IUserListProps & InjectedIntlProps, I
 		const { menuAnchorEl } = this.state;
 
 		return (
-			<div className="list">
+			<div className='list'>
 				{conversationArr.map(item =>
 					<UserItem
 						key={item._id}
@@ -52,8 +52,8 @@ class UserList extends React.PureComponent<IUserListProps & InjectedIntlProps, I
 					onClose={this.handleMenuClose}
 					anchorEl={menuAnchorEl}
 				>
-					<MenuItem className="menuItem" onClick={this.handleMenuClose}>
-						{formatMessage({ id: "chat.users.menuItem.delete" })}
+					<MenuItem className='menuItem' onClick={this.handleMenuClose}>
+						{formatMessage({ id: 'chat.users.menuItem.delete' })}
 					</MenuItem>
 				</Menu>
 			</div>

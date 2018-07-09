@@ -1,32 +1,32 @@
-import * as React from "react";
-import { injectIntl, InjectedIntlProps } from "react-intl";
+import * as React from 'react';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 
-import Input from "@material-ui/core/Input";
-import IconButton from "@material-ui/core/IconButton";
+import Input from '@material-ui/core/Input';
+import IconButton from '@material-ui/core/IconButton';
 
-import Search from "@material-ui/icons/Search";
-import Cancel from "@material-ui/icons/Cancel";
+import Search from '@material-ui/icons/Search';
+import Cancel from '@material-ui/icons/Cancel';
 
 interface ISearchboxProps {}
 const Searchbox: React.SFC<ISearchboxProps & InjectedIntlProps> = props => {
 	const { intl: { formatMessage } } = props;
 
 	return (
-		<div className="head searchbox">
+		<div className='head searchbox'>
 			<Input
-				classes={{ root: "searchbar" }}
+				classes={{ root: 'searchbar' }}
 				disableUnderline
-				placeholder={formatMessage({ id: "chat.users.search" })}
+				placeholder={formatMessage({ id: 'chat.users.search' })}
 				startAdornment={
-					<Search className="btn" />
+					<Search className='btn' />
 				}
 				endAdornment={
 					<IconButton
-						className="cancel"
+						className='cancel'
 						onClick={e => e.preventDefault()}
 						onMouseDown={e => e.preventDefault()}
 					>
-						<Cancel style={{ fontSize: "inherit" }} />
+						<Cancel style={{ fontSize: 'inherit' }} />
 					</IconButton>
 				}
 			/>
