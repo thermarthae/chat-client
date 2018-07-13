@@ -7,11 +7,9 @@ import Menu from './menu';
 import Users from './users';
 import Inbox from './inbox';
 
-interface IChatRouteProps {
-	id: string;
-}
+interface IChatProps extends RouteComponentProps<{ id: string }> { }
 
-const Chat = (props: RouteComponentProps<IChatRouteProps>) => {
+const Chat = (props: IChatProps) => {
 	return (
 		<div id='chat'>
 			<Menu />
