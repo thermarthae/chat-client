@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { NavLink, withRouter } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import Query from 'react-apollo/Query';
 import { GET_LOGIN_STATUS } from './navigator.apollo';
@@ -51,4 +51,4 @@ const Navigator = () => (
 	}</Query>
 );
 
-export default withRouter(Navigator);
+export default Navigator;
