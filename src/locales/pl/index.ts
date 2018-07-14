@@ -3,7 +3,8 @@ import * as pl from 'react-intl/locale-data/pl';
 addLocaleData(pl);
 
 export default {
-	'error': `Błąd 404 - ${location.pathname}`,
+	'error': 'Coś poszło nie tak!',
+	'error404': `Błąd 404 - ${location.pathname}`,
 	'error.Err100': 'Użytkownik z podanym adresem nie istnieje',
 	'error.Err101': 'Nie znaleziono użytkownika',
 	'error.Err102': 'Nie znaleziono użytkowników',

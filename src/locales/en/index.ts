@@ -3,7 +3,8 @@ import * as en from 'react-intl/locale-data/en';
 addLocaleData(en);
 
 export default {
-	'error': `Error 404 - ${location.pathname}`,
+	'error': 'Something went wrong!',
+	'error404': `Error 404 - ${location.pathname}`,
 	'error.Err100': 'Username doesn\'t belong to any account',
 	'error.Err101': 'User not found',
 	'error.Err102': 'Users not found',

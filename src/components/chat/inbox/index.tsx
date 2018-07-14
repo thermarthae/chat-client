@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { Redirect } from 'react-router';
 
 import Query from 'react-apollo/Query';
 import { GET_CONVERSATION, IGetConversationResponse } from './index.apollo';
@@ -32,12 +33,10 @@ const Inbox: React.SFC<IInboxProps> = props => {
 		!oponentId ? <Empty i18nID='chat.inbox.nothingSelected' /> :
 			<Query query={GET_CONVERSATION} variables={{ id: oponentId }}>{
 				({ loading, error, data }) => {
-					if (error) return (
-						<div id='inbox'>
-							<div className='empty'>{error.message ? error.message : 'Error'}</div>
-						</div>
-					);
-
+					if (error) {
+						if (error.message && error.message.includes('404 (Not Found)')) return <Redirect to='/' push />;
+						return <Empty i18nID='error' />;
+					}
 					if (loading) return <Empty i18nID='chat.inbox.loading' />;
 					if (!data) return <Empty i18nID='chat.inbox.nothingSelected' />;
 
