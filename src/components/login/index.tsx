@@ -48,7 +48,9 @@ class Login extends React.PureComponent<WithApolloClient<ILoginProps>, ILoginSta
 	}
 
 	private handleShowPassswordClick = () => {
-		this.setState({ showPassword: !this.state.showPassword });
+		this.setState(prevState => ({
+			showPassword: !prevState.showPassword
+		}));
 	}
 
 	private handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
