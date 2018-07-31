@@ -4,7 +4,7 @@ import Mutation from 'react-apollo/Mutation';
 import { TOGGLE_ASIDE } from './header.apollo';
 
 import ButtonBase from '@material-ui/core/ButtonBase';
-import Settings from '@material-ui/icons/Settings';
+import SettingsSharp from '@material-ui/icons/SettingsSharp';
 
 interface IHeaderProps {
 	conversationName: string;
@@ -23,7 +23,7 @@ const Header: React.SFC<IHeaderProps> = props => {
 						className='btn btn-big'
 						onClick={() => toggleAside({})}
 					>
-						<Settings style={{ fontSize: 'inherit' }} />
+						<SettingsSharp style={{ fontSize: 'inherit' }} />
 					</ButtonBase>
 				</div>
 			}
