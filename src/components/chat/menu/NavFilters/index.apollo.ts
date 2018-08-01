@@ -8,12 +8,10 @@ export const SET_INBOX_FILTER = gql`
 
 export const GET_CURRENT_USER = gql`
 	query {
-		currentUser {
-			conversationData {
-				conversationCount
-				draftCount
-				unreadCount
-			}
+		userConversations {
+			conversationCount
+			draftCount
+			unreadCount
 		}
 		chat @client {
 			inboxFilter
@@ -22,12 +20,10 @@ export const GET_CURRENT_USER = gql`
 `;
 export type TInboxFilter = 'UNREAD' | 'ALL' | 'DRAFT';
 export interface IGetCurrentUserResponse {
-	currentUser: {
-		conversationData: {
-			conversationCount: number;
-			draftCount: number;
-			unreadCount: number;
-		}
+	userConversations: {
+		conversationCount: number;
+		draftCount: number;
+		unreadCount: number;
 	};
 	chat: {
 		inboxFilter: TInboxFilter

@@ -7,25 +7,17 @@ export const GET_INBOX_FILTER = gql`
 		}
 	}
 `;
-// export interface IGetInboxFilterResponse {
-// 	chat: {
-// 		inboxFilter: 'unread' | null | 'draft'
-// 	};
-// }
-
 
 export const GET_CONVERSATION_LIST = gql`
 	query ($filter: conversationFilter){
-		currentUser {
-			conversationData(filter: $filter) {
-				conversationArr {
-					_id
-					name
-					seen
-					lastMessage {
-						content
-						time
-					}
+		userConversations(filter: $filter) {
+			conversationArr {
+				_id
+				name
+				seen
+				lastMessage {
+					content
+					time
 				}
 			}
 		}
@@ -41,9 +33,7 @@ export interface IConversation {
 	};
 }
 export interface IGetConversationListResponse {
-	currentUser: {
-		conversationData: {
-			conversationArr: [IConversation];
-		}
+	userConversations: {
+		conversationArr: [IConversation];
 	};
 }

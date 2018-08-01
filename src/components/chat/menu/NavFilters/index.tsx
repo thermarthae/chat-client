@@ -33,11 +33,11 @@ const NavFilters = () => {
 			if (loading) return <NavLoading />;
 
 			const {
-				currentUser: { conversationData: {
+				userConversations: {
 					conversationCount,
 					draftCount,
 					unreadCount
-				} },
+				},
 				chat: {
 					inboxFilter
 				}

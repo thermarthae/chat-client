@@ -84,9 +84,9 @@ class Users extends React.PureComponent<IUsersProps & InjectedIntlProps, IUsersS
 							);
 
 							const {
-								currentUser: { conversationData: {
+								userConversations: {
 									conversationArr
-								} }
+								}
 							}: IGetConversationListResponse = data;
 
 							if (!conversationArr[0]) return (
