@@ -6,33 +6,32 @@ export const GET_CONVERSATION = gql`
 			name
 			messages {
 				_id
-				authorName
+				author {
+					name
+				}
 				time
 				me
 				content
 			}
-			draft {
-				content
-				time
-			}
+			draft
 		}
 	}
 `;
+
 export interface IMessage {
 	_id: string;
-	authorName: string;
+	author: {
+		name: string;
+	};
 	time: string;
 	me: boolean;
 	content: string;
 }
-export interface IDraft {
-	content: string;
-	time: string;
-}
+
 export interface IGetConversationResponse {
 	getConversation: {
 		name: string;
 		messages: [IMessage];
-		draft?: IDraft;
+		draft: string;
 	};
 }

@@ -23,7 +23,7 @@ const MessageItem: React.SFC<IMessageItemProps> = props => {
 			}
 		>
 			{!message.me && <div className='author'>
-				<Avatar>{message.authorName[0]}</Avatar>
+				<Avatar>{message.author.name[0]}</Avatar>
 			</div>}
 			<div className='wrapper'>
 				<div className='content'>
