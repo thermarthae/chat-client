@@ -16,11 +16,25 @@ interface IMessageListState {
 }
 
 class MessageList extends React.PureComponent<IMessageListProps, IMessageListState> {
+	private msgs: any;
+
 	public state = {
 		menuAnchorEl: undefined,
 	};
 
-	public handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+	public componentDidMount() {
+		this.scrollToBottom('instant');
+	}
+
+	public componentDidUpdate() {
+		this.scrollToBottom('smooth');
+	}
+
+	private scrollToBottom(behavior: 'smooth' | 'instant') {
+		this.msgs.scrollIntoView({ behavior, block: 'end', inline: 'end' });
+	}
+
+	private handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
 		event.preventDefault();
 		const target = event.currentTarget;
 
@@ -35,9 +49,11 @@ class MessageList extends React.PureComponent<IMessageListProps, IMessageListSta
 
 		return (
 			<div className='messageList'>
-				{messages.map(
-					msg => <MessageItem key={msg._id} message={msg} handleMenuClick={this.handleMenuClick} />
-				)}
+				<div ref={msgs => { this.msgs = msgs; }}>
+					{messages.map(
+						msg => <MessageItem key={msg._id} message={msg} handleMenuClick={this.handleMenuClick} />
+					)}
+				</div>
 				<Menu
 					open={Boolean(menuAnchorEl)}
 					onClose={this.handleMenuClick}
