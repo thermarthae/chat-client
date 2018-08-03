@@ -57,10 +57,7 @@ const client = new ApolloClient({
 			new WebSocketLink({
 				uri: `ws://localhost:3000/graphql`,
 				options: {
-					reconnect: true,
-					connectionParams: {
-						authToken: 'user.authToken',
-					}
+					reconnect: true
 				}
 			}),
 			new BatchHttpLink({
