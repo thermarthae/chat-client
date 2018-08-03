@@ -17,7 +17,6 @@ export const GET_CONVERSATION = gql`
 		}
 	}
 `;
-
 export interface IMessage {
 	_id: string;
 	author: {
@@ -27,7 +26,6 @@ export interface IMessage {
 	me: boolean;
 	content: string;
 }
-
 export interface IGetConversationResponse {
 	getConversation: {
 		name: string;
@@ -35,3 +33,18 @@ export interface IGetConversationResponse {
 		draft: string;
 	};
 }
+
+
+export const MESSAGES_SUBSCRIPTION = gql`
+	subscription($conversationId: ID!) {
+		messageAdded(conversationId: $conversationId) {
+			_id
+			author {
+				name
+			}
+			time
+			content
+			me
+		}
+	}
+`;

@@ -47,30 +47,29 @@ class MessageInput extends React.PureComponent<TProps, IMessageInputStates> {
 		const { message } = this.state;
 
 		try {
+			this.setState({ message: '' });
 			await client.mutate({
 				mutation: SEND_MESSAGE,
 				variables: { conversationId: oponentId, message },
 				update: (proxy, { data: { sendMessage } }: any) => {
 					const msgData = proxy.readQuery({ query: GET_MESSAGES, variables: { id: oponentId } }) as IGetMessagesResponse;
-					msgData.getConversation.messages.push(sendMessage);
+					if (!msgData.getConversation.messages.find((msg: any) => msg._id === sendMessage._id))
+						msgData.getConversation.messages.push(sendMessage);
 					proxy.writeQuery({ query: GET_MESSAGES, data: msgData, variables: { id: oponentId } });
 				},
-				optimisticResponse: () => {
-					this.setState({ message: '' });
-					return {
-						__typename: 'Mutation',
-						sendMessage: {
-							__typename: 'Message',
-							_id: Date.now(),
-							me: true,
-							author: {
-								__typename: 'User',
-								name: ''
-							},
-							content: message,
-							time: Date.now()
-						}
-					};
+				optimisticResponse: {
+					__typename: 'Mutation',
+					sendMessage: {
+						__typename: 'Message',
+						_id: Date.now(),
+						me: true,
+						author: {
+							__typename: 'User',
+							name: ''
+						},
+						content: message,
+						time: Date.now()
+					}
 				}
 			});
 		} catch (e) {

@@ -9,6 +9,7 @@ import { IMessage } from './index.apollo';
 
 interface IMessageListProps {
 	messages: [IMessage];
+	subscribeToNewMessages: () => void;
 }
 
 interface IMessageListState {
@@ -24,13 +25,14 @@ class MessageList extends React.PureComponent<IMessageListProps, IMessageListSta
 
 	public componentDidMount() {
 		this.scrollToBottom('instant');
+		this.props.subscribeToNewMessages();
 	}
 
 	public componentDidUpdate() {
 		this.scrollToBottom('smooth');
 	}
 
-	private scrollToBottom(behavior: 'smooth' | 'instant') {
+	private scrollToBottom = (behavior: 'smooth' | 'instant') => {
 		this.msgs.scrollIntoView({ behavior, block: 'end', inline: 'end' });
 	}
 

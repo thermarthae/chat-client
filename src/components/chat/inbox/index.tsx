@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import { Redirect } from 'react-router';
 
 import Query from 'react-apollo/Query';
-import { GET_CONVERSATION, IGetConversationResponse } from './index.apollo';
+import { GET_CONVERSATION, IGetConversationResponse, MESSAGES_SUBSCRIPTION } from './index.apollo';
 
 import '../../../style/inbox.component.scss';
 
@@ -32,7 +32,7 @@ const Inbox: React.SFC<IInboxProps> = props => {
 	return (
 		!oponentId ? <Empty i18nID='chat.inbox.nothingSelected' /> :
 			<Query query={GET_CONVERSATION} variables={{ id: oponentId }}>{
-				({ loading, error, data }) => {
+				({ loading, error, data, subscribeToMore }) => {
 					if (error) {
 						if (error.message && error.message.includes('404 (Not Found)')) return <Redirect to='/' push />;
 						return <Empty i18nID='error' />;
@@ -53,7 +53,24 @@ const Inbox: React.SFC<IInboxProps> = props => {
 							<Header conversationName={name} />
 							<div className='content'>
 								<div className='main'>
-									<MessageList messages={messages} />
+									<MessageList
+										messages={messages}
+										subscribeToNewMessages={() => subscribeToMore({
+											document: MESSAGES_SUBSCRIPTION,
+											variables: { conversationId: oponentId },
+											updateQuery: (prev, { subscriptionData }) => {
+												if (!subscriptionData.data) return prev;
+												const messagesArr = prev.getConversation.messages;
+												const messageAdded = subscriptionData.data.messageAdded;
+												if (!messagesArr.find((msg: any) => msg._id === messageAdded._id))
+													return Object.assign({}, prev, {
+														getConversation: Object.assign({}, prev.getConversation, {
+															messages: [...messagesArr, messageAdded]
+														})
+													});
+											}
+										})}
+									/>
 									<MessageInput draft={draft} oponentId={oponentId} />
 								</div>
 								<Aside />
