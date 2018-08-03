@@ -9,7 +9,7 @@ import '../../../style/inbox.component.scss';
 
 import Header from './header.component';
 import MessageList from './message-list.component';
-import Input from './input.component';
+import MessageInput from './MessageInput';
 import Aside from './aside.component';
 
 interface IInboxProps {
@@ -54,7 +54,7 @@ const Inbox: React.SFC<IInboxProps> = props => {
 							<div className='content'>
 								<div className='main'>
 									<MessageList messages={messages} />
-									<Input draft={draft} />
+									<MessageInput draft={draft} oponentId={oponentId} />
 								</div>
 								<Aside />
 							</div>
