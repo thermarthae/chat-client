@@ -1,25 +1,23 @@
 import * as React from 'react';
-
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
+import { withRouter, RouteComponentProps } from 'react-router';
 
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import UserItem from './user-item.component';
-import { IConversation } from './index.apollo';
+import { IConversation } from '../index.apollo';
 
 
-interface IUserListProps {
-	oponentId: string;
+interface IUserListProps extends RouteComponentProps<{ id: string }> {
 	conversationArr: [IConversation];
-
 }
 
 interface IUserListStates {
 	menuAnchorEl: HTMLElement | undefined;
 }
 
-class UserList extends React.PureComponent<IUserListProps & InjectedIntlProps, IUserListStates> {
+class UserList extends React.PureComponent<IUserListProps, IUserListStates> {
 	public state = {
 		menuAnchorEl: undefined,
 	};
@@ -34,7 +32,7 @@ class UserList extends React.PureComponent<IUserListProps & InjectedIntlProps, I
 	}
 
 	public render() {
-		const { conversationArr, oponentId, intl: { formatMessage } } = this.props;
+		const { conversationArr } = this.props;
 		const { menuAnchorEl } = this.state;
 
 		return (
@@ -44,7 +42,7 @@ class UserList extends React.PureComponent<IUserListProps & InjectedIntlProps, I
 						key={item._id}
 						handleMenuClick={this.handleMenuClick}
 						conversation={item}
-						oponentId={oponentId}
+						oponentId={this.props.match.params.id}
 					/>
 				)}
 				<Menu
@@ -53,7 +51,7 @@ class UserList extends React.PureComponent<IUserListProps & InjectedIntlProps, I
 					anchorEl={menuAnchorEl}
 				>
 					<MenuItem className='menuItem' onClick={this.handleMenuClose}>
-						{formatMessage({ id: 'chat.users.menuItem.delete' })}
+						<FormattedMessage id='chat.users.menuItem.delete' />
 					</MenuItem>
 				</Menu>
 			</div>
@@ -61,4 +59,4 @@ class UserList extends React.PureComponent<IUserListProps & InjectedIntlProps, I
 	}
 }
 
-export default injectIntl(UserList);
+export default withRouter(UserList);

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 import Avatar from '@material-ui/core/Avatar';
 import ListItem from '@material-ui/core/ListItem';
@@ -7,7 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 
 import MoreHoriz from '@material-ui/icons/MoreHoriz';
 
-import { IConversation } from './index.apollo';
+import { IConversation } from '../index.apollo';
 
 interface IUserItemProps {
 	handleMenuClick: (event: React.MouseEvent<HTMLElement>) => void;
@@ -15,8 +16,8 @@ interface IUserItemProps {
 	oponentId: string;
 }
 
-const UserItem: React.SFC<IUserItemProps> = props => {
-	const { conversation, oponentId } = props;
+const UserItem: React.SFC<IUserItemProps & InjectedIntlProps> = props => {
+	const { conversation, oponentId, intl: { formatMessage } } = props;
 	return (
 		<Link to={'/chat/' + conversation._id}>
 			<ListItem
@@ -31,13 +32,13 @@ const UserItem: React.SFC<IUserItemProps> = props => {
 					<div className='avatar'>
 						<div className='status' />
 						<Avatar onClick={e => e.preventDefault()}>
-							{(conversation.name) ? conversation.name[0] : 'UPS'}
+							{conversation.name ? conversation.name[0] : ''}
 						</Avatar>
 					</div>
 				</div>
 				<div className='center'>
 					<span className='name'>
-						{conversation.name || 'Nazwa Konwersacji'}
+						{conversation.name || formatMessage({ id: 'chat.users.conversationName' })}
 					</span>
 					<span className='message'>
 						{conversation.lastMessage.content}
@@ -53,4 +54,4 @@ const UserItem: React.SFC<IUserItemProps> = props => {
 	);
 };
 
-export default UserItem;
+export default injectIntl(UserItem);
