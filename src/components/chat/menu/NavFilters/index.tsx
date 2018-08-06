@@ -12,15 +12,21 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 const NavLoading = () => {
 	return <List className='container'>
 		<ListItem button className={'line'}>
-			<span className='name'><FormattedMessage id='chat.menu.inbox' /></span>
+			<FormattedMessage id='chat.menu.inbox'>
+				{txt => <span className='name'>{txt}</span>}
+			</FormattedMessage>
 			<CircularProgress size='1em' color='inherit' />
 		</ListItem>
 		<ListItem button className={'line'}>
-			<span className='name'><FormattedMessage id='chat.menu.allMessages' /></span>
+			<FormattedMessage id='chat.menu.allMessages'>
+				{txt => <span className='name'>{txt}</span>}
+			</FormattedMessage>
 			<CircularProgress size='1em' color='inherit' />
 		</ListItem>
 		<ListItem button className={'line'}>
-			<span className='name'><FormattedMessage id='chat.menu.draft' /></span>
+			<FormattedMessage id='chat.menu.draft'>
+				{txt => <span className='name'>{txt}</span>}
+			</FormattedMessage>
 			<CircularProgress size='1em' color='inherit' />
 		</ListItem>
 	</List>;
@@ -51,7 +57,9 @@ const NavFilters = () => {
 							onClick={() => setInboxFilter({ variables: { inboxFilter: 'UNREAD' } })}
 							className={'line' + (inboxFilter === 'UNREAD' ? ' active' : '')}
 						>
-							<span className='name'><FormattedMessage id='chat.menu.inbox' /></span>
+							<FormattedMessage id='chat.menu.inbox'>
+								{txt => <span className='name'>{txt}</span>}
+							</FormattedMessage>
 							<span className='count'>{unreadCount}</span>
 						</ListItem>
 						<ListItem
@@ -59,7 +67,9 @@ const NavFilters = () => {
 							onClick={() => setInboxFilter({ variables: { inboxFilter: 'ALL' } })}
 							className={'line' + (inboxFilter === 'ALL' ? ' active' : '')}
 						>
-							<span className='name'><FormattedMessage id='chat.menu.allMessages' /></span>
+							<FormattedMessage id='chat.menu.allMessages'>
+								{txt => <span className='name'>{txt}</span>}
+							</FormattedMessage>
 							<span className='count'>{conversationCount}</span>
 						</ListItem>
 						<ListItem
@@ -67,7 +77,9 @@ const NavFilters = () => {
 							onClick={() => setInboxFilter({ variables: { inboxFilter: 'DRAFT' } })}
 							className={'line' + (inboxFilter === 'DRAFT' ? ' active' : '')}
 						>
-							<span className='name'><FormattedMessage id='chat.menu.draft' /></span>
+							<FormattedMessage id='chat.menu.draft'>
+								{txt => <span className='name'>{txt}</span>}
+							</FormattedMessage>
 							<span className='count'>{draftCount}</span>
 						</ListItem>
 					</List>

@@ -7,9 +7,9 @@ import PersonAdd from '@material-ui/icons/PersonAdd';
 const Head = () => {
 	return (
 		<div className='head'>
-			<span className='title'>
-				<FormattedMessage id='chat.menu.title' />
-			</span>
+			<FormattedMessage id='chat.menu.title'>
+				{txt => <span className='title'>{txt}</span>}
+			</FormattedMessage>
 			<IconButton className='btn'>
 				<PersonAdd style={{ fontSize: 'inherit' }} />
 			</IconButton>

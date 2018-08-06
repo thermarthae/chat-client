@@ -17,10 +17,14 @@ const Menu = () => {
 			<div className='separator' />
 			<List className='container'>
 				<ListItem className='line' button>
-					<span className='name'><FormattedMessage id='chat.menu.help' /></span>
+					<FormattedMessage id='chat.menu.help'>
+						{txt => <span className='name'>{txt}</span>}
+					</FormattedMessage>
 				</ListItem>
 				<ListItem className='line' button>
-					<span className='name'><FormattedMessage id='chat.menu.settings' /></span>
+					<FormattedMessage id='chat.menu.settings'>
+						{txt => <span className='name'>{txt}</span>}
+					</FormattedMessage>
 				</ListItem>
 			</List>
 		</div>
