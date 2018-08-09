@@ -181,6 +181,7 @@
 				flex-direction: column;
 				margin: 0 10px;
 				overflow: hidden;
+				white-space: nowrap;
 
 				.name {
 					color: $text-primary__color--light;
@@ -191,7 +192,6 @@
 				.message {
 					font-size: 0.9em;
 					text-overflow: ellipsis;
-					white-space: nowrap;
 					overflow: hidden;
 				}
 			}
