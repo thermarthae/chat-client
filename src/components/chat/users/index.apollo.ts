@@ -16,24 +16,45 @@ export const GET_CONVERSATION_LIST = gql`
 				name
 				seen
 				lastMessage {
+					_id
 					content
 					time
+					me
+					conversation
 				}
 			}
 		}
 	}
 `;
+export interface ILastMessage {
+	_id: string;
+	content: string;
+	time: string;
+	me: boolean;
+	conversation: string;
+}
 export interface IConversation {
 	_id: string;
 	name: string | null;
 	seen: boolean;
-	lastMessage: {
-		content: string;
-		time: string;
-	};
+	lastMessage: ILastMessage;
 }
 export interface IGetConversationListResponse {
 	userConversations: {
 		conversationArr: [IConversation];
 	};
 }
+
+
+
+export const MESSAGES_SUBSCRIPTION = gql`
+	subscription {
+		newMessageAdded {
+			_id
+			time
+			content
+			me
+			conversation
+		}
+	}
+`;

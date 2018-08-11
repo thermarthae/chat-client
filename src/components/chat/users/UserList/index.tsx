@@ -11,6 +11,7 @@ import { IConversation } from '../index.apollo';
 
 interface IUserListProps extends RouteComponentProps<{ id: string }> {
 	conversationArr: [IConversation];
+	subscribeToNewMessages: () => void;
 }
 
 interface IUserListStates {
@@ -21,6 +22,10 @@ class UserList extends React.PureComponent<IUserListProps, IUserListStates> {
 	public state = {
 		menuAnchorEl: undefined,
 	};
+
+	public componentDidMount() {
+		this.props.subscribeToNewMessages();
+	}
 
 	public handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
 		event.preventDefault();
