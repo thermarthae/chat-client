@@ -12,6 +12,7 @@ export const GET_CONVERSATION = gql`
 				time
 				me
 				content
+				conversation
 			}
 			draft
 		}
@@ -25,6 +26,7 @@ export interface IMessage {
 	time: string;
 	me: boolean;
 	content: string;
+	conversation: string;
 }
 export interface IGetConversationResponse {
 	getConversation: {
@@ -36,8 +38,8 @@ export interface IGetConversationResponse {
 
 
 export const MESSAGES_SUBSCRIPTION = gql`
-	subscription($conversationId: ID!) {
-		messageAdded(conversationId: $conversationId) {
+	subscription {
+		newMessageAdded {
 			_id
 			author {
 				name
@@ -45,6 +47,7 @@ export const MESSAGES_SUBSCRIPTION = gql`
 			time
 			content
 			me
+			conversation
 		}
 	}
 `;

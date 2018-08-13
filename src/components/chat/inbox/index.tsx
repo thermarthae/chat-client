@@ -3,7 +3,10 @@ import { FormattedMessage } from 'react-intl';
 import { Redirect } from 'react-router';
 
 import Query from 'react-apollo/Query';
-import { GET_CONVERSATION, IGetConversationResponse, MESSAGES_SUBSCRIPTION } from './index.apollo';
+import {
+	GET_CONVERSATION, IGetConversationResponse,
+	MESSAGES_SUBSCRIPTION, IMessage
+} from './index.apollo';
 
 import '../../../style/inbox.component.scss';
 
@@ -57,17 +60,17 @@ const Inbox: React.SFC<IInboxProps> = props => {
 										messages={messages}
 										subscribeToNewMessages={() => subscribeToMore({
 											document: MESSAGES_SUBSCRIPTION,
-											variables: { conversationId: oponentId },
-											updateQuery: (prev, { subscriptionData }) => {
+											updateQuery: (prev: IGetConversationResponse, { subscriptionData }) => {
 												if (!subscriptionData.data) return prev;
+												const newMessageAdded: IMessage = subscriptionData.data.newMessageAdded;
 												const messagesArr = prev.getConversation.messages;
-												const messageAdded = subscriptionData.data.messageAdded;
-												if (!messagesArr.find((msg: any) => msg._id === messageAdded._id))
+												if (newMessageAdded.conversation === oponentId && !messagesArr.find(msg => msg._id === newMessageAdded._id))
 													return Object.assign({}, prev, {
 														getConversation: Object.assign({}, prev.getConversation, {
-															messages: [...messagesArr, messageAdded]
+															messages: [...messagesArr, newMessageAdded]
 														})
 													});
+												return prev;
 											}
 										})}
 									/>

@@ -53,7 +53,7 @@ class MessageInput extends React.PureComponent<TProps, IMessageInputStates> {
 				variables: { conversationId: oponentId, message },
 				update: (proxy, { data: { sendMessage } }: any) => {
 					const msgData = proxy.readQuery({ query: GET_MESSAGES, variables: { id: oponentId } }) as IGetMessagesResponse;
-					if (!msgData.getConversation.messages.find((msg: any) => msg._id === sendMessage._id))
+					if (!msgData.getConversation.messages.find(msg => msg._id === sendMessage._id))
 						msgData.getConversation.messages.push(sendMessage);
 					proxy.writeQuery({ query: GET_MESSAGES, data: msgData, variables: { id: oponentId } });
 				},
@@ -68,6 +68,7 @@ class MessageInput extends React.PureComponent<TProps, IMessageInputStates> {
 							name: ''
 						},
 						content: message,
+						conversation: oponentId,
 						time: Date.now()
 					}
 				}

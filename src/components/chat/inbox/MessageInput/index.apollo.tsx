@@ -10,6 +10,7 @@ export const SEND_MESSAGE = gql`
 			}
 			content
 			time
+			conversation
 		}
 	}
 `;
