@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 export const GET_CONVERSATION = gql`
 	query ($id: ID!){
 		getConversation(id: $id){
+			_id
 			name
 			messages {
 				_id
@@ -30,6 +31,7 @@ export interface IMessage {
 }
 export interface IGetConversationResponse {
 	getConversation: {
+		_id: string;
 		name: string;
 		messages: [IMessage];
 		draft: string;

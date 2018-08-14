@@ -18,6 +18,7 @@ export const SEND_MESSAGE = gql`
 export const GET_MESSAGES = gql`
 	query ($id: ID!){
 		getConversation(id: $id){
+			_id
 			messages {
 				_id
 				author {
@@ -32,6 +33,7 @@ export const GET_MESSAGES = gql`
 `;
 export interface IGetMessagesResponse {
 	getConversation: {
+		_id: string;
 		messages: [{
 			_id: string;
 			author: {
