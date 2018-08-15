@@ -4,8 +4,7 @@ import { Redirect } from 'react-router';
 
 import Query from 'react-apollo/Query';
 import {
-	GET_CONVERSATION, IGetConversationResponse,
-	MESSAGES_SUBSCRIPTION, IMessage
+	GET_CONVERSATION, IGetConversationResponse
 } from './index.apollo';
 
 import '../../../style/inbox.component.scss';
@@ -58,21 +57,8 @@ const Inbox: React.SFC<IInboxProps> = props => {
 								<div className='main'>
 									<MessageList
 										messages={messages}
-										subscribeToNewMessages={() => subscribeToMore({
-											document: MESSAGES_SUBSCRIPTION,
-											updateQuery: (prev: IGetConversationResponse, { subscriptionData }) => {
-												if (!subscriptionData.data) return prev;
-												const newMessageAdded: IMessage = subscriptionData.data.newMessageAdded;
-												const messagesArr = prev.getConversation.messages;
-												if (newMessageAdded.conversation === oponentId && !messagesArr.find(msg => msg._id === newMessageAdded._id))
-													return Object.assign({}, prev, {
-														getConversation: Object.assign({}, prev.getConversation, {
-															messages: [...messagesArr, newMessageAdded]
-														})
-													});
-												return prev;
-											}
-										})}
+										oponentId={oponentId}
+										subscribeToMore={subscribeToMore}
 									/>
 									<MessageInput draft={draft} oponentId={oponentId} />
 								</div>

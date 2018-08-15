@@ -5,11 +5,13 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import MessageItem from './message-item.component';
-import { IMessage } from './index.apollo';
+import { IGetConversationResponse, IMessage } from './index.apollo';
+import { MESSAGES_SUBSCRIPTION, INewMessageAdded } from './message-list.apollo';
 
 interface IMessageListProps {
 	messages: [IMessage];
-	subscribeToNewMessages: () => void;
+	subscribeToMore: any;
+	oponentId: string;
 }
 
 interface IMessageListState {
@@ -18,6 +20,7 @@ interface IMessageListState {
 
 class MessageList extends React.PureComponent<IMessageListProps, IMessageListState> {
 	private msgs: any;
+	private unsubscribe: any;
 
 	public state = {
 		menuAnchorEl: undefined,
@@ -25,7 +28,27 @@ class MessageList extends React.PureComponent<IMessageListProps, IMessageListSta
 
 	public componentDidMount() {
 		this.scrollToBottom('instant');
-		this.props.subscribeToNewMessages();
+		const { subscribeToMore, oponentId } = this.props;
+		this.unsubscribe = subscribeToMore({
+			document: MESSAGES_SUBSCRIPTION,
+			updateQuery: (prev: IGetConversationResponse, { subscriptionData }: { subscriptionData: INewMessageAdded }) => {
+				if (!subscriptionData.data) return prev;
+				const newMessageAdded = subscriptionData.data.newMessageAdded;
+				const messagesArr = prev.getConversation.messages;
+				console.log('oponentId', oponentId);
+				if (newMessageAdded.conversation === oponentId && !messagesArr.find(msg => msg._id === newMessageAdded._id))
+					return Object.assign({}, prev, {
+						getConversation: Object.assign({}, prev.getConversation, {
+							messages: [...messagesArr, newMessageAdded]
+						})
+					});
+				return prev;
+			}
+		});
+	}
+
+	public componentWillUnmount() {
+		this.unsubscribe();
 	}
 
 	public componentDidUpdate() {
@@ -44,7 +67,7 @@ class MessageList extends React.PureComponent<IMessageListProps, IMessageListSta
 			menuAnchorEl: !prevState.menuAnchorEl ? target : undefined
 		}));
 	}
-
+	
 	public render() {
 		const { messages } = this.props;
 		const { menuAnchorEl } = this.state;

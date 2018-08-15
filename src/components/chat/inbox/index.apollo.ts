@@ -37,19 +37,3 @@ export interface IGetConversationResponse {
 		draft: string;
 	};
 }
-
-
-export const MESSAGES_SUBSCRIPTION = gql`
-	subscription {
-		newMessageAdded {
-			_id
-			author {
-				name
-			}
-			time
-			content
-			me
-			conversation
-		}
-	}
-`;
