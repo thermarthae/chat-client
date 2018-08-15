@@ -5,8 +5,7 @@ import Query from 'react-apollo/Query';
 import '../../../style/users.component.scss';
 import {
 	GET_INBOX_FILTER,
-	GET_CONVERSATION_LIST, IGetConversationListResponse,
-	MESSAGES_SUBSCRIPTION, ILastMessage
+	GET_CONVERSATION_LIST, IGetConversationListResponse
 } from './index.apollo';
 
 import Searchbox from './searchbox.component';
@@ -39,7 +38,7 @@ const Users = () => {
 			<Query query={GET_INBOX_FILTER}>{
 				({ data: { chat: { inboxFilter } } }) =>
 					<Query query={GET_CONVERSATION_LIST} variables={{ filter: inboxFilter }}>
-						{({ loading, error, data, subscribeToMore }) => {
+						{({ loading, error, data }) => {
 							if (error) return `Error! ${error.message}`;
 							if (loading) return (
 								<div className='list'>
@@ -64,34 +63,6 @@ const Users = () => {
 
 							return <UserList
 								conversationArr={conversationArr}
-								subscribeToNewMessages={() => subscribeToMore({
-									document: MESSAGES_SUBSCRIPTION,
-									updateQuery: (prev: IGetConversationListResponse, { subscriptionData }) => {
-										if (!subscriptionData.data) return prev;
-										const prevConversationArr = prev.userConversations.conversationArr.slice();
-										const messageAdded: ILastMessage = subscriptionData.data.newMessageAdded;
-
-										let convIndex: number;
-										const foundConversation = prevConversationArr.find((cnv, index) => {
-											if (cnv._id !== messageAdded.conversation) return false;
-											convIndex = index;
-											return true;
-										});
-
-										if (foundConversation) {
-											const editedConv = Object.assign({}, foundConversation, { lastMessage: messageAdded });
-											prevConversationArr.splice(convIndex!, 1);
-											prevConversationArr.splice(convIndex!, 0, editedConv);
-
-											return Object.assign({}, prev, {
-												userConversations: Object.assign({}, prev.userConversations, {
-													conversationArr: prevConversationArr
-												})
-											});
-										}
-										// TODO: else add new convers
-									}
-								})}
 							/>;
 						}}
 					</Query>

@@ -34,7 +34,7 @@ const Inbox: React.SFC<IInboxProps> = props => {
 	return (
 		!oponentId ? <Empty i18nID='chat.inbox.nothingSelected' /> :
 			<Query query={GET_CONVERSATION} variables={{ id: oponentId }}>{
-				({ loading, error, data, subscribeToMore }) => {
+				({ loading, error, data }) => {
 					if (error) {
 						if (error.message && error.message.includes('404 (Not Found)')) return <Redirect to='/' push />;
 						return <Empty i18nID='error' />;
@@ -58,7 +58,6 @@ const Inbox: React.SFC<IInboxProps> = props => {
 									<MessageList
 										messages={messages}
 										oponentId={oponentId}
-										subscribeToMore={subscribeToMore}
 									/>
 									<MessageInput draft={draft} oponentId={oponentId} />
 								</div>

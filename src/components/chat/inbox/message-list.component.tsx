@@ -5,12 +5,10 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import MessageItem from './message-item.component';
-import { IGetConversationResponse, IMessage } from './index.apollo';
-import { MESSAGES_SUBSCRIPTION, INewMessageAdded } from './message-list.apollo';
+import { IMessage } from './index.apollo';
 
 interface IMessageListProps {
 	messages: [IMessage];
-	subscribeToMore: any;
 	oponentId: string;
 }
 
@@ -20,7 +18,6 @@ interface IMessageListState {
 
 class MessageList extends React.PureComponent<IMessageListProps, IMessageListState> {
 	private msgs: any;
-	private unsubscribe: any;
 
 	public state = {
 		menuAnchorEl: undefined,
@@ -28,27 +25,6 @@ class MessageList extends React.PureComponent<IMessageListProps, IMessageListSta
 
 	public componentDidMount() {
 		this.scrollToBottom('instant');
-		const { subscribeToMore, oponentId } = this.props;
-		this.unsubscribe = subscribeToMore({
-			document: MESSAGES_SUBSCRIPTION,
-			updateQuery: (prev: IGetConversationResponse, { subscriptionData }: { subscriptionData: INewMessageAdded }) => {
-				if (!subscriptionData.data) return prev;
-				const newMessageAdded = subscriptionData.data.newMessageAdded;
-				const messagesArr = prev.getConversation.messages;
-				console.log('oponentId', oponentId);
-				if (newMessageAdded.conversation === oponentId && !messagesArr.find(msg => msg._id === newMessageAdded._id))
-					return Object.assign({}, prev, {
-						getConversation: Object.assign({}, prev.getConversation, {
-							messages: [...messagesArr, newMessageAdded]
-						})
-					});
-				return prev;
-			}
-		});
-	}
-
-	public componentWillUnmount() {
-		this.unsubscribe();
 	}
 
 	public componentDidUpdate() {
