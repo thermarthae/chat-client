@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import Query from 'react-apollo/Query';
-import { GET_ASIDE_STATUS } from './aside.apollo';
+import { GET_ASIDE_STATUS } from './Aside.apollo';
 
 const Aside: React.SFC<{}> = () => {
 	return (

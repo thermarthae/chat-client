@@ -4,19 +4,19 @@ import { FormattedMessage } from 'react-intl';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import MessageItem from './message-item.component';
-import { IMessage } from './index.apollo';
+import Message from './Message';
+import { IMessage } from '../Mailbox.apollo';
 
-interface IMessageListProps {
+interface IInboxProps {
 	messages: [IMessage];
 	oponentId: string;
 }
 
-interface IMessageListState {
+interface IInboxState {
 	menuAnchorEl: HTMLElement | undefined;
 }
 
-class MessageList extends React.PureComponent<IMessageListProps, IMessageListState> {
+class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 	private msgs: any;
 
 	public state = {
@@ -43,16 +43,16 @@ class MessageList extends React.PureComponent<IMessageListProps, IMessageListSta
 			menuAnchorEl: !prevState.menuAnchorEl ? target : undefined
 		}));
 	}
-	
+
 	public render() {
 		const { messages } = this.props;
 		const { menuAnchorEl } = this.state;
 
 		return (
-			<div className='messageList'>
+			<div className='inbox'>
 				<div ref={msgs => { this.msgs = msgs; }}>
 					{messages.map(
-						msg => <MessageItem key={msg._id} message={msg} handleMenuClick={this.handleMenuClick} />
+						msg => <Message key={msg._id} message={msg} handleMenuClick={this.handleMenuClick} />
 					)}
 				</div>
 				<Menu
@@ -69,4 +69,4 @@ class MessageList extends React.PureComponent<IMessageListProps, IMessageListSta
 	}
 }
 
-export default MessageList;
+export default Inbox;

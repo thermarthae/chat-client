@@ -7,7 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Search from '@material-ui/icons/Search';
 import Cancel from '@material-ui/icons/Cancel';
 
-interface ISearchboxProps {}
+interface ISearchboxProps { }
 const Searchbox: React.SFC<ISearchboxProps & InjectedIntlProps> = props => {
 	const { intl: { formatMessage } } = props;
 
@@ -16,7 +16,7 @@ const Searchbox: React.SFC<ISearchboxProps & InjectedIntlProps> = props => {
 			<Input
 				classes={{ root: 'searchbar' }}
 				disableUnderline
-				placeholder={formatMessage({ id: 'chat.users.search' })}
+				placeholder={formatMessage({ id: 'chat.conversations.search' })}
 				startAdornment={
 					<Search className='btn' />
 				}

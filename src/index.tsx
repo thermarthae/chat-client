@@ -18,7 +18,7 @@ import mutations from './state/mutations';
 
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import './style/index.scss';
-import App from './components/app.component';
+import App from './components/App';
 
 const cache = new InMemoryCache();
 
@@ -102,7 +102,7 @@ declare let module: {
 };
 
 if (module.hot)
-	module.hot.accept('./components/app.component', () => {
-		const NewApp = require('./components/app.component').default;
+	module.hot.accept('./components/App', () => {
+		const NewApp = require('./components/App').default;
 		renderComponent(NewApp);
 	});

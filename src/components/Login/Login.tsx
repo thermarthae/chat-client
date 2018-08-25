@@ -3,7 +3,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { RouterProps } from 'react-router';
 
 import withApollo, { WithApolloClient } from 'react-apollo/withApollo';
-import { LOG_IN, ILogInResponse, SET_LOGIN_STATUS } from './index.apollo';
+import { LOG_IN, ILogInResponse, SET_LOGIN_STATUS } from './Login.apollo';
 
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -20,7 +20,7 @@ import TextField from '@material-ui/core/TextField';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
-import '../../style/login.component.scss';
+import './Login.style.scss';
 
 interface ILoginProps extends InjectedIntlProps, RouterProps { }
 

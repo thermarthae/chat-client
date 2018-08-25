@@ -8,7 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 
 import MoreHoriz from '@material-ui/icons/MoreHoriz';
 
-import { IConversation } from '../index.apollo';
+import { IConversation } from '../Conversations.apollo';
 
 interface IUserItemProps {
 	handleMenuClick: (event: React.MouseEvent<HTMLElement>) => void;
@@ -38,7 +38,7 @@ const UserItem: React.SFC<IUserItemProps & InjectedIntlProps> = props => {
 				</div>
 				<div className='center'>
 					<span className='name'>
-						{conversation.name || formatMessage({ id: 'chat.users.conversationName' })}
+						{conversation.name || formatMessage({ id: 'chat.conversations.conversationName' })}
 					</span>
 					<span className='message'>
 						{conversation.lastMessage.content}

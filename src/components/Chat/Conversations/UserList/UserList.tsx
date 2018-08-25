@@ -5,8 +5,8 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import UserItem from './user-item.component';
-import { IConversation } from '../index.apollo';
+import UserItem from './UserItem';
+import { IConversation } from '../Conversations.apollo';
 
 
 interface IUserListProps extends RouteComponentProps<{ id: string }> {
@@ -51,7 +51,7 @@ class UserList extends React.PureComponent<IUserListProps, IUserListStates> {
 					anchorEl={menuAnchorEl}
 				>
 					<MenuItem className='menuItem' onClick={this.handleMenuClose}>
-						<FormattedMessage id='chat.users.menuItem.delete' />
+						<FormattedMessage id='menuItem.delete' />
 					</MenuItem>
 				</Menu>
 			</div>

@@ -1,4 +1,4 @@
-#inbox {
+#mailbox {
 	display: flex;
 	flex-direction: column;
 	color: $text-primary__color--dark;
@@ -52,11 +52,11 @@
 			display: flex;
 			flex-direction: column;
 
-			.messageList {
+			.inbox {
 				overflow: auto;
 				flex-grow: 1;
 
-				.messageItem {
+				.message {
 					display: flex;
 					flex-direction: row;
 					color: $text-primary__color--dark;
@@ -196,10 +196,6 @@
 					width: 1.5em;
 					font-size: 1.75em;
 				}
-
-				.emoticon {}
-
-				.send {}
 			}
 		}
 

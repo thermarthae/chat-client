@@ -34,7 +34,7 @@ module.exports = {
 						loader: 'sass-loader',
 						options: {
 							sourceMap: true,
-							data: '@import \'variables\';'
+							data: '@import \'~Style/variables\';'
 						}
 					}
 				]

@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import '../../style/chat.component.scss';
+import './Chat.style.scss';
 
-import Menu from './menu';
-import Users from './users';
-import Inbox from './inbox';
+import Menu from './Menu/Menu';
+import Conversations from './Conversations/Conversations';
+import Mailbox from './Mailbox/Mailbox';
 
 interface IChatProps extends RouteComponentProps<{ id: string }> { }
 
@@ -13,8 +13,8 @@ const Chat = (props: IChatProps) => {
 	return (
 		<div id='chat'>
 			<Menu />
-			<Users />
-			<Inbox oponentId={props.match.params.id} />
+			<Conversations />
+			<Mailbox oponentId={props.match.params.id} />
 		</div>
 	);
 };

@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import Query from 'react-apollo/Query';
 import Mutation from 'react-apollo/Mutation';
-import { SET_INBOX_FILTER, GET_CURRENT_USER, IGetCurrentUserResponse } from './index.apollo';
+import { SET_INBOX_FILTER, GET_CURRENT_USER, IGetCurrentUserResponse } from './NavFilters.apollo';
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';

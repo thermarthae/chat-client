@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import Mutation from 'react-apollo/Mutation';
-import { TOGGLE_ASIDE } from './header.apollo';
+import { TOGGLE_ASIDE } from './Header.apollo';
 
 import ButtonBase from '@material-ui/core/ButtonBase';
 import SettingsSharp from '@material-ui/icons/SettingsSharp';

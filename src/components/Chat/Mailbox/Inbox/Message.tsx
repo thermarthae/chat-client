@@ -6,7 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 
 import MoreVert from '@material-ui/icons/MoreVert';
 
-import { IMessage } from './index.apollo';
+import { IMessage } from '../Mailbox.apollo';
 
 interface IMessageItemProps {
 	handleMenuClick: (event: React.MouseEvent<HTMLElement>) => void;
@@ -18,7 +18,7 @@ const MessageItem: React.SFC<IMessageItemProps> = props => {
 	return (
 		<div
 			className={
-				'messageItem'
+				'message'
 				+ (message.me ? ' me' : '')
 			}
 		>

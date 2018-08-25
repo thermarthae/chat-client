@@ -6,14 +6,14 @@ import messages from '../locales';
 
 import Query from 'react-apollo/Query';
 import withApollo, { WithApolloClient } from 'react-apollo/withApollo';
-import { GET_APP_DATA } from './app.apollo';
+import { GET_APP_DATA } from './App.apollo';
 
-import '../style/app.component.scss';
+import './App.style.scss';
 
-import Error from './error.component';
-import Navigator from './navigator.component';
-import Chat from './chat';
-import Login from './login';
+import Error from './Error/Error';
+import Navigator from './Navigator/Navigator';
+import Chat from './Chat/Chat';
+import Login from './Login/Login';
 
 interface IPrivateRouteProps extends RouteProps {
 	auth: boolean;
@@ -21,7 +21,7 @@ interface IPrivateRouteProps extends RouteProps {
 	whenUnlogged?: boolean;
 }
 
-const PrivateRoute = ({auth, Component, whenUnlogged, ...rest}: IPrivateRouteProps) => {
+const PrivateRoute = ({ auth, Component, whenUnlogged, ...rest }: IPrivateRouteProps) => {
 	return (
 		<Route
 			{...rest}

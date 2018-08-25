@@ -5,22 +5,22 @@ import { Redirect } from 'react-router';
 import Query from 'react-apollo/Query';
 import {
 	GET_CONVERSATION, IGetConversationResponse
-} from './index.apollo';
+} from './Mailbox.apollo';
 
-import '../../../style/inbox.component.scss';
+import './Mailbox.style.scss';
 
-import Header from './header.component';
-import MessageList from './message-list.component';
-import MessageInput from './MessageInput';
-import Aside from './aside.component';
+import Header from './Header/Header';
+import Inbox from './Inbox/Inbox';
+import MessageInput from './MessageInput/MessageInput';
+import Aside from './Aside/Aside';
 
-interface IInboxProps {
+interface IMailboxProps {
 	oponentId?: string;
 }
 
 const Empty = ({ i18nID }: { i18nID: string }) => {
 	return (
-		<div id='inbox'>
+		<div id='mailbox'>
 			<div className='empty'>
 				<FormattedMessage id={i18nID} />
 			</div>
@@ -28,19 +28,19 @@ const Empty = ({ i18nID }: { i18nID: string }) => {
 	);
 };
 
-const Inbox: React.SFC<IInboxProps> = props => {
+const Mailbox: React.SFC<IMailboxProps> = props => {
 	const { oponentId } = props;
 
 	return (
-		!oponentId ? <Empty i18nID='chat.inbox.nothingSelected' /> :
+		!oponentId ? <Empty i18nID='chat.mailbox.nothingSelected' /> :
 			<Query query={GET_CONVERSATION} variables={{ id: oponentId }}>{
 				({ loading, error, data }) => {
 					if (error) {
 						if (error.message && error.message.includes('404 (Not Found)')) return <Redirect to='/' push />;
-						return <Empty i18nID='error' />;
+						return <Empty i18nID='error.unknown' />;
 					}
-					if (loading) return <Empty i18nID='chat.inbox.loading' />;
-					if (!data) return <Empty i18nID='chat.inbox.nothingSelected' />;
+					if (loading) return <Empty i18nID='chat.mailbox.loading' />;
+					if (!data) return <Empty i18nID='chat.mailbox.nothingSelected' />;
 
 					const {
 						getConversation: {
@@ -51,11 +51,11 @@ const Inbox: React.SFC<IInboxProps> = props => {
 					}: IGetConversationResponse = data;
 
 					return (
-						<div id='inbox'>
+						<div id='mailbox'>
 							<Header conversationName={name} />
 							<div className='content'>
 								<div className='main'>
-									<MessageList
+									<Inbox
 										messages={messages}
 										oponentId={oponentId}
 									/>
@@ -70,4 +70,4 @@ const Inbox: React.SFC<IInboxProps> = props => {
 	);
 };
 
-export default Inbox;
+export default Mailbox;

@@ -4,9 +4,9 @@ import { FormattedMessage } from 'react-intl';
 import IconButton from '@material-ui/core/IconButton';
 import PersonAdd from '@material-ui/icons/PersonAdd';
 
-const Head = () => {
+const Header = () => {
 	return (
-		<div className='head'>
+		<div className='head header'>
 			<FormattedMessage id='chat.menu.title'>
 				{txt => <span className='title'>{txt}</span>}
 			</FormattedMessage>
@@ -17,4 +17,4 @@ const Head = () => {
 	);
 };
 
-export default Head;
+export default Header;

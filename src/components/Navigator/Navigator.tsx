@@ -2,14 +2,14 @@ import * as React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import Query from 'react-apollo/Query';
-import { GET_LOGIN_STATUS } from './navigator.apollo';
+import { GET_LOGIN_STATUS } from './Navigator.apollo';
 
 import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Chat from '@material-ui/icons/Chat';
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew';
 
-import '../style/navigator.component.scss';
+import './Navigator.style.scss';
 
 const handleLogout = (client: any) => {
 	document.cookie = 'sign_token' + '=; Max-Age=0';

@@ -2,14 +2,14 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import Query from 'react-apollo/Query';
 
-import '../../../style/users.component.scss';
+import './Conversations.style.scss';
 import {
 	GET_INBOX_FILTER,
 	GET_CONVERSATION_LIST, IGetConversationListResponse
-} from './index.apollo';
+} from './Conversations.apollo';
 
-import Searchbox from './searchbox.component';
-import UserList from './UserList';
+import Searchbox from './Searchbox';
+import UserList from './UserList/UserList';
 
 const FakeMessage = () => {
 	return (
@@ -31,9 +31,9 @@ const FakeMessage = () => {
 	);
 };
 
-const Users = () => {
+const Conversations = () => {
 	return (
-		<div id='users'>
+		<div id='conversations'>
 			<Searchbox />
 			<Query query={GET_INBOX_FILTER}>{
 				({ data: { chat: { inboxFilter } } }) =>
@@ -57,7 +57,7 @@ const Users = () => {
 
 							if (!conversationArr[0]) return (
 								<div className='list empty'>
-									<FormattedMessage id='chat.users.nothingToShow' />
+									<FormattedMessage id='chat.conversations.nothingToShow' />
 								</div>
 							);
 
@@ -71,4 +71,4 @@ const Users = () => {
 	);
 };
 
-export default Users;
+export default Conversations;
