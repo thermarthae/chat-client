@@ -86,7 +86,7 @@ class MessageInput extends React.PureComponent<TProps, IMessageInputStates> {
 			<div className='bottom'>
 				<TextField
 					className='input'
-					placeholder={formatMessage({ id: 'chat.inbox.typeYourMessage' })}
+					placeholder={formatMessage({ id: 'chat.mailbox.typeYourMessage' })}
 					multiline
 					rowsMax={3}
 					InputProps={{ disableUnderline: true }}
