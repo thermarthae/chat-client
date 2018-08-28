@@ -10,7 +10,7 @@ import { IConversation } from '../Conversations.apollo';
 
 
 interface IUserListProps extends RouteComponentProps<{ id: string }> {
-	conversationArr: [IConversation];
+	conversationArr: IConversation[];
 }
 
 interface IUserListStates {

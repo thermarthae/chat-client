@@ -3,10 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import Query from 'react-apollo/Query';
 
 import './Conversations.style.scss';
-import {
-	GET_INBOX_FILTER,
-	GET_CONVERSATION_LIST, IGetConversationListResponse
-} from './Conversations.apollo';
+import { GET_CONVARR_AND_FILTER, IGetConvArrAndFilterResponse } from './Conversations.apollo';
 
 import Searchbox from './Searchbox';
 import UserList from './UserList/UserList';
@@ -35,38 +32,45 @@ const Conversations = () => {
 	return (
 		<div id='conversations'>
 			<Searchbox />
-			<Query query={GET_INBOX_FILTER}>{
-				({ data: { chat: { inboxFilter } } }) =>
-					<Query query={GET_CONVERSATION_LIST} variables={{ filter: inboxFilter }}>
-						{({ loading, error, data }) => {
-							if (error) return `Error! ${error.message}`;
-							if (loading) return (
-								<div className='list'>
-									<FakeMessage />
-									<FakeMessage />
-									<FakeMessage />
-									<div className='background' />
-								</div>
-							);
+			<Query query={GET_CONVARR_AND_FILTER} >
+				{({ loading, error, data }) => {
+					if (error) return `Error! ${error.message}`;
+					if (loading) return (
+						<div className='list'>
+							<FakeMessage />
+							<FakeMessage />
+							<FakeMessage />
+							<div className='background' />
+						</div>
+					);
 
-							const {
-								userConversations: {
-									conversationArr
-								}
-							}: IGetConversationListResponse = data;
+					const {
+						chat: { inboxFilter },
+						userConversations: { conversationArr }
+					}: IGetConvArrAndFilterResponse = data;
 
-							if (!conversationArr[0]) return (
-								<div className='list empty'>
-									<FormattedMessage id='chat.conversations.nothingToShow' />
-								</div>
-							);
+					if (!conversationArr[0]) return (
+						<div className='list empty'>
+							<FormattedMessage id='chat.conversations.nothingToShow' />
+						</div>
+					);
 
-							return <UserList
-								conversationArr={conversationArr}
-							/>;
-						}}
-					</Query>
-			}</Query>
+					let filteredConv = [];
+					switch (inboxFilter) {
+						case 'DRAFT':
+							filteredConv = conversationArr.filter(conv => conv.draft);
+							break;
+						case 'UNREAD':
+							filteredConv = conversationArr.filter(conv => !conv.seen);
+							break;
+						default:
+							filteredConv = conversationArr;
+							break;
+					}
+
+					return <UserList conversationArr={filteredConv} />;
+				}}
+			</Query>
 		</div>
 	);
 };

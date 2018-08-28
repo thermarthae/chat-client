@@ -1,21 +1,17 @@
 import gql from 'graphql-tag';
 
-export const GET_INBOX_FILTER = gql`
+export const GET_CONVARR_AND_FILTER = gql`
 	query {
 		chat @client {
 			inboxFilter
 		}
-	}
-`;
-
-export const GET_CONVERSATION_LIST = gql`
-	query ($filter: conversationFilter){
-		userConversations(filter: $filter) {
+		userConversations {
 			conversationArr {
 				_id
 				name
 				seen
-				lastMessage {
+				draft
+				messages(limit: 1) {
 					_id
 					content
 					time
@@ -28,18 +24,22 @@ export const GET_CONVERSATION_LIST = gql`
 `;
 export interface IConversation {
 	_id: string;
-	name: string | null;
+	name: string;
 	seen: boolean;
-	lastMessage: {
+	draft: string;
+	messages: [{
 		_id: string;
 		content: string;
 		time: string;
 		me: boolean;
 		conversation: string;
-	};
+	}];
 }
-export interface IGetConversationListResponse {
+export interface IGetConvArrAndFilterResponse {
+	chat: {
+		inboxFilter: 'UNREAD' | 'ALL' | 'DRAFT';
+	};
 	userConversations: {
-		conversationArr: [IConversation];
+		conversationArr: IConversation[];
 	};
 }

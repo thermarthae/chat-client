@@ -33,7 +33,7 @@ export interface IGetConversationResponse {
 	getConversation: {
 		_id: string;
 		name: string;
-		messages: [IMessage];
+		messages: IMessage[];
 		draft: string;
 	};
 }

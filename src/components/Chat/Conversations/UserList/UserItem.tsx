@@ -32,7 +32,7 @@ const UserItem: React.SFC<IUserItemProps & InjectedIntlProps> = props => {
 					<div className='avatar'>
 						<div className='status' />
 						<Avatar onClick={e => e.preventDefault()}>
-							{conversation.name ? conversation.name[0] : ''}
+							{conversation.name[0] || ''}
 						</Avatar>
 					</div>
 				</div>
@@ -41,7 +41,7 @@ const UserItem: React.SFC<IUserItemProps & InjectedIntlProps> = props => {
 						{conversation.name || formatMessage({ id: 'chat.conversations.conversationName' })}
 					</span>
 					<span className='message'>
-						{conversation.lastMessage.content}
+						{conversation.messages[0].content}
 					</span>
 				</div>
 				<div className='right'>
