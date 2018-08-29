@@ -21,7 +21,7 @@ interface IMailboxProps {
 const Empty = ({ i18nID }: { i18nID: string }) => {
 	return (
 		<div id='mailbox'>
-			<div className='empty'>
+			<div className='item--empty align--center empty'>
 				<FormattedMessage id={i18nID} />
 			</div>
 		</div>

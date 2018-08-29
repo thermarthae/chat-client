@@ -60,10 +60,6 @@
 		flex-grow: 1;
 		overflow: auto;
 
-		&.empty {
-			@extend %empty;
-		}
-
 		> a {
 			text-decoration: none;
 		}

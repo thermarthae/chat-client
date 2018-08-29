@@ -50,7 +50,7 @@ const Conversations = () => {
 					}: IGetConvArrAndFilterResponse = data;
 
 					if (!conversationArr[0]) return (
-						<div className='list empty'>
+						<div className='item--empty align--center list'>
 							<FormattedMessage id='chat.conversations.nothingToShow' />
 						</div>
 					);

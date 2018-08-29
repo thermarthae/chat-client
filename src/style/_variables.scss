@@ -34,12 +34,14 @@ $icon-active__color--dark: rgba(255, 255, 255, 0.54);
 $icon-inactive__color--dark: rgba(255, 255, 255, 0.38);
 /* ///////////////////////////////////////////////// */
 
-//0px 0px 0px hsla(234, 22%, 68%, 1), 1px 1px 0px #26283b, 2px 2px 0px #26283b, 3px 3px 0px #26283b, 4px 4px 0px #26283b, 5px 5px 0px #26283b, 6px 6px 0px #26283b, 7px 7px 0px #26283b, 8px 8px 0px #26283b, 9px 9px 0px #26283b, 10px 10px 0px #000000
-
-%empty {
+.align--center {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	flex-grow: 1;
+}
+
+.item--empty {
 	text-align: center;
 	font-size: 2em;
 	font-weight: 600;
