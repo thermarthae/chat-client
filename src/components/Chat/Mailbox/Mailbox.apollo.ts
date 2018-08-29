@@ -1,11 +1,11 @@
 import gql from 'graphql-tag';
 
 export const GET_CONVERSATION = gql`
-	query ($id: ID!){
+	query($id: ID!, $skip: Int!, $limit: Int!) {
 		getConversation(id: $id){
 			_id
 			name
-			messages {
+			messages(skip: $skip, limit: $limit) {
 				_id
 				author {
 					name

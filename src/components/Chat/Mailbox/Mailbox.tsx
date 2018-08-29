@@ -30,11 +30,12 @@ const Empty = ({ i18nID }: { i18nID: string }) => {
 
 const Mailbox: React.SFC<IMailboxProps> = props => {
 	const { oponentId } = props;
+	const mgsToFetch = 10;
 
 	return (
 		!oponentId ? <Empty i18nID='chat.mailbox.nothingSelected' /> :
-			<Query query={GET_CONVERSATION} variables={{ id: oponentId }}>{
-				({ loading, error, data }) => {
+			<Query query={GET_CONVERSATION} variables={{ id: oponentId, skip: 0, limit: mgsToFetch }}>{
+				({ loading, error, data, fetchMore }) => {
 					if (error) {
 						if (error.message && error.message.includes('404 (Not Found)')) return <Redirect to='/' push />;
 						return <Empty i18nID='error.unknown' />;
@@ -57,7 +58,25 @@ const Mailbox: React.SFC<IMailboxProps> = props => {
 								<div className='main'>
 									<Inbox
 										messages={messages}
-										oponentId={oponentId}
+										mgsToFetch={mgsToFetch}
+										onLoadMore={() =>
+											fetchMore({
+												variables: { skip: messages.length },
+												updateQuery: (prev: IGetConversationResponse, { fetchMoreResult }) => {
+													if (!fetchMoreResult || !fetchMoreResult.getConversation.messages)
+														return prev;
+
+													return {
+														getConversation: Object.assign({}, prev.getConversation, {
+															messages: [
+																...fetchMoreResult.getConversation.messages,
+																...prev.getConversation.messages,
+															]
+														})
+													};
+												}
+											})
+										}
 									/>
 									<MessageInput draft={draft} oponentId={oponentId} />
 								</div>
