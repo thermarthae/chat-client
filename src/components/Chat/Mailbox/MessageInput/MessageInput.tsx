@@ -43,8 +43,9 @@ class MessageInput extends React.PureComponent<TProps, IMessageInputStates> {
 	}
 
 	private sendMessage = async () => {
-		const { oponentId, client } = this.props;
 		const { message } = this.state;
+		if (!message) return;
+		const { oponentId, client } = this.props;
 
 		try {
 			this.setState({ message: '' });
