@@ -19,7 +19,7 @@ export const GET_MESSAGES = gql`
 	query ($id: ID!){
 		getConversation(id: $id){
 			_id
-			messages {
+			messages(limit: 10, skip: 0) {
 				_id
 				author {
 					name
