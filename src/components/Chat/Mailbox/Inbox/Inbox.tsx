@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
+import memoizeOne from 'memoize-one';
 
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -78,9 +79,28 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 		}));
 	}
 
+	private groupMessages = memoizeOne((msgs: IMessage[]) => {
+		let lastMsg = msgs[0];
+		let currentGroup: IMessage[] = [];
+		const msgGroups: IMessage[][] = [];
+
+		msgs.forEach(msg => {
+			if (lastMsg.me === msg.me) currentGroup.push(msg);
+			else {
+				msgGroups.push(currentGroup);
+				currentGroup = [msg];
+			}
+			lastMsg = msg;
+		});
+		msgGroups.push(currentGroup);
+
+		return msgGroups;
+	});
+
 	public render() {
 		const { messages } = this.props;
 		const { menuAnchorEl, isFetching } = this.state;
+		const msgGroups = this.groupMessages(messages);
 
 		return (
 			<div className='inbox' ref={this.inboxRef} onScroll={this.handleScroll as any}>
@@ -88,8 +108,15 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 					{isFetching && <div className='align--center fetching'>
 						<CircularProgress size='1.5em' color='inherit' />
 					</div>}
-					{messages.map(
-						msg => <Message key={msg._id} message={msg} handleMenuClick={this.handleMenuClick} />
+					{msgGroups.map(grp =>
+						<div
+							key={'G-' + grp[0]._id + '-' + grp.length}
+							className={'group' + (grp[0].me ? ' right' : ' left')}
+						>
+							{grp.map(
+								msg => <Message key={msg._id} message={msg} handleMenuClick={this.handleMenuClick} />
+							)}
+						</div>
 					)}
 				</div>
 				<Menu
