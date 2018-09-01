@@ -2,11 +2,15 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import memoizeOne from 'memoize-one';
 
-import Menu from '@material-ui/core/Menu';
+import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Grow from '@material-ui/core/Grow';
+import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import Message from './Message';
+import MessageGroup from './MessageGroup';
 import { IMessage } from '../Mailbox.apollo';
 
 interface IInboxProps {
@@ -22,7 +26,7 @@ interface IInboxState {
 }
 
 class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
-	private listRef = React.createRef<HTMLDivElement>();
+	private bottomRef = React.createRef<HTMLDivElement>();
 	private inboxRef = React.createRef<HTMLDivElement>();
 
 	public state = {
@@ -31,15 +35,15 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 		noMoreMsgToFetch: false,
 	};
 
-	public componentDidMount() {
-		this.scrollToBottom('instant');
+	public async componentDidMount() {
+		await setTimeout(() => this.scrollToBottom('instant'), 1);
+		if (this.inboxRef.current!.scrollTop < 300) await this.fetchMoreMsgs();
 	}
 
 	public getSnapshotBeforeUpdate(prevProps: IInboxProps) {
 		if (this.props.messages.length > prevProps.messages.length) {
 			const inbox = this.inboxRef.current!;
-			const onBottom = inbox.scrollHeight - inbox.scrollTop === inbox.clientHeight;
-			return !onBottom ? inbox.scrollHeight - inbox.scrollTop : null;
+			return inbox.scrollHeight - inbox.scrollTop;
 		}
 		return null;
 	}
@@ -53,21 +57,23 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 	}
 
 	private scrollToBottom = (behavior: 'smooth' | 'instant') => {
-		this.listRef.current!.scrollIntoView({ behavior, block: 'end', inline: 'end' });
+		this.bottomRef.current!.scrollIntoView({ behavior, block: 'end', inline: 'end' });
+	}
+
+	private fetchMoreMsgs = async () => {
+		const { isFetching, noMoreMsgToFetch } = this.state;
+		if (isFetching || noMoreMsgToFetch) return;
+
+		this.setState({ isFetching: true });
+		const { data: { getConversation: { messages } } } = await this.props.onLoadMore();
+		this.setState(({ }, props) => ({
+			isFetching: false,
+			noMoreMsgToFetch: (!messages || messages.length < props.mgsToFetch) ? true : false
+		}));
 	}
 
 	private handleScroll = async (event: React.ChangeEvent<HTMLDivElement>) => {
-		const { isFetching, noMoreMsgToFetch } = this.state;
-
-		if (!isFetching && !noMoreMsgToFetch && event.target.scrollTop < 300) {
-			this.setState({ isFetching: true });
-			const { data: { getConversation: { messages } } } = await this.props.onLoadMore();
-
-			this.setState(({ }, props) => ({
-				isFetching: false,
-				noMoreMsgToFetch: (!messages || messages.length < props.mgsToFetch) ? true : false
-			}));
-		}
+		if (event.target.scrollTop < 300) await this.fetchMoreMsgs();
 	}
 
 	private handleMenuClick = async (event: React.MouseEvent<HTMLElement>) => {
@@ -103,31 +109,33 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 		const msgGroups = this.groupMessages(messages);
 
 		return (
-			<div className='inbox' ref={this.inboxRef} onScroll={this.handleScroll as any}>
-				<div ref={this.listRef}>
+			<div className='align--bottom inbox'>
+				<div className='groups' ref={this.inboxRef} onScroll={this.handleScroll as any}>
 					{isFetching && <div className='align--center fetching'>
 						<CircularProgress size='1.5em' color='inherit' />
 					</div>}
-					{msgGroups.map(grp =>
-						<div
-							key={'G-' + grp[0]._id + '-' + grp.length}
-							className={'group' + (grp[0].me ? ' right' : ' left')}
-						>
-							{grp.map(
-								msg => <Message key={msg._id} message={msg} handleMenuClick={this.handleMenuClick} />
-							)}
-						</div>
-					)}
+					{msgGroups.map(grp => <MessageGroup
+						key={'G-' + grp[0]._id + '-' + grp.length}
+						group={grp}
+						handleMenuClick={this.handleMenuClick}
+					/>)}
+					<div ref={this.bottomRef}></div>
 				</div>
-				<Menu
-					open={!!menuAnchorEl}
-					onClose={this.handleMenuClick}
-					anchorEl={menuAnchorEl}
-				>
-					<MenuItem className='menuItem' onClick={this.handleMenuClick}>
-						<FormattedMessage id='menuItem.delete' />
-					</MenuItem>
-				</Menu>
+				<Popper open={!!menuAnchorEl} anchorEl={menuAnchorEl} transition disablePortal>
+					{({ TransitionProps }) => (
+						<Grow {...TransitionProps} >
+							<Paper>
+								<ClickAwayListener onClickAway={this.handleMenuClick as any}>
+									<MenuList>
+										<MenuItem className='menuItem' onClick={this.handleMenuClick}>
+											<FormattedMessage id='menuItem.delete' />
+										</MenuItem>
+									</MenuList>
+								</ClickAwayListener>
+							</Paper>
+						</Grow>
+					)}
+				</Popper>
 			</div>
 		);
 	}
