@@ -1,3 +1,5 @@
+$font-size: 14px; //TODO replace *em
+/* ///////////////////////////////////////////////// */
 $bg-primary__color-30: #3a3d5a;
 $bg-primary__color-20: darken($bg-primary__color-30, 10%);
 $bg-primary__color-18: darken($bg-primary__color-30, 12%);
@@ -7,7 +9,7 @@ $bg-accent__color-1: #ebedf1;
 $bg-accent__color-2: #2dd505;
 $bg-accent__color-3: #0084ff;
 $shadow-1: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-$shadow-2: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+$shadow-2: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
 /* ///////////////////////////////////////////////// */
 $transparent-primary__color--light: rgba(255, 255, 255, 0.1);
 $transparent-secondary__color--light: rgba(255, 255, 255, 0.57);
@@ -39,6 +41,12 @@ $icon-inactive__color--dark: rgba(255, 255, 255, 0.38);
 	justify-content: center;
 	align-items: center;
 	flex-grow: 1;
+}
+
+.align--bottom {
+	display: flex;
+	justify-content: flex-end;
+	flex-direction: column;
 }
 
 .item--empty {
