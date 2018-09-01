@@ -12,7 +12,7 @@
 		width: 380px;
 
 		.title {
-			font-size: 1.75em;
+			font-size: round($font-size * 1.75);
 			margin: 10px 0 8px 0;
 		}
 
@@ -23,7 +23,7 @@
 		.form {
 			margin: 16px 0;
 
-			>*:not(:first-child) {
+			> *:not(:first-child) {
 				margin-top: 16px;
 			}
 		}
@@ -40,7 +40,7 @@
 			justify-content: center;
 
 			.progress {
-				position: absolute
+				position: absolute;
 			}
 		}
 	}

@@ -30,7 +30,7 @@
 			justify-content: center;
 			box-sizing: border-box;
 			line-height: 0;
-			font-size: 1.75em;
+			font-size: round($font-size * 1.75);
 			color: inherit;
 
 			> * {

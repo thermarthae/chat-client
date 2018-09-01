@@ -9,7 +9,7 @@
 
 	.header {
 		padding: 0 25px 0 30px;
-		font-size: 1.5em;
+		font-size: round($font-size * 1.5);
 
 		.btn {
 			height: 1em;
