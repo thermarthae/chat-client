@@ -91,7 +91,8 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 		const msgGroups: IMessage[][] = [];
 
 		msgs.forEach(msg => {
-			if (lastMsg.me === msg.me) currentGroup.push(msg);
+			const moreThan2h = parseInt(msg.time, 10) - parseInt(lastMsg.time, 10) > 1000 * 60 * 60 * 2;
+			if (lastMsg.me === msg.me && !moreThan2h) currentGroup.push(msg);
 			else {
 				msgGroups.push(currentGroup);
 				currentGroup = [msg];

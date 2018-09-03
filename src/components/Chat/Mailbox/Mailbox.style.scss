@@ -59,118 +59,111 @@
 				}
 
 				.group {
-					display: flex;
-					align-items: flex-end;
-					padding: 0px 10px;
-					margin: 10px 0;
-
-					.author {
-						margin: 0 5px;
+					.header {
+						.time {
+							text-align: center;
+							color: $text-secondary__color--dark;
+							line-height: 2;
+							font-weight: 500;
+							user-select: none;
+						}
 					}
 
-					.list {
-						margin: 0 5px;
-					}
-
-					.message {
+					.container {
 						display: flex;
-						flex-direction: row;
-						color: $text-primary__color--dark;
-						margin: 1px 0;
-						transition: background-color 0.1s;
-						will-change: background-color;
+						align-items: flex-end;
+						padding: 0px 10px;
+						margin: 10px 0;
 
-						&:first-child {
-							.wrapper {
-								.content {
-									border-radius: 2em 2em 2em 0;
+						.author {
+							margin: 0 5px;
+						}
+
+						.list {
+							margin: 0 5px;
+						}
+
+						.message {
+							display: flex;
+							flex-direction: row;
+							color: $text-primary__color--dark;
+							margin: 1px 0;
+							transition: background-color 0.1s;
+							will-change: background-color;
+
+							&:first-child {
+								.wrapper {
+									.content {
+										border-radius: 2em 2em 2em 0;
+									}
 								}
 							}
-						}
 
-						&:hover {
+							&:hover {
+								.options {
+									opacity: 1;
+								}
+							}
+
+							.fetching {
+								padding: 10px 0;
+							}
+
+							.wrapper {
+								margin: 0 5px;
+								max-width: 60%;
+
+								.content {
+									position: relative;
+									background: #ffffff;
+									border-radius: 0 2em 2em 0;
+									padding: round($font-size * 0.6) round($font-size * 0.85);
+									word-break: break-word;
+									white-space: pre-wrap;
+									font-weight: 300;
+									box-shadow: $shadow-2;
+								}
+							}
+
 							.options {
-								opacity: 1;
-							}
+								display: flex;
+								align-items: center;
+								flex-shrink: 0;
+								opacity: 0;
+								transition: opacity 0.1s;
+								will-change: opacity;
 
-							// .wrapper {
-							// 	.time {
-							// 		opacity: 1;
-							// 	}
-							// }
-						}
-
-						.fetching {
-							padding: 10px 0;
-						}
-
-						.wrapper {
-							margin: 0 5px;
-							max-width: 60%;
-
-							.content {
-								position: relative;
-								background: #ffffff;
-								border-radius: 0 2em 2em 0;
-								padding: round($font-size * 0.6) round($font-size * 0.85);
-								word-break: break-word;
-								white-space: pre-wrap;
-								font-weight: 300;
-								box-shadow: $shadow-2;
-							}
-
-							// .time {
-							// 	color: $text-secondary__color--dark;
-							// 	text-align: right;
-							// 	line-height: 1.5;
-							// 	font-weight: 500;
-							// 	opacity: 0;
-							// 	transition: opacity 0.1s;
-							// 	will-change: opacity;
-							// 	user-select: none;
-							// }
-						}
-
-						.options {
-							display: flex;
-							align-items: center;
-							flex-shrink: 0;
-							opacity: 0;
-							transition: opacity 0.1s;
-							will-change: opacity;
-
-							.btn {
-								width: round($font-size * 1.5);
-								height: round($font-size * 1.5);
-								font-size: round($font-size * 1.5);
+								.btn {
+									width: round($font-size * 1.5);
+									height: round($font-size * 1.5);
+									font-size: round($font-size * 1.5);
+								}
 							}
 						}
 					}
 
 					&.right {
-						flex-direction: row-reverse;
-
-						.message {
+						.container {
 							flex-direction: row-reverse;
 
-							&:first-child {
-								.wrapper {
-									.content {
-										border-radius: 2em 2em 0 2em;
+							.message {
+								flex-direction: row-reverse;
+
+								&:first-child {
+									.wrapper {
+										.content {
+											border-radius: 2em 2em 0 2em;
+										}
 									}
 								}
-							}
 
-							.wrapper {
-								.content {
-									background: $bg-primary__color-30;
-									color: $text-primary__color--light;
-									border-radius: 2em 0 0 2em;
+								.wrapper {
+									.content {
+										background: $bg-primary__color-30;
+										color: $text-primary__color--light;
+										border-radius: 2em 0 0 2em;
+									}
 								}
-
-								// .time {
-								// 	text-align: right;
-								// }
 							}
 						}
 					}

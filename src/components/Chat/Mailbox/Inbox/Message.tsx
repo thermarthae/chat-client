@@ -1,5 +1,4 @@
 import * as React from 'react';
-// import { FormattedRelative } from 'react-intl';
 
 import IconButton from '@material-ui/core/IconButton';
 import MoreVert from '@material-ui/icons/MoreVert';
@@ -19,9 +18,6 @@ const MessageItem: React.SFC<IMessageItemProps> = props => {
 				<div className='content'>
 					<span>{message.content}</span>
 				</div>
-				{/* <div className='time'>
-					<FormattedRelative value={parseInt(message.time, 10)} />
-				</div> */}
 			</div>
 			<div className='options'>
 				<IconButton className='btn' onClick={props.handleMenuClick}>
