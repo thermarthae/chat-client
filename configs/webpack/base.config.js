@@ -60,7 +60,9 @@ module.exports = {
 	plugins: [
 		new HtmlWebpackPlugin({
 			title: require('../../package.json').name,
-			template: 'index.html.ejs'
+			template: 'index.html.ejs',
+			favicon: 'favicon.png',
+
 		}),
 		new ForkTsCheckerWebpackPlugin({
 			checkSyntacticErrors: true,
