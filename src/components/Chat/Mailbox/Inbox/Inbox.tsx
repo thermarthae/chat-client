@@ -76,7 +76,7 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 		if (event.target.scrollTop < 300) await this.fetchMoreMsgs();
 	}
 
-	private handleMenuClick = async (event: React.MouseEvent<HTMLElement>) => {
+	private handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
 		event.preventDefault();
 		const target = event.currentTarget;
 
