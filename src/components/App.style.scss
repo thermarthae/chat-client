@@ -38,4 +38,25 @@
 			}
 		}
 	}
+
+	.align--center {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-grow: 1;
+	}
+
+	.align--bottom {
+		display: flex;
+		justify-content: flex-end;
+		flex-direction: column;
+	}
+
+	.item--empty {
+		text-align: center;
+		font-size: 2em;
+		font-weight: 600;
+		color: rgba(255, 255, 255, 0.1);
+		user-select: none;
+	}
 }
