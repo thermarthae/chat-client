@@ -3,7 +3,7 @@
 	flex-direction: column;
 	color: $text-primary__color--dark;
 	background-color: $bg-accent__color-1;
-	z-index: 0;
+	min-width: 20em;
 
 	.empty {
 		color: rgba(0, 0, 0, 0.1);
@@ -15,7 +15,7 @@
 		justify-content: initial;
 		background-color: lighten($bg-accent__color-1, 5%);
 		box-shadow: $shadow-1;
-		z-index: 2;
+		z-index: 1;
 
 		.id {
 			flex-grow: 1;
@@ -49,13 +49,16 @@
 			flex-grow: 1;
 			display: flex;
 			flex-direction: column;
+			z-index: 0;
 
 			.inbox {
 				overflow: auto;
 				flex: 1 0 1px;
+				z-index: -1;
 
 				.groups {
 					overflow: auto;
+					padding: 10px 0;
 				}
 
 				.group {
@@ -174,8 +177,9 @@
 				display: flex;
 				align-items: center;
 				background-color: lighten($bg-accent__color-1, 5%);
+				flex: 0 0 auto;
 				box-shadow: $shadow-1;
-				z-index: 1;
+				position: relative;
 
 				> * {
 					margin-right: 5px;
@@ -183,10 +187,19 @@
 
 				.input {
 					flex-grow: 1;
+					max-height: 10em;
+					padding: 15px;
+					word-break: break-word;
+					box-sizing: border-box;
+					outline: none;
+					cursor: text;
+					overflow-y: auto;
 
-					textarea {
-						padding: 10px 15px;
-						box-sizing: border-box;
+					.public-DraftEditorPlaceholder-inner {
+						position: absolute;
+						color: $text-secondary__color--dark;
+						color: $text-disabled__color--dark;
+						pointer-events: none;
 					}
 				}
 
