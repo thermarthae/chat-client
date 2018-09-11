@@ -49,12 +49,6 @@ const Conversations = () => {
 						userConversations: { conversationArr }
 					}: IGetConvArrAndFilterResponse = data;
 
-					if (!conversationArr[0]) return (
-						<div className='item--empty align--center list'>
-							<FormattedMessage id='chat.conversations.nothingToShow' />
-						</div>
-					);
-
 					let filteredConv = [];
 					switch (inboxFilter) {
 						case 'DRAFT':
@@ -67,6 +61,12 @@ const Conversations = () => {
 							filteredConv = conversationArr;
 							break;
 					}
+
+					if (!filteredConv[0]) return (
+						<div className='item--empty align--center list'>
+							<FormattedMessage id='chat.conversations.nothingToShow' />
+						</div>
+					);
 
 					return <UserList conversationArr={filteredConv} />;
 				}}
