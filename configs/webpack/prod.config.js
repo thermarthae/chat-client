@@ -11,6 +11,7 @@ module.exports = {
 	devtool: 'source-map',
 	output: {
 		filename: 'js/bundle.min.js',
+		chunkFilename: '[name].bundle.js',
 		path: path.resolve(__dirname, '../../dist')
 	},
 	optimization: {
