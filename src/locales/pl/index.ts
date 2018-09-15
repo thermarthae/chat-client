@@ -49,4 +49,21 @@ export default flatten({
 		},
 	},
 
+	emojiPicker: {
+		search: 'Szukaj',
+		notfound: 'Nie znaleziono',
+		categories: {
+			search: 'Wyniki wyszukiwania',
+			recent: 'Ostatnio używane',
+			people: 'Ludzie',
+			nature: 'Natura',
+			foods: 'Jedzenie',
+			activity: 'Sport',
+			places: 'Podróże',
+			objects: 'Objekty',
+			symbols: 'Symbole',
+			flags: 'Flagi',
+			custom: 'Niestandarodwe',
+		}
+	}
 });
