@@ -9,26 +9,25 @@ import {
 	IGetMessagesResponse,
 } from './MessageInput.apollo';
 
-import './TextEditor.style.scss';
 
-interface ITextEditorProps {
-	oponentId: string;
-	draft: string;
+interface IMessageEditorProps {
 	className?: string;
 	plugins?: any;
 	placeholder?: string;
+	oponentId: string;
+	draft: string;
 }
 
-interface ITextEditorStates {
+interface IMessageEditorStates {
 	editorState: EditorState;
 }
 
-type TProps = WithApolloClient<ITextEditorProps>;
-class TextEditor extends React.PureComponent<TProps, ITextEditorStates> {
+type TProps = WithApolloClient<IMessageEditorProps>;
+class MessageEditor extends React.PureComponent<TProps, IMessageEditorStates> {
 	private editorRef = React.createRef<HTMLDivElement>();
 
 	public state = {
-		editorState: createEditorStateWithText(''),
+		editorState: createEditorStateWithText(this.props.draft),
 	};
 
 	private onChange = (editorState: any) => this.setState({ editorState });
@@ -120,4 +119,4 @@ class TextEditor extends React.PureComponent<TProps, ITextEditorStates> {
 	}
 }
 
-export default withApollo(TextEditor, { withRef: true });
+export default withApollo(MessageEditor, { withRef: true });

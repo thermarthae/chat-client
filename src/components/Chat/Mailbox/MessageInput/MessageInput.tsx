@@ -1,20 +1,14 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import createEmojiPlugin from 'draft-js-emoji-plugin';
 
 import IconButton from '@material-ui/core/IconButton';
 import Send from '@material-ui/icons/Send';
 import InsertEmoticon from '@material-ui/icons/InsertEmoticon';
 
-import TextEditor from './TextEditor';
+import MessageEditor from './MessageEditor';
 
-const emojiPlugin = createEmojiPlugin({
-	selectButtonContent: (
-		<IconButton component='div' className='btn emoticon'>
-			<InsertEmoticon style={{ fontSize: 'inherit' }} />
-		</IconButton>
-	)
-});
+import createEmojiPlugin from 'Components/EmojiPlugin';
+const emojiPlugin = createEmojiPlugin();
 const { EmojiSelect } = emojiPlugin;
 const plugins = [emojiPlugin];
 
@@ -23,29 +17,42 @@ interface IMessageInputProps {
 	draft: string;
 }
 
-const MessageInput: React.SFC<IMessageInputProps & InjectedIntlProps> = props => {
-	const { oponentId, draft, intl: { formatMessage } } = props;
-	const textEditor = React.createRef<any>();
+class MessageInput extends React.PureComponent<IMessageInputProps & InjectedIntlProps, { open: boolean }>{
+	public state = {
+		open: false
+	};
 
-	return (
-		<div className='bottom'>
-			<TextEditor
-				ref={textEditor}
-				plugins={plugins}
-				oponentId={oponentId}
-				draft={draft}
-				className='input'
-				placeholder={formatMessage({ id: 'chat.mailbox.typeYourMessage' })}
-			/>
-			<EmojiSelect />
-			<IconButton
-				className='btn send'
-				onClick={() => textEditor.current!.getWrappedInstance().sendMessage()}
-			>
-				<Send style={{ fontSize: 'inherit' }} />
-			</IconButton>
-		</div>
-	);
-};
+	public render() {
+		const { oponentId, draft, intl: { formatMessage } } = this.props;
+		const messageEditor = React.createRef<any>();
+
+		return (
+			<div className='bottom'>
+				<MessageEditor
+					className='input'
+					oponentId={oponentId}
+					ref={messageEditor}
+					plugins={plugins}
+					draft={draft}
+					placeholder={formatMessage({ id: 'chat.mailbox.typeYourMessage' })}
+				/>
+				{this.state.open && <EmojiSelect
+					style={{ position: 'absolute', right: 10, bottom: 20 }}
+					custom={[]}
+				/> /* TODO: l18n */}
+				<IconButton className='btn emoticon'
+					onClick={() => this.setState(prevState => ({ open: !prevState.open }))}
+				>
+					<InsertEmoticon style={{ fontSize: 'inherit' }} />
+				</IconButton>
+				<IconButton className='btn send'
+					onClick={() => messageEditor.current!.getWrappedInstance().sendMessage()}
+				>
+					<Send style={{ fontSize: 'inherit' }} />
+				</IconButton>
+			</div>
+		);
+	}
+}
 
 export default injectIntl(MessageInput);
