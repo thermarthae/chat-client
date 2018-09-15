@@ -2,6 +2,8 @@ import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 import IconButton from '@material-ui/core/IconButton';
+import Slide from '@material-ui/core/Slide';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Send from '@material-ui/icons/Send';
 import InsertEmoticon from '@material-ui/icons/InsertEmoticon';
 
@@ -17,58 +19,78 @@ interface IMessageInputProps {
 	draft: string;
 }
 
-class MessageInput extends React.PureComponent<IMessageInputProps & InjectedIntlProps, { open: boolean }>{
+interface IMessageInputState {
+	emojiPickerIsOpen: boolean;
+}
+
+type TProps = IMessageInputProps & InjectedIntlProps;
+class MessageInput extends React.PureComponent<TProps, IMessageInputState>{
+	private messageEditor = React.createRef<any>();
 	public state = {
-		open: false
+		emojiPickerIsOpen: false
 	};
+
+	private handleSendMessage = () => {
+		this.messageEditor.current!.getWrappedInstance().sendMessage();
+	}
+
+	private handleEmojiPickerClose = () => this.setState({ emojiPickerIsOpen: false });
+
+	private handleEmojiPickerToggle = () => {
+		this.setState(prevState => ({ emojiPickerIsOpen: !prevState.emojiPickerIsOpen }));
+	}
 
 	public render() {
 		const { oponentId, draft, intl: { formatMessage } } = this.props;
-		const messageEditor = React.createRef<any>();
+		const { emojiPickerIsOpen } = this.state;
 
 		return (
-			<div className='bottom'>
-				<MessageEditor
-					className='input'
-					oponentId={oponentId}
-					ref={messageEditor}
-					plugins={plugins}
-					draft={draft}
-					placeholder={formatMessage({ id: 'chat.mailbox.typeYourMessage' })}
-				/>
-				{this.state.open && <EmojiSelect
-					custom={[]}
-					emojiTooltip
-					showPreview={false}
-					i18n={{
-						search: formatMessage({ id: 'emojiPicker.search' }),
-						notfound: formatMessage({ id: 'emojiPicker.notfound' }),
-						categories: {
-							search: formatMessage({ id: 'emojiPicker.categories.search' }),
-							recent: formatMessage({ id: 'emojiPicker.categories.recent' }),
-							people: formatMessage({ id: 'emojiPicker.categories.people' }),
-							nature: formatMessage({ id: 'emojiPicker.categories.nature' }),
-							foods: formatMessage({ id: 'emojiPicker.categories.foods' }),
-							activity: formatMessage({ id: 'emojiPicker.categories.activity' }),
-							places: formatMessage({ id: 'emojiPicker.categories.places' }),
-							objects: formatMessage({ id: 'emojiPicker.categories.objects' }),
-							symbols: formatMessage({ id: 'emojiPicker.categories.symbols' }),
-							flags: formatMessage({ id: 'emojiPicker.categories.flags' }),
-							custom: formatMessage({ id: 'emojiPicker.categories.custom' }),
-						}
-					}}
-				/>}
-				<IconButton className='btn emoticon'
-					onClick={() => this.setState(prevState => ({ open: !prevState.open }))}
-				>
-					<InsertEmoticon style={{ fontSize: 'inherit' }} />
-				</IconButton>
-				<IconButton className='btn send'
-					onClick={() => messageEditor.current!.getWrappedInstance().sendMessage()}
-				>
-					<Send style={{ fontSize: 'inherit' }} />
-				</IconButton>
-			</div>
+			<ClickAwayListener onClickAway={this.handleEmojiPickerClose}>
+				<div className='bottom'>
+					<MessageEditor
+						className='input'
+						oponentId={oponentId}
+						ref={this.messageEditor}
+						plugins={plugins}
+						draft={draft}
+						placeholder={formatMessage({ id: 'chat.mailbox.typeYourMessage' })}
+					/>
+					<Slide direction='up' in={emojiPickerIsOpen} mountOnEnter unmountOnExit>
+						<EmojiSelect
+							custom={[]}
+							emojiTooltip
+							showPreview={false}
+							i18n={{
+								search: formatMessage({ id: 'emojiPicker.search' }),
+								notfound: formatMessage({ id: 'emojiPicker.notfound' }),
+								categories: {
+									search: formatMessage({ id: 'emojiPicker.categories.search' }),
+									recent: formatMessage({ id: 'emojiPicker.categories.recent' }),
+									people: formatMessage({ id: 'emojiPicker.categories.people' }),
+									nature: formatMessage({ id: 'emojiPicker.categories.nature' }),
+									foods: formatMessage({ id: 'emojiPicker.categories.foods' }),
+									activity: formatMessage({ id: 'emojiPicker.categories.activity' }),
+									places: formatMessage({ id: 'emojiPicker.categories.places' }),
+									objects: formatMessage({ id: 'emojiPicker.categories.objects' }),
+									symbols: formatMessage({ id: 'emojiPicker.categories.symbols' }),
+									flags: formatMessage({ id: 'emojiPicker.categories.flags' }),
+									custom: formatMessage({ id: 'emojiPicker.categories.custom' }),
+								}
+							}}
+						/>
+					</Slide>
+					<IconButton className='btn emoticon'
+						onClick={this.handleEmojiPickerToggle}
+					>
+						<InsertEmoticon style={{ fontSize: 'inherit' }} />
+					</IconButton>
+					<IconButton className='btn send'
+						onClick={this.handleSendMessage}
+					>
+						<Send style={{ fontSize: 'inherit' }} />
+					</IconButton>
+				</div>
+			</ClickAwayListener>
 		);
 	}
 }
