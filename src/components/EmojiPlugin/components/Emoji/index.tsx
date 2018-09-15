@@ -7,8 +7,8 @@ interface IEmoji {
 }
 
 const Emoji = ({ decoratedText, ...props }: IEmoji) => {
-	const emojiCode = twemoji.convert.toCodePoint(decoratedText);
-	const emojiUrl = `https://twemoji.maxcdn.com/2/svg/${emojiCode}.svg`;
+	const parsedHtml = twemoji.parse(decoratedText, { folder: 'svg', ext: '.svg' });
+	const emojiUrl = parsedHtml.match(/https:\/\/twemoji(.*)\.svg/g)![0];
 
 	return (
 		<span className='emoji' style={{ backgroundImage: `url(${emojiUrl})` }}>

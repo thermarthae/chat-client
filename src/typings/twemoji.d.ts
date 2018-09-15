@@ -7,24 +7,24 @@
 
 declare module 'twemoji' {
 	type ParseCallbackFn = (
-		iconId: string,
-		options: {
+		iconId?: string,
+		options?: {
 			// callback?: ParseCallbackFn; //TODO
 			base?: string;
 			ext?: string;
 			size?: string;
 		},
-		variant: string
+		variant?: string
 	) => void;
 
 	interface ParseOptions {
-		callback: ParseCallbackFn;					// default the common replacer
-		attributes: (icon, variant) => object;		// default returns {}
-		base: string;								// default MaxCDN
-		ext: string;								// default ".png"
-		className: string;							// default "emoji"
-		size: string | number;						// default "36x36"
-		folder: string;								// in case it's specified it replaces .size info, if any
+		callback?: ParseCallbackFn;					// default the common replacer
+		attributes?: (icon, variant) => object;		// default returns {}
+		base?: string;								// default MaxCDN
+		ext?: string;								// default ".png"
+		className?: string;							// default "emoji"
+		size?: string | number;						// default "36x36"
+		folder?: string;								// in case it's specified it replaces .size info, if any
 	}
 
 	export declare class twemoji {
