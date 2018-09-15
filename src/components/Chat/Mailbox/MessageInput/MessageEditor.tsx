@@ -7,7 +7,7 @@ import {
 	SEND_MESSAGE,
 	GET_MESSAGES,
 	IGetMessagesResponse,
-} from './MessageInput.apollo';
+} from './MessageEditor.apollo';
 
 
 interface IMessageEditorProps {
