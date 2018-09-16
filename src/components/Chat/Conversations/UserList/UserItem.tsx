@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { parseEmoji } from 'Utils/emoji.utils';
 
 import Avatar from '@material-ui/core/Avatar';
 import ListItem from '@material-ui/core/ListItem';
@@ -18,6 +19,8 @@ interface IUserItemProps {
 
 const UserItem: React.SFC<IUserItemProps & InjectedIntlProps> = props => {
 	const { conversation, oponentId, intl: { formatMessage } } = props;
+	const parsedMsg = parseEmoji(conversation.messages[0].content);
+
 	return (
 		<Link to={'/chat/' + conversation._id}>
 			<ListItem
@@ -40,9 +43,7 @@ const UserItem: React.SFC<IUserItemProps & InjectedIntlProps> = props => {
 					<span className='name'>
 						{conversation.name || formatMessage({ id: 'chat.conversations.conversationName' })}
 					</span>
-					<span className='message'>
-						{conversation.messages[0].content}
-					</span>
+					<span className='message' dangerouslySetInnerHTML={{ __html: parsedMsg }} />
 				</div>
 				<div className='right'>
 					<IconButton className='menu' onClick={props.handleMenuClick} >
