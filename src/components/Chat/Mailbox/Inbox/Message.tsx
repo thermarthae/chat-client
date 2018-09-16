@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { parseEmoji } from 'Utils/emoji.utils';
 
 import IconButton from '@material-ui/core/IconButton';
 import MoreVert from '@material-ui/icons/MoreVert';
@@ -12,11 +13,13 @@ interface IMessageItemProps {
 
 const MessageItem: React.SFC<IMessageItemProps> = props => {
 	const { message } = props;
+	const parsedMsg = parseEmoji(message.content);
+
 	return (
 		<div className='message'>
 			<div className='wrapper'>
 				<div className='content'>
-					<span>{message.content}</span>
+					<span dangerouslySetInnerHTML={{ __html: parsedMsg }} />
 				</div>
 			</div>
 			<div className='options'>
