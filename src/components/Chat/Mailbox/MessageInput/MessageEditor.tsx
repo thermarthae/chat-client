@@ -40,6 +40,15 @@ class MessageEditor extends React.PureComponent<TProps, IMessageEditorStates> {
 			return 'handled';
 		}
 	}
+	private handlePastedText = (text: string, html: string, editorState: EditorState) => {
+		const newState = Modifier.replaceText(
+			editorState.getCurrentContent(),
+			editorState.getSelection(),
+			text.trim()
+		);
+		this.onChange(EditorState.push(editorState, newState, 'insert-fragment'));
+		return 'handled';
+	}
 
 	private clearEditorContent = (editorState: EditorState, contentState: ContentState) => {
 		const firstBlock = contentState.getFirstBlock();
@@ -110,6 +119,7 @@ class MessageEditor extends React.PureComponent<TProps, IMessageEditorStates> {
 					editorState={this.state.editorState}
 					onChange={this.onChange}
 					handleReturn={this.handleReturn}
+					handlePastedText={this.handlePastedText}
 					plugins={plugins}
 					ref={this.editorRef as any}
 					placeholder={placeholder}
