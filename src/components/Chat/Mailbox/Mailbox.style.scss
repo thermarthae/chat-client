@@ -199,6 +199,27 @@
 						color: $text-disabled__color--dark;
 						pointer-events: none;
 					}
+
+					.emoji {
+						background-position: center;
+						background-repeat: no-repeat;
+						background-size: contain;
+						vertical-align: middle;
+						display: inline-block;
+						overflow: hidden;
+						max-width: 1.95ch;
+						max-height: 1em;
+						line-height: inherit;
+						color: transparent;
+						min-width: 1em;
+						margin: 0 1px;
+
+						span {
+							display: inline-block;
+							overflow: hidden;
+							text-indent: -100%;
+						}
+					}
 				}
 
 				.btn {

@@ -7,15 +7,19 @@ interface IEmoji {
 }
 
 const Emoji = ({ decoratedText, ...props }: IEmoji) => {
-	let parsedHtml = twemoji.parse(decoratedText, { folder: 'svg', ext: '.svg' });
-	parsedHtml += `<span data-text='true'>${decoratedText}</span>`;
+	const parsedHtml = twemoji.parse(decoratedText, { folder: 'svg', ext: '.svg' });
+	const emojiUrl = parsedHtml.match(/https:\/\/twemoji(.*)\.svg/g)![0];
 
 	return (
 		<span
-			className='emoji-wrapper'
+			className='emoji'
 			data-offset-key={props.offsetKey}
-			dangerouslySetInnerHTML={{ __html: parsedHtml }}
-		/>
+			style={{ backgroundImage: `url(${emojiUrl})` }}
+		>
+			<span data-offset-key={props.offsetKey}>
+				<span data-text='true'>{decoratedText}</span>
+			</span>
+		</span>
 	);
 
 };
