@@ -7,26 +7,7 @@ import { GET_CONVARR_AND_FILTER, IGetConvArrAndFilterResponse } from './Conversa
 
 import Searchbox from './Searchbox';
 import UserList from './UserList/UserList';
-
-const FakeMessage = () => {
-	return (
-		<div className='fake'>
-			<div className='content'>
-				<div className='avatar'></div>
-				<div className='clear'></div>
-				<div className='center'>
-					<div className='top'>
-						<div className='clear'></div>
-					</div>
-					<div className='bottom'>
-						<div className='clear'></div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-	);
-};
+import FakeConversations from './FakeConversations';
 
 const Conversations = () => {
 	return (
@@ -35,14 +16,7 @@ const Conversations = () => {
 			<Query query={GET_CONVARR_AND_FILTER} >
 				{({ loading, error, data }) => {
 					if (error) return `Error! ${error.message}`;
-					if (loading) return (
-						<div className='list'>
-							<FakeMessage />
-							<FakeMessage />
-							<FakeMessage />
-							<div className='background' />
-						</div>
-					);
+					if (loading) return <FakeConversations />;
 
 					const {
 						chat: { inboxFilter },
