@@ -1,22 +1,23 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { withRouter, RouteComponentProps } from 'react-router';
 
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import UserItem from './UserItem';
-import { IUser } from '../Searchbox.apollo';
+import ConversationItem from './ConversationItem';
+import { IConversation } from '../Conversations.apollo';
 
 
-interface IUserListProps {
-	userArr: IUser[];
+interface IConversationListProps extends RouteComponentProps<{ id: string }> {
+	conversationArr: IConversation[];
 }
 
-interface IUserListStates {
+interface IConversationListStates {
 	menuAnchorEl: HTMLElement | undefined;
 }
 
-class UserList extends React.PureComponent<IUserListProps, IUserListStates> {
+class ConversationList extends React.PureComponent<IConversationListProps, IConversationListStates> {
 	public state = {
 		menuAnchorEl: undefined
 	};
@@ -31,16 +32,17 @@ class UserList extends React.PureComponent<IUserListProps, IUserListStates> {
 	}
 
 	public render() {
-		const { userArr } = this.props;
+		const { conversationArr } = this.props;
 		const { menuAnchorEl } = this.state;
 
 		return (
-			<div className='users list'>
-				{userArr.map(item =>
-					<UserItem
+			<div className='conversations list'>
+				{conversationArr.map(item =>
+					<ConversationItem
 						key={item._id}
 						handleMenuClick={this.handleMenuClick}
-						user={item}
+						conversation={item}
+						oponentId={this.props.match.params.id}
 					/>
 				)}
 				<Menu
@@ -57,4 +59,4 @@ class UserList extends React.PureComponent<IUserListProps, IUserListStates> {
 	}
 }
 
-export default UserList;
+export default withRouter(ConversationList);

@@ -1,10 +1,23 @@
 import gql from 'graphql-tag';
 
-export const GET_CONVARR_AND_FILTER = gql`
+export const GET_CHAT_FILTER = gql`
 	query {
 		chat @client {
 			inboxFilter
 		}
+	}
+`;
+export type TInboxFilter = 'SEARCH' | 'UNREAD' | 'ALL' | 'DRAFT';
+export interface IGetChatFilterRes {
+	chat: {
+		inboxFilter: TInboxFilter
+	};
+}
+
+
+
+export const GET_CONV_ARR = gql`
+	query {
 		userConversations {
 			conversationArr {
 				_id
@@ -35,10 +48,7 @@ export interface IConversation {
 		conversation: string;
 	}];
 }
-export interface IGetConvArrAndFilterResponse {
-	chat: {
-		inboxFilter: 'UNREAD' | 'ALL' | 'DRAFT';
-	};
+export interface IGetConvArrResponse {
 	userConversations: {
 		conversationArr: IConversation[];
 	};
