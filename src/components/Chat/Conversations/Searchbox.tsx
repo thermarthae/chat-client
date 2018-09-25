@@ -1,14 +1,7 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { withApollo, WithApolloClient } from 'react-apollo';
-import { SET_INBOX_FILTER, FIND_CONV_AND_USR, IFindConvAndUsrRes } from './Searchbox.apollo';
-import { TInboxFilter } from './Conversations.apollo';
-
-import './Searchbox.style.scss';
-import ConversationList from './ConversationList/ConversationList';
-import UserList from './UserList/UserList';
-import FakeConversations from './FakeConversations';
-import EmptyItem from './EmptyItem';
+import { FormattedMessage } from 'react-intl';
 
 import Input from '@material-ui/core/Input';
 import IconButton from '@material-ui/core/IconButton';
@@ -17,6 +10,15 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 
 import Search from '@material-ui/icons/Search';
 import Cancel from '@material-ui/icons/Cancel';
+
+import { SET_INBOX_FILTER, FIND_CONV_AND_USR, IFindConvAndUsrRes } from './Searchbox.apollo';
+import { TInboxFilter } from './Conversations.apollo';
+
+import './Searchbox.style.scss';
+import ConversationList from './ConversationList/ConversationList';
+import UserList from './UserList/UserList';
+import FakeConversations from './FakeConversations';
+import EmptyItem from './EmptyItem';
 
 
 interface ISearchboxProps extends InjectedIntlProps {
@@ -29,7 +31,7 @@ interface ISearchboxState {
 	waitingForRes: boolean;
 	prevInboxFilter: TInboxFilter;
 	queryOnFlight?: NodeJS.Timer;
-	isQueryTooShort: boolean;
+	isQueryShort: boolean;
 }
 
 class Searchbox extends React.PureComponent<WithApolloClient<ISearchboxProps>, ISearchboxState> {
@@ -42,7 +44,7 @@ class Searchbox extends React.PureComponent<WithApolloClient<ISearchboxProps>, I
 		waitingForRes: false,
 		prevInboxFilter: 'ALL' as TInboxFilter,
 		queryOnFlight: undefined,
-		isQueryTooShort: true,
+		isQueryShort: true,
 	};
 
 	private handleFocus = () => {
@@ -62,9 +64,9 @@ class Searchbox extends React.PureComponent<WithApolloClient<ISearchboxProps>, I
 
 		if (query.length < 1) return await this.setInboxFilter(this.state.prevInboxFilter);
 		await this.setInboxFilter('SEARCH');
-		if (query.length <= 3) return this.setState({ isQueryTooShort: true });
+		if (query.length <= 3) return this.setState({ isQueryShort: true });
 
-		this.setState({ waitingForRes: true, isQueryTooShort: false });
+		this.setState({ waitingForRes: true, isQueryShort: false });
 		this.setState(prevState => {
 			clearInterval(prevState.queryOnFlight!);
 			return { queryOnFlight: setTimeout(() => this.searchQuery(query), 400) };
@@ -91,7 +93,7 @@ class Searchbox extends React.PureComponent<WithApolloClient<ISearchboxProps>, I
 
 	public render() {
 		const { inboxFilter, intl: { formatMessage } } = this.props;
-		const { query, isQueryTooShort, waitingForRes, result } = this.state;
+		const { query, isQueryShort, waitingForRes, result } = this.state;
 		const { findConversation, findUser } = result as IFindConvAndUsrRes;
 
 		const shouldDisplay = (inboxFilter === 'SEARCH') ? true : false;
@@ -122,18 +124,22 @@ class Searchbox extends React.PureComponent<WithApolloClient<ISearchboxProps>, I
 				{shouldDisplay && <>
 					{waitingForRes
 						? <FakeConversations />
-						: isQueryTooShort
-							? <EmptyItem>Query is too short</EmptyItem>
+						: isQueryShort
+							? <EmptyItem><FormattedMessage id={'chat.searchbox.isQueryShort'} /></EmptyItem>
 							: <>
 								{!isUserArr && !isConvArr
-									? <EmptyItem>No results</EmptyItem>
+									? <EmptyItem><FormattedMessage id={'chat.searchbox.noResults'} /></EmptyItem>
 									: <div className='list search-result'>
 										{isUserArr && <>
-											<ListSubheader className='subheader'>Users</ListSubheader>
+											<ListSubheader className='subheader'>
+												<FormattedMessage id={'chat.searchbox.users'} />
+											</ListSubheader>
 											<UserList userArr={findUser} />
 										</>}
 										{isConvArr && <>
-											<ListSubheader className='subheader'>Conversations</ListSubheader>
+											<ListSubheader className='subheader'>
+												<FormattedMessage id={'chat.searchbox.conversations'} />
+											</ListSubheader>
 											<ConversationList conversationArr={findConversation} />
 										</>}
 									</div>

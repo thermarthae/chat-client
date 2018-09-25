@@ -28,17 +28,6 @@ export default flatten({
 		loginButton: 'Zaloguj',
 	},
 	chat: {
-		conversations: {
-			search: 'Szukaj...',
-			nothingToShow: 'Brak elementów do wyświetlenia...',
-			conversationName: 'Nazwa konwersacji',
-		},
-		mailbox: {
-			nothingSelected: 'Nic nie wybrano...',
-			loading: 'Wczytywanie...',
-			isTyping: ' pisze...',
-			typeYourMessage: 'Napisz wiadomość...',
-		},
 		menu: {
 			title: 'Poczta',
 			inbox: 'Odebrane',
@@ -46,6 +35,23 @@ export default flatten({
 			draft: 'Robocze',
 			help: 'Pomoc',
 			settings: 'Ustawienia',
+		},
+		mailbox: {
+			nothingSelected: 'Nic nie wybrano...',
+			loading: 'Wczytywanie...',
+			isTyping: ' pisze...',
+			typeYourMessage: 'Napisz wiadomość...',
+		},
+		conversations: {
+			search: 'Szukaj...',
+			nothingToShow: 'Brak elementów do wyświetlenia...',
+			conversationName: 'Nazwa konwersacji',
+		},
+		searchbox: {
+			isQueryShort: 'Wyszukiwane wyrażenie musi mieć co najmniej 3 znaki',
+			noResults: 'Brak wyników',
+			users: 'Użytkownicy',
+			conversations: 'Konwersacje',
 		},
 	},
 

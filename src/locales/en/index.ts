@@ -47,6 +47,12 @@ export default flatten({
 			nothingToShow: 'Nothing to show...',
 			conversationName: 'Conversation name',
 		},
+		searchbox: {
+			isQueryShort: 'Query must be at least 3 characters long',
+			noResults: 'No results found',
+			users: 'Users',
+			conversations: 'Conversations',
+		},
 	},
 
 	emojiPicker: {
