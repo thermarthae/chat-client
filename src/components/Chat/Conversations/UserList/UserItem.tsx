@@ -8,7 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 
 import MoreHoriz from '@material-ui/icons/MoreHoriz';
 
-import { IUser } from '../Searchbox.apollo';
+import { IUser } from '../Serachbox/Searchbox.apollo';
 
 interface IUserItemProps {
 	handleMenuClick: (event: React.MouseEvent<HTMLElement>) => void;

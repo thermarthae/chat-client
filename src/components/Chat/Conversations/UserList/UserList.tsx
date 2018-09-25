@@ -5,7 +5,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import UserItem from './UserItem';
-import { IUser } from '../Searchbox.apollo';
+import { IUser } from '../Serachbox/Searchbox.apollo';
 
 
 interface IUserListProps {

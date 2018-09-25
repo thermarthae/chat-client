@@ -12,13 +12,13 @@ import Search from '@material-ui/icons/Search';
 import Cancel from '@material-ui/icons/Cancel';
 
 import { SET_INBOX_FILTER, FIND_CONV_AND_USR, IFindConvAndUsrRes } from './Searchbox.apollo';
-import { TInboxFilter } from './Conversations.apollo';
+import { TInboxFilter } from '../Conversations.apollo';
 
 import './Searchbox.style.scss';
-import ConversationList from './ConversationList/ConversationList';
-import UserList from './UserList/UserList';
-import FakeConversations from './FakeConversations';
-import EmptyItem from './EmptyItem';
+import ConversationList from '../ConversationList/ConversationList';
+import UserList from '../UserList/UserList';
+import FakeConversations from '../FakeConversations';
+import EmptyItem from '../EmptyItem';
 
 
 interface ISearchboxProps extends InjectedIntlProps {

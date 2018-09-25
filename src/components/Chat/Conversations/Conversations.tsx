@@ -5,7 +5,7 @@ import Query from 'react-apollo/Query';
 import './Conversations.style.scss';
 import { GET_CHAT_FILTER, TInboxFilter, GET_CONV_ARR, IGetConvArrResponse } from './Conversations.apollo';
 
-import Searchbox from './Searchbox';
+import Searchbox from './Serachbox/Searchbox';
 import ConversationList from './ConversationList/ConversationList';
 import FakeConversations from './FakeConversations';
 import EmptyItem from './EmptyItem';
