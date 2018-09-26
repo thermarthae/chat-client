@@ -8,7 +8,7 @@ module.exports = {
 	entry: './index.tsx',
 	context: path.resolve(__dirname, '../../src'),
 	resolve: {
-		extensions: ['.ts', '.tsx', '.js', '.jsx'],
+		extensions: ['.mjs', '.ts', '.tsx', '.js', '.jsx'],
 		alias: {
 			Style: path.resolve(__dirname, '../../src/style/'),
 			Components: path.resolve(__dirname, '../../src/components/'),
@@ -20,6 +20,11 @@ module.exports = {
 	},
 	module: {
 		rules: [
+			{
+				test: /\.mjs$/,
+				include: /node_modules/,
+				type: "javascript/auto",
+			},
 			{
 				test: /\.tsx?$/,
 				exclude: /node_modules/,
