@@ -56,9 +56,17 @@
 				flex: 1 0 1px;
 				z-index: -1;
 
-				.groups {
+				> div {
 					overflow: auto;
+				}
+
+				.groups {
 					padding: 10px 0;
+
+					.clear {
+						height: 1px;
+						margin-top: -1px;
+					}
 				}
 
 				.group {

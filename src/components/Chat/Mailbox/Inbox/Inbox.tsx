@@ -26,8 +26,8 @@ interface IInboxState {
 }
 
 class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
-	private bottomRef = React.createRef<HTMLDivElement>();
-	private inboxRef = React.createRef<HTMLDivElement>();
+	private groupsRef = React.createRef<HTMLDivElement>();
+	private contentRef = React.createRef<HTMLDivElement>();
 
 	public state = {
 		menuAnchorEl: undefined,
@@ -36,13 +36,13 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 	};
 
 	public async componentDidMount() {
-		await setTimeout(() => this.scrollToBottom('instant'), 1);
-		if (this.inboxRef.current!.scrollTop < 300) await this.fetchMoreMsgs();
+		this.scrollToBottom('instant');
+		if (this.contentRef.current!.scrollTop < 300) await this.fetchMoreMsgs();
 	}
 
 	public getSnapshotBeforeUpdate(prevProps: IInboxProps) {
 		if (this.props.messages.length > prevProps.messages.length) {
-			const inbox = this.inboxRef.current!;
+			const inbox = this.contentRef.current!;
 			return inbox.scrollHeight - inbox.scrollTop;
 		}
 		return null;
@@ -50,14 +50,14 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 
 	public componentDidUpdate({ }, { }, snapshot: number) {
 		if (snapshot !== null) {
-			const inbox = this.inboxRef.current!;
+			const inbox = this.contentRef.current!;
 			inbox.scrollTop = inbox.scrollHeight - snapshot;
 		}
 		// else this.scrollToBottom('smooth'); //TODO: Scroll when new message
 	}
 
 	private scrollToBottom = (behavior: 'smooth' | 'instant') => {
-		this.bottomRef.current!.scrollIntoView({ behavior, block: 'end', inline: 'end' });
+		this.groupsRef.current!.scrollIntoView({ behavior, block: 'end', inline: 'end' });
 	}
 
 	private fetchMoreMsgs = async () => {
@@ -111,16 +111,18 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 
 		return (
 			<div className='align--bottom inbox'>
-				<div className='groups' ref={this.inboxRef} onScroll={this.handleScroll as any}>
-					{isFetching && <div className='align--center fetching'>
-						<CircularProgress size='1.5em' color='inherit' />
-					</div>}
-					{msgGroups.map(grp => <MessageGroup
-						key={'G-' + grp[0]._id + '-' + grp.length}
-						group={grp}
-						handleMenuClick={this.handleMenuClick}
-					/>)}
-					<div ref={this.bottomRef}></div>
+				<div ref={this.contentRef} onScroll={this.handleScroll as any}>
+					<div className='groups' ref={this.groupsRef}>
+						{isFetching && <div className='align--center fetching'>
+							<CircularProgress size='1.5em' color='inherit' />
+						</div>}
+						{msgGroups.map(grp => <MessageGroup
+							key={'G-' + grp[0].time} //TODO: fix key
+							group={grp}
+							handleMenuClick={this.handleMenuClick}
+						/>)}
+						<div className='clear' />
+					</div>
 				</div>
 				<Popper open={!!menuAnchorEl} anchorEl={menuAnchorEl} transition disablePortal>
 					{({ TransitionProps }) => (
