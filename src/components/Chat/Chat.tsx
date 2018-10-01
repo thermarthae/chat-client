@@ -13,7 +13,7 @@ const Chat = (props: IChatProps) => {
 	return (
 		<div id='chat'>
 			<Menu />
-			<Conversations />
+			<Conversations oponentId={props.match.params.id} />
 			<Mailbox oponentId={props.match.params.id} />
 		</div>
 	);

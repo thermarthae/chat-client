@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { withRouter, RouteComponentProps } from 'react-router';
 
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -9,15 +8,16 @@ import ConversationItem from './ConversationItem';
 import { IConversation } from '../Conversations.apollo';
 
 
-interface IConversationListProps extends RouteComponentProps<{ id: string }> {
+interface IConversationListProps {
 	conversationArr: IConversation[];
+	oponentId?: string;
 }
 
 interface IConversationListStates {
 	menuAnchorEl: HTMLElement | undefined;
 }
 
-class ConversationList extends React.PureComponent<IConversationListProps, IConversationListStates> {
+export default class ConversationList extends React.PureComponent<IConversationListProps, IConversationListStates> {
 	public state = {
 		menuAnchorEl: undefined
 	};
@@ -32,7 +32,7 @@ class ConversationList extends React.PureComponent<IConversationListProps, IConv
 	}
 
 	public render() {
-		const { conversationArr } = this.props;
+		const { conversationArr, oponentId } = this.props;
 		const { menuAnchorEl } = this.state;
 
 		return (
@@ -42,7 +42,7 @@ class ConversationList extends React.PureComponent<IConversationListProps, IConv
 						key={item._id}
 						handleMenuClick={this.handleMenuClick}
 						conversation={item}
-						oponentId={this.props.match.params.id}
+						currentConv={item._id === oponentId}
 					/>
 				)}
 				<Menu
@@ -58,5 +58,3 @@ class ConversationList extends React.PureComponent<IConversationListProps, IConv
 		);
 	}
 }
-
-export default withRouter(ConversationList);

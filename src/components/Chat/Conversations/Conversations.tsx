@@ -10,13 +10,17 @@ import ConversationList from './ConversationList/ConversationList';
 import FakeConversations from './FakeConversations';
 import EmptyItem from './EmptyItem';
 
-const Conversations = () => {
+interface IConversationsProps {
+	oponentId?: string;
+}
+
+const Conversations: React.SFC<IConversationsProps> = ({ oponentId }) => {
 	return (
 		<Query query={GET_CHAT_FILTER} >
 			{({ data: { chat: { inboxFilter } } }) => {
 				return (
 					<div id='conversations'>
-						<Searchbox inboxFilter={inboxFilter} />
+						<Searchbox oponentId={oponentId} inboxFilter={inboxFilter} />
 						<Query query={GET_CONV_ARR} >
 							{({ loading, error, data }) => {
 								if (error) return `Error! ${error.message}`;
@@ -46,7 +50,7 @@ const Conversations = () => {
 									<FormattedMessage id='chat.conversations.nothingToShow' />
 								</EmptyItem>;
 
-								return <ConversationList conversationArr={filteredConv} />;
+								return <ConversationList oponentId={oponentId} conversationArr={filteredConv} />;
 							}}
 						</Query>
 					</div>

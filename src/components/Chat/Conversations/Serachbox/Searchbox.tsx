@@ -6,7 +6,6 @@ import { FormattedMessage } from 'react-intl';
 import Input from '@material-ui/core/Input';
 import IconButton from '@material-ui/core/IconButton';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import ListSubheader from '@material-ui/core/ListSubheader';
 
 import Search from '@material-ui/icons/Search';
 import Cancel from '@material-ui/icons/Cancel';
@@ -15,14 +14,13 @@ import { SET_INBOX_FILTER, FIND_CONV_AND_USR, IFindConvAndUsrRes } from './Searc
 import { TInboxFilter } from '../Conversations.apollo';
 
 import './Searchbox.style.scss';
-import ConversationList from '../ConversationList/ConversationList';
-import UserList from '../UserList/UserList';
 import FakeConversations from '../FakeConversations';
+import SerachResult from './SearchResult';
 import EmptyItem from '../EmptyItem';
-
 
 interface ISearchboxProps extends InjectedIntlProps {
 	inboxFilter: TInboxFilter;
+	oponentId?: string;
 }
 
 interface ISearchboxState {
@@ -92,13 +90,9 @@ class Searchbox extends React.PureComponent<WithApolloClient<ISearchboxProps>, I
 	}
 
 	public render() {
-		const { inboxFilter, intl: { formatMessage } } = this.props;
+		const { inboxFilter, oponentId, intl: { formatMessage } } = this.props; //TODO: formatMessage Component <>{}</>
 		const { query, isQueryShort, waitingForRes, result } = this.state;
-		const { findConversation, findUser } = result as IFindConvAndUsrRes;
-
 		const shouldDisplay = (inboxFilter === 'SEARCH') ? true : false;
-		const isConvArr = !!findConversation[0];
-		const isUserArr = !!findUser[0];
 
 		return (
 			<>
@@ -121,32 +115,14 @@ class Searchbox extends React.PureComponent<WithApolloClient<ISearchboxProps>, I
 					/>
 					{waitingForRes && <LinearProgress className='progress-bar' variant='query' />}
 				</div>
-				{shouldDisplay && <>
-					{waitingForRes
-						? <FakeConversations />
-						: isQueryShort
-							? <EmptyItem><FormattedMessage id={'chat.searchbox.isQueryShort'} /></EmptyItem>
-							: <>
-								{!isUserArr && !isConvArr
-									? <EmptyItem><FormattedMessage id={'chat.searchbox.noResults'} /></EmptyItem>
-									: <div className='list search-result'>
-										{isUserArr && <>
-											<ListSubheader className='subheader'>
-												<FormattedMessage id={'chat.searchbox.users'} />
-											</ListSubheader>
-											<UserList userArr={findUser} />
-										</>}
-										{isConvArr && <>
-											<ListSubheader className='subheader'>
-												<FormattedMessage id={'chat.searchbox.conversations'} />
-											</ListSubheader>
-											<ConversationList conversationArr={findConversation} />
-										</>}
-									</div>
-								}
-							</>
-					}
-				</>}
+				{shouldDisplay && <>{
+					isQueryShort
+						? <EmptyItem><FormattedMessage id={'chat.searchbox.isQueryShort'} /></EmptyItem>
+						: waitingForRes
+							? <FakeConversations />
+							: <SerachResult result={result} oponentId={oponentId} />
+				}</>}
+
 			</>
 		);
 	}
