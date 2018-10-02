@@ -31,7 +31,7 @@ const Conversations: React.SFC<IConversationsProps> = ({ oponentId }) => {
 								}: IGetConvArrResponse = data;
 
 								let filteredConv = [];
-								switch (inboxFilter as TInboxFilter) { //TODO: mem cache
+								switch (inboxFilter as TInboxFilter) {
 									case 'SEARCH':
 										return null;
 										break;
