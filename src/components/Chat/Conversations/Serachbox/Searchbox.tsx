@@ -95,12 +95,13 @@ class Searchbox extends React.PureComponent<WithApolloClient<ISearchboxProps>, I
 
 		return (
 			<>
-				<div className='head searchbox' style={{ position: 'relative' }}>
+				<div className='head searchbox' >
 					<FormattedMessage id='chat.conversations.search'>{
 						placeholder => <Input
 							value={query}
 							onChange={this.handleChange}
 							classes={{ root: 'searchbar' }}
+							className={(query ? 'filled ' : '') + (isQueryShort ? 'short' : '')}
 							disableUnderline
 							placeholder={placeholder as string}
 							startAdornment={
