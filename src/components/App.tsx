@@ -15,17 +15,32 @@ import Navigator from './Navigator/Navigator';
 import Chat from './Chat/Chat';
 import Login from './Login/Login';
 
+class UpdateBlocker extends React.Component<{ children: (href: string) => React.ReactNode }> {
+	private locationHref = location.href.replace(/\/$/, '');
+
+	public shouldComponentUpdate() {
+		const newLocation = location.href.replace(/\/$/, '');
+		if (this.locationHref !== newLocation) {
+			this.locationHref = newLocation;
+			return true;
+		}
+		return false;
+	}
+
+	public render() {
+		return this.props.children(this.locationHref);
+	}
+}
+
 interface IPrivateRouteProps extends RouteProps {
 	auth: boolean;
-	Component: any;
+	component: React.ComponentType<any>;
 	whenUnlogged?: boolean;
 }
 
-const PrivateRoute = ({ auth, Component, whenUnlogged, ...rest }: IPrivateRouteProps) => {
+const PrivateRoute = ({ auth, component: Component, whenUnlogged, ...rest }: IPrivateRouteProps) => {
 	return (
-		<Route
-			{...rest}
-			render={props => {
+		<Route {...rest} render={props => {
 				if (whenUnlogged) {
 					if (!auth) return <Component {...props} />;
 					return <Redirect to={{ pathname: '/', state: { from: props.location } }} />;
@@ -34,8 +49,7 @@ const PrivateRoute = ({ auth, Component, whenUnlogged, ...rest }: IPrivateRouteP
 					if (auth) return <Component {...props} />;
 					return <Redirect to={{ pathname: '/login', state: { from: props.location } }} />;
 				}
-			}}
-		/>
+		}} />
 	);
 };
 
@@ -55,22 +69,25 @@ class App extends React.PureComponent<IAppPropsType> {
 				({ data: { app: { language, isLoggedIn } } }) => {
 					return <IntlProvider locale={language} messages={messages[language]}>
 						<BrowserRouter>
-							<div id='app'>
+							<UpdateBlocker>
+								{locationHref => {
+									return <div id='app'>
 								<Navigator />
 								<Switch>
 									<Redirect exact from='/' to='/chat' />
-									<PrivateRoute auth={isLoggedIn} path='/chat/:id' Component={Chat} />
-									<PrivateRoute auth={isLoggedIn} path='/chat' Component={Chat} />
-									<PrivateRoute auth={isLoggedIn} path='/login' Component={Login} whenUnlogged />
+											<PrivateRoute auth={isLoggedIn} path='/chat/:id' component={Chat} />
+											<PrivateRoute auth={isLoggedIn} path='/chat' component={Chat} />
+											<PrivateRoute auth={isLoggedIn} path='/login' component={Login} whenUnlogged />
 									<Route component={Error} />
 								</Switch>
-							</div>
+									</div>;
+								}}
+							</UpdateBlocker>
 						</BrowserRouter>
 					</IntlProvider>;
 				}
 			}</Query>
 		);
-
 	}
 }
 
