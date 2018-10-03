@@ -11,25 +11,30 @@ interface IMessageItemProps {
 	message: IMessage;
 }
 
-const MessageItem: React.SFC<IMessageItemProps> = props => {
-	const { message } = props;
-	const parsedMsg = parseEmoji(message.content);
+export default class MessageItem extends React.Component<IMessageItemProps> {
+	public shouldComponentUpdate(nextProps: IMessageItemProps) {
+		if (this.props.message.content !== nextProps.message.content) return true;
+		return false;
+	}
 
-	return (
-		<div className='message'>
-			<div className='wrapper'>
-				<div className='content'>
-					<span dangerouslySetInnerHTML={{ __html: parsedMsg }} />
+	public render() {
+		const { message, handleMenuClick } = this.props;
+		const parsedMsg = parseEmoji(message.content);
+
+		return (
+			<div className='message'>
+				<div className='wrapper'>
+					<div className='content'>
+						<span dangerouslySetInnerHTML={{ __html: parsedMsg }} />
+					</div>
 				</div>
+				<div className='options'>
+					<IconButton className='btn' onClick={handleMenuClick}>
+						<MoreVert style={{ fontSize: 'inherit' }} />
+					</IconButton>
+				</div>
+				<div className='clear'></div>
 			</div>
-			<div className='options'>
-				<IconButton className='btn' onClick={props.handleMenuClick}>
-					<MoreVert style={{ fontSize: 'inherit' }} />
-				</IconButton>
-			</div>
-			<div className='clear'></div>
-		</div>
-	);
-};
-
-export default MessageItem;
+		);
+	}
+}
