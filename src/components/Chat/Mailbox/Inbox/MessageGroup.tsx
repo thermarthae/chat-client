@@ -12,34 +12,40 @@ interface IMessageGroupProps {
 }
 
 
-const MessageGroup: React.SFC<IMessageGroupProps> = props => {
-	const { group, handleMenuClick } = props;
-	const firstMsg = group[0];
-	return (
-		<div className={'group' + (!firstMsg.me ? ' left' : ' right')}>
-			<div className='header'>
-				<div className='time'>
-					<FormattedDate
-						value={new Date(parseInt(firstMsg.time, 10))}
-						year='numeric'
-						weekday='long'
-						month='long'
-						day='numeric'
-						hour='numeric'
-						minute='numeric'
-					/>
-				</div>
-			</div>
-			<div className='container'>
-				{!firstMsg.me && <div className='author'>
-					<Avatar>{firstMsg.author.name[0]}</Avatar>
-				</div>}
-				<div className='list'>
-						{group.map(msg => <MessageItem key={msg._id} message={msg} handleMenuClick={handleMenuClick} />)}
-				</div>
-			</div>
-		</div>
-	);
-};
+export default class MessageGroup extends React.Component<IMessageGroupProps> {
+	public shouldComponentUpdate(nextProps: IMessageGroupProps) {
+		if (nextProps.group.length !== this.props.group.length) return true;
+		return false;
+	}
 
-export default MessageGroup;
+	public render() {
+		const { group, handleMenuClick } = this.props;
+		const firstMsg = group[0];
+
+		return (
+			<div className={'group' + (!firstMsg.me ? ' left' : ' right')}>
+				<div className='header'>
+					<div className='time'>
+						<FormattedDate
+							value={new Date(parseInt(firstMsg.time, 10))}
+							year='numeric'
+							weekday='long'
+							month='long'
+							day='numeric'
+							hour='numeric'
+							minute='numeric'
+						/>
+					</div>
+				</div>
+				<div className='container'>
+					{!firstMsg.me && <div className='author'>
+						<Avatar>{firstMsg.author.name[0]}</Avatar>
+					</div>}
+					<div className='list'>
+						{group.map(msg => <MessageItem key={msg._id} message={msg} handleMenuClick={handleMenuClick} />)}
+					</div>
+				</div>
+			</div>
+		);
+	}
+}
