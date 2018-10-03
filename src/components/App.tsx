@@ -41,14 +41,14 @@ interface IPrivateRouteProps extends RouteProps {
 const PrivateRoute = ({ auth, component: Component, whenUnlogged, ...rest }: IPrivateRouteProps) => {
 	return (
 		<Route {...rest} render={props => {
-				if (whenUnlogged) {
-					if (!auth) return <Component {...props} />;
-					return <Redirect to={{ pathname: '/', state: { from: props.location } }} />;
-				}
-				else {
-					if (auth) return <Component {...props} />;
-					return <Redirect to={{ pathname: '/login', state: { from: props.location } }} />;
-				}
+			if (whenUnlogged) {
+				if (!auth) return <Component {...props} />;
+				return <Redirect to={{ pathname: '/', state: { from: props.location } }} />;
+			}
+			else {
+				if (auth) return <Component {...props} />;
+				return <Redirect to={{ pathname: '/login', state: { from: props.location } }} />;
+			}
 		}} />
 	);
 };
@@ -73,13 +73,12 @@ class App extends React.PureComponent<IAppPropsType> {
 								{locationHref => {
 									return <div id='app'>
 										<Navigator locationHref={locationHref} />
-								<Switch>
-									<Redirect exact from='/' to='/chat' />
-											<PrivateRoute auth={isLoggedIn} path='/chat/:id' component={Chat} />
-											<PrivateRoute auth={isLoggedIn} path='/chat' component={Chat} />
+										<Switch>
+											<Redirect exact from='/' to='/chat' />
+											<PrivateRoute auth={isLoggedIn} path='/chat/:oponentId?' component={Chat} />
 											<PrivateRoute auth={isLoggedIn} path='/login' component={Login} whenUnlogged />
-									<Route component={Error} />
-								</Switch>
+											<Route component={Error} />
+										</Switch>
 									</div>;
 								}}
 							</UpdateBlocker>

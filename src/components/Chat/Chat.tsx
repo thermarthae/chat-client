@@ -7,14 +7,16 @@ import Menu from './Menu/Menu';
 import Conversations from './Conversations/Conversations';
 import Mailbox from './Mailbox/Mailbox';
 
-interface IChatProps extends RouteComponentProps<{ id: string }> { }
+interface IChatProps extends RouteComponentProps<{ oponentId?: string }> { }
 
-const Chat = (props: IChatProps) => {
+const Chat: React.SFC<IChatProps> = props => {
+	const oponentId = props.match.params.oponentId;
+
 	return (
 		<div id='chat'>
 			<Menu />
-			<Conversations oponentId={props.match.params.id} />
-			<Mailbox oponentId={props.match.params.id} />
+			<Conversations oponentId={oponentId} />
+			<Mailbox oponentId={oponentId} />
 		</div>
 	);
 };
