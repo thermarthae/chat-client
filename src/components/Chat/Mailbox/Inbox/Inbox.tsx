@@ -111,7 +111,7 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 
 		return (
 			<div className='align--bottom inbox'>
-				<div ref={this.contentRef} onScroll={this.handleScroll as any}>
+				<div className='overflow' ref={this.contentRef} onScroll={this.handleScroll as any}>
 					<div className='groups' ref={this.groupsRef}>
 						{isFetching && <div className='align--center fetching'>
 							<CircularProgress size='1.5em' color='inherit' />
