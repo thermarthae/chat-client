@@ -10,25 +10,29 @@ interface IHeaderProps {
 	conversationName: string;
 }
 
-const Header: React.SFC<IHeaderProps> = props => {
-	return (
-		<Mutation mutation={TOGGLE_ASIDE}>
-			{toggleAside =>
-				<div className='head'>
-					<div className='id'>
-						<span className='name'>{props.conversationName}</span>
+class Header extends React.PureComponent<IHeaderProps> {
+	public render() {
+		const { conversationName } = this.props;
+
+		return (
+			<Mutation mutation={TOGGLE_ASIDE}>
+				{toggleAside =>
+					<div className='head'>
+						<div className='id'>
+							<span className='name'>{conversationName}</span>
+						</div>
+						<ButtonBase
+							focusRipple
+							className='btn btn-big'
+							onClick={() => toggleAside({})}
+						>
+							<SettingsSharp style={{ fontSize: 'inherit' }} />
+						</ButtonBase>
 					</div>
-					<ButtonBase
-						focusRipple
-						className='btn btn-big'
-						onClick={() => toggleAside({})}
-					>
-						<SettingsSharp style={{ fontSize: 'inherit' }} />
-					</ButtonBase>
-				</div>
-			}
-		</Mutation>
-	);
-};
+				}
+			</Mutation>
+		);
+	}
+}
 
 export default Header;
