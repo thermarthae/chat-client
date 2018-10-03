@@ -144,8 +144,7 @@
 			.right {
 				.menu {
 					font-size: round($font-size * 1.25);
-					height: 1em;
-					width: 1em;
+					padding: round($font-size * 0.15);
 					color: inherit;
 
 					&:hover {

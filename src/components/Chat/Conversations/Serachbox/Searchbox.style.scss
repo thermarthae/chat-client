@@ -24,8 +24,7 @@
 			opacity: 0;
 			position: absolute;
 			color: inherit;
-			width: round($font-size * 1.5);
-			height: round($font-size * 1.5);
+			padding: round($font-size * 0.25);
 			right: round($font-size * 0.25);
 			font-size: inherit;
 			transition: opacity 0.2s;

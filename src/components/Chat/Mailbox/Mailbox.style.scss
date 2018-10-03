@@ -143,8 +143,7 @@
 								will-change: opacity;
 
 								.btn {
-									width: round($font-size * 1.5);
-									height: round($font-size * 1.5);
+									padding: round($font-size * 0.15);
 									font-size: round($font-size * 1.5);
 								}
 							}
@@ -231,9 +230,8 @@
 				}
 
 				.btn {
-					height: round($font-size * 3);
-					width: round($font-size * 3);
-					font-size: round($font-size * 1.725);
+					font-size: round($font-size * 1.55);
+					padding: round($font-size * 0.715);
 				}
 
 				.emoji-mart {
