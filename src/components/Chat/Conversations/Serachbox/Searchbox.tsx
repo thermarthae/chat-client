@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { withApollo, WithApolloClient } from 'react-apollo';
 import { FormattedMessage } from 'react-intl';
+import { withApollo, WithApolloClient } from 'react-apollo';
 
 import Input from '@material-ui/core/Input';
 import IconButton from '@material-ui/core/IconButton';
@@ -18,7 +17,7 @@ import FakeConversations from '../FakeConversations';
 import SerachResult from './SearchResult';
 import EmptyItem from '../EmptyItem';
 
-interface ISearchboxProps extends InjectedIntlProps {
+interface ISearchboxProps {
 	inboxFilter: TInboxFilter;
 	oponentId?: string;
 }
@@ -90,29 +89,31 @@ class Searchbox extends React.PureComponent<WithApolloClient<ISearchboxProps>, I
 	}
 
 	public render() {
-		const { inboxFilter, oponentId, intl: { formatMessage } } = this.props; //TODO: formatMessage Component <>{}</>
+		const { inboxFilter, oponentId } = this.props;
 		const { query, isQueryShort, waitingForRes, result } = this.state;
 		const shouldDisplay = (inboxFilter === 'SEARCH') ? true : false;
 
 		return (
 			<>
 				<div className='head searchbox' style={{ position: 'relative' }}>
-					<Input
-						value={query}
-						onChange={this.handleChange}
-						classes={{ root: 'searchbar' }}
-						disableUnderline
-						placeholder={formatMessage({ id: 'chat.conversations.search' })}
-						startAdornment={
-							<Search className='btn' />
-						}
-						onFocus={this.handleFocus}
-						endAdornment={
-							<IconButton className='cancel' onClick={this.handleClearInput} >
-								<Cancel style={{ fontSize: 'inherit' }} />
-							</IconButton>
-						}
-					/>
+					<FormattedMessage id='chat.conversations.search'>{
+						placeholder => <Input
+							value={query}
+							onChange={this.handleChange}
+							classes={{ root: 'searchbar' }}
+							disableUnderline
+							placeholder={placeholder as string}
+							startAdornment={
+								<Search className='btn' />
+							}
+							onFocus={this.handleFocus}
+							endAdornment={
+								<IconButton className='cancel' onClick={this.handleClearInput} >
+									<Cancel style={{ fontSize: 'inherit' }} />
+								</IconButton>
+							}
+						/>
+					}</FormattedMessage>
 					{waitingForRes && <LinearProgress className='progress-bar' variant='query' />}
 				</div>
 				{shouldDisplay && <>{
@@ -128,4 +129,4 @@ class Searchbox extends React.PureComponent<WithApolloClient<ISearchboxProps>, I
 	}
 }
 
-export default injectIntl(withApollo(Searchbox));
+export default withApollo(Searchbox);
