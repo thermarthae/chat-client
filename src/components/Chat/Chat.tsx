@@ -9,15 +9,21 @@ import Mailbox from './Mailbox/Mailbox';
 
 interface IChatProps extends RouteComponentProps<{ oponentId?: string }> { }
 
-const Chat: React.SFC<IChatProps> = props => {
-	const oponentId = props.match.params.oponentId;
+export default class Chat extends React.Component<IChatProps> {
+	public shouldComponentUpdate(nextProps: IChatProps) {
+		if (JSON.stringify(this.props.match) !== JSON.stringify(nextProps.match)) return true;
+		return false;
+	}
 
-	return (
-		<div id='chat'>
-			<Menu />
-			<Conversations oponentId={oponentId} />
-			<Mailbox oponentId={oponentId} />
-		</div>
-	);
-};
-export default Chat;
+	public render() {
+		const oponentId = this.props.match.params.oponentId;
+
+		return (
+			<div id='chat'>
+				<Menu />
+				<Conversations oponentId={oponentId} />
+				<Mailbox oponentId={oponentId} />
+			</div>
+		);
+	}
+}
