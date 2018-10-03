@@ -1,92 +1,61 @@
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 
 import Query from 'react-apollo/Query';
 import Mutation from 'react-apollo/Mutation';
 import { SET_INBOX_FILTER, GET_CURRENT_USER, IGetCurrentUserResponse } from './NavFilters.apollo';
 
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
-const NavLoading = () => {
-	return <List className='container'>
-		<ListItem button className={'line'}>
-			<FormattedMessage id='chat.menu.inbox'>
-				{txt => <span className='name'>{txt}</span>}
-			</FormattedMessage>
-			<CircularProgress size='1em' color='inherit' />
-		</ListItem>
-		<ListItem button className={'line'}>
-			<FormattedMessage id='chat.menu.allMessages'>
-				{txt => <span className='name'>{txt}</span>}
-			</FormattedMessage>
-			<CircularProgress size='1em' color='inherit' />
-		</ListItem>
-		<ListItem button className={'line'}>
-			<FormattedMessage id='chat.menu.draft'>
-				{txt => <span className='name'>{txt}</span>}
-			</FormattedMessage>
-			<CircularProgress size='1em' color='inherit' />
-		</ListItem>
-	</List>;
-};
+import NavItem from './NavItem';
 
 const NavFilters = () => {
-	return <Query query={GET_CURRENT_USER}>
-		{({ loading, error, data }) => {
-			if (error) return `Error! ${error.message}`;
-			if (loading) return <NavLoading />;
+	const emptyInboxFilters = [
+		{ name: 'UNREAD', l18nID: 'chat.menu.inbox' },
+		{ name: 'ALL', l18nID: 'chat.menu.allMessages' },
+		{ name: 'DRAFT', l18nID: 'chat.menu.draft' }
+	];
 
-			const {
-				userConversations: {
-					conversationCount,
-					draftCount,
-					unreadCount
-				},
-				chat: {
-					inboxFilter
-				}
-			}: IGetCurrentUserResponse = data;
+	return (
+		<List className='container'>
+			<Query query={GET_CURRENT_USER}>
+				{({ loading, error, data }) => {
+					if (error) return `Error! ${error.message}`;
+					if (loading) return emptyInboxFilters.map(
+						filter => <NavItem key={filter.name} l18nID={filter.l18nID} />
+					);
 
-			return <Mutation mutation={SET_INBOX_FILTER}>
-				{setInboxFilter =>
-					<List className='container'>
-						<ListItem
-							button
-							onClick={() => setInboxFilter({ variables: { inboxFilter: 'UNREAD' } })}
-							className={'line' + (inboxFilter === 'UNREAD' ? ' active' : '')}
-						>
-							<FormattedMessage id='chat.menu.inbox'>
-								{txt => <span className='name'>{txt}</span>}
-							</FormattedMessage>
-							<span className='count'>{unreadCount}</span>
-						</ListItem>
-						<ListItem
-							button
-							onClick={() => setInboxFilter({ variables: { inboxFilter: 'ALL' } })}
-							className={'line' + (inboxFilter === 'ALL' ? ' active' : '')}
-						>
-							<FormattedMessage id='chat.menu.allMessages'>
-								{txt => <span className='name'>{txt}</span>}
-							</FormattedMessage>
-							<span className='count'>{conversationCount}</span>
-						</ListItem>
-						<ListItem
-							button
-							onClick={() => setInboxFilter({ variables: { inboxFilter: 'DRAFT' } })}
-							className={'line' + (inboxFilter === 'DRAFT' ? ' active' : '')}
-						>
-							<FormattedMessage id='chat.menu.draft'>
-								{txt => <span className='name'>{txt}</span>}
-							</FormattedMessage>
-							<span className='count'>{draftCount}</span>
-						</ListItem>
-					</List>
-				}
-			</Mutation>;
-		}}
-	</Query>;
+					const {
+						userConversations: {
+							conversationCount,
+							draftCount,
+							unreadCount
+						},
+						chat: {
+							inboxFilter
+						}
+					}: IGetCurrentUserResponse = data;
+
+					const inboxFilters = [
+						{ name: 'UNREAD', l18nID: 'chat.menu.inbox', count: unreadCount },
+						{ name: 'ALL', l18nID: 'chat.menu.allMessages', count: conversationCount },
+						{ name: 'DRAFT', l18nID: 'chat.menu.draft', count: draftCount }
+					];
+
+					return <Mutation mutation={SET_INBOX_FILTER} ignoreResults>
+						{setInboxFilter => inboxFilters.map(filter =>
+							<NavItem
+								key={filter.name}
+								active={inboxFilter === filter.name}
+								count={filter.count}
+								setInboxFilter={() => setInboxFilter({ variables: { inboxFilter: filter.name } })}
+								l18nID={filter.l18nID}
+							/>)
+						}
+					</Mutation>;
+				}}
+			</Query>
+		</List>
+	);
 };
 
 export default NavFilters;
