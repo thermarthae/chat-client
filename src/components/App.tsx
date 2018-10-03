@@ -72,7 +72,7 @@ class App extends React.PureComponent<IAppPropsType> {
 							<UpdateBlocker>
 								{locationHref => {
 									return <div id='app'>
-								<Navigator />
+										<Navigator locationHref={locationHref} />
 								<Switch>
 									<Redirect exact from='/' to='/chat' />
 											<PrivateRoute auth={isLoggedIn} path='/chat/:id' component={Chat} />

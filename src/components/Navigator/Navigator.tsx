@@ -16,39 +16,51 @@ const handleLogout = (client: any) => {
 	client.resetStore();
 };
 
-const Navigator = () => (
-	<Query query={GET_LOGIN_STATUS}>{
-		({ client, data: { app: { isLoggedIn } } }) => {
-			if (!isLoggedIn) return null;
 
-			return <nav id='navigator'>
-				<div className='btn btn-big'>
-					<IconButton className='btn' onClick={() => handleLogout(client)}>
-						<PowerSettingsNew style={{ fontSize: 'inherit' }} />
-					</IconButton>
-				</div>
-				<NavLink
-					exact={false}
-					className='btn btn-big switch'
-					activeClassName='active'
-					to='/chat'
-				>
-					<IconButton className='btn'>
-						<Chat style={{ fontSize: 'inherit' }} />
-					</IconButton>
-				</NavLink>
-				<NavLink
-					className='btn btn-big switch'
-					activeClassName='active'
-					to='/login'
-				>
-					<IconButton className='btn'>
-						<AccountCircle style={{ fontSize: 'inherit' }} />
-					</IconButton>
-				</NavLink>
-			</nav>;
-		}
-	}</Query>
-);
+interface INavigatorProps {
+	locationHref: string;
+}
 
-export default Navigator;
+export default class Navigator extends React.Component<INavigatorProps> {
+	public shouldComponentUpdate(nextProps: INavigatorProps) {
+		if (nextProps.locationHref.split('/')[3] !== this.props.locationHref.split('/')[3]) return true;
+		return false;
+	}
+
+	public render() {
+		return (
+			<Query query={GET_LOGIN_STATUS}>{
+				({ client, data: { app: { isLoggedIn } } }) => {
+					if (!isLoggedIn) return null;
+
+					return <nav id='navigator'>
+						<div className='btn btn-big'>
+							<IconButton className='btn' onClick={() => handleLogout(client)}>
+								<PowerSettingsNew style={{ fontSize: 'inherit' }} />
+							</IconButton>
+						</div>
+						<NavLink
+							exact={false}
+							className='btn btn-big switch'
+							activeClassName='active'
+							to='/chat'
+						>
+							<IconButton className='btn'>
+								<Chat style={{ fontSize: 'inherit' }} />
+							</IconButton>
+						</NavLink>
+						<NavLink
+							className='btn btn-big switch'
+							activeClassName='active'
+							to='/login'
+						>
+							<IconButton className='btn'>
+								<AccountCircle style={{ fontSize: 'inherit' }} />
+							</IconButton>
+						</NavLink>
+					</nav>;
+				}
+			}</Query>
+		);
+	}
+}
