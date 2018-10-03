@@ -3,7 +3,7 @@ import { FormattedDate } from 'react-intl';
 
 import Avatar from '@material-ui/core/Avatar';
 
-import Message from './Message';
+import MessageItem from './MessageItem';
 import { IMessage } from '../Mailbox.apollo';
 
 interface IMessageGroupProps {
@@ -35,7 +35,7 @@ const MessageGroup: React.SFC<IMessageGroupProps> = props => {
 					<Avatar>{firstMsg.author.name[0]}</Avatar>
 				</div>}
 				<div className='list'>
-					{group.map(msg => <Message key={msg._id} message={msg} handleMenuClick={handleMenuClick} />)}
+						{group.map(msg => <MessageItem key={msg._id} message={msg} handleMenuClick={handleMenuClick} />)}
 				</div>
 			</div>
 		</div>
