@@ -33,6 +33,7 @@ export default flatten({
 			inbox: 'Unread',
 			allMessages: 'All messages',
 			draft: 'Draft',
+			searchResult: 'Search results',
 			help: 'Help',
 			settings: 'Settings',
 		},

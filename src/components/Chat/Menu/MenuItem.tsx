@@ -4,15 +4,15 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import ListItem from '@material-ui/core/ListItem';
 
-interface INavItemProps {
+interface IMenuItemProps {
+	l18nID: string;
 	setInboxFilter?: () => void;
 	active?: boolean;
-	l18nID: string;
 	count?: number;
 }
 
-class NavItem extends React.Component<INavItemProps> {
-	public shouldComponentUpdate(nextProps: INavItemProps) {
+class MenuItem extends React.Component<IMenuItemProps> {
+	public shouldComponentUpdate(nextProps: IMenuItemProps) {
 		if (nextProps.active !== this.props.active) return true;
 		if (nextProps.count !== this.props.count) return true;
 		return false;
@@ -20,6 +20,17 @@ class NavItem extends React.Component<INavItemProps> {
 
 	public render() {
 		const { setInboxFilter, active, l18nID, count } = this.props;
+
+		let countElement = null;
+		switch (typeof count) {
+			case 'number':
+				countElement = <span className='count'>{count}</span>;
+				break;
+			case null:
+				countElement = <CircularProgress size='1em' color='inherit' />;
+				break;
+		}
+
 
 		return (
 			<ListItem button
@@ -29,13 +40,10 @@ class NavItem extends React.Component<INavItemProps> {
 				<FormattedMessage id={l18nID}>
 					{txt => <span className='name'>{txt}</span>}
 				</FormattedMessage>
-				{typeof count === 'number'
-					? <span className='count'>{count}</span>
-					: <CircularProgress size='1em' color='inherit' />
-				}
+				{countElement}
 			</ListItem>
 		);
 	}
 }
 
-export default NavItem;
+export default MenuItem;

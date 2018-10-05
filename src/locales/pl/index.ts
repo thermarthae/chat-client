@@ -32,6 +32,7 @@ export default flatten({
 			title: 'Poczta',
 			inbox: 'Odebrane',
 			allMessages: 'Wszystkie',
+			searchResult: 'Wyniki wyszukiwania',
 			draft: 'Robocze',
 			help: 'Pomoc',
 			settings: 'Ustawienia',
