@@ -35,21 +35,41 @@ export const GET_CONV_ARR = gql`
 		}
 	}
 `;
+export interface IMessage {
+	_id: string;
+	content: string;
+	time: string;
+	me: boolean;
+	conversation: string;
+}
 export interface IConversation {
 	_id: string;
 	name: string;
 	seen: boolean;
 	draft: string;
-	messages: [{
-		_id: string;
-		content: string;
-		time: string;
-		me: boolean;
-		conversation: string;
-	}];
+	messages: IMessage[];
 }
 export interface IGetConvArrResponse {
 	userConversations: {
 		conversationArr: IConversation[];
 	};
 }
+
+
+export const UPDATED_CONV_SUBSCRIPTION = gql`
+	subscription {
+		updatedConversation {
+			_id
+			name
+			seen
+			draft
+			messages(limit: 1) {
+				_id
+				content
+				time
+				me
+				conversation
+			}
+		}
+	}
+`;

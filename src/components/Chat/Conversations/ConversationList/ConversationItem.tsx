@@ -15,10 +15,12 @@ interface IConversationItemProps {
 	handleMenuClick: (event: React.MouseEvent<HTMLElement>) => void;
 	conversation: IConversation;
 	currentConv: boolean;
+	lastMsgId: string;
 }
 class ConversationItem extends React.Component<IConversationItemProps & InjectedIntlProps> {
 	public shouldComponentUpdate(nextProps: IConversationItemProps) {
 		if (this.props.currentConv !== nextProps.currentConv) return true;
+		if (this.props.lastMsgId !== nextProps.lastMsgId) return true;
 		return false;
 	}
 

@@ -3,7 +3,11 @@ import { FormattedMessage } from 'react-intl';
 import Query from 'react-apollo/Query';
 
 import './Conversations.style.scss';
-import { GET_CHAT_FILTER, TInboxFilter, GET_CONV_ARR, IGetConvArrResponse } from './Conversations.apollo';
+import {
+	GET_CHAT_FILTER, TInboxFilter,
+	GET_CONV_ARR, IGetConvArrResponse,
+	UPDATED_CONV_SUBSCRIPTION, IConversation
+} from './Conversations.apollo';
 
 import Searchbox from './Serachbox/Searchbox';
 import ConversationList from './ConversationList/ConversationList';
@@ -22,7 +26,7 @@ const Conversations: React.SFC<IConversationsProps> = ({ oponentId }) => {
 					<div id='conversations'>
 						<Searchbox oponentId={oponentId} inboxFilter={inboxFilter} />
 						<Query query={GET_CONV_ARR} >
-							{({ loading, error, data }) => {
+							{({ loading, error, data, subscribeToMore }) => {
 								if (error) return `Error! ${error.message}`;
 								if (loading) return <FakeConversations />;
 
@@ -50,7 +54,39 @@ const Conversations: React.SFC<IConversationsProps> = ({ oponentId }) => {
 									<FormattedMessage id='chat.conversations.nothingToShow' />
 								</EmptyItem>;
 
-								return <ConversationList oponentId={oponentId} conversationArr={filteredConv} />;
+								return <ConversationList
+									oponentId={oponentId}
+									conversationArr={filteredConv}
+									subscribe={() => subscribeToMore({
+										document: UPDATED_CONV_SUBSCRIPTION,
+										updateQuery: (prev: IGetConvArrResponse, { subscriptionData }) => {
+											if (!subscriptionData.data) return prev;
+											const prevConvArr = prev.userConversations.conversationArr.slice();
+											const updatedConv: IConversation = subscriptionData.data.updatedConversation;
+
+											let convIndex: number;
+											const foundConversation = prevConvArr.find((cnv, index) => {
+												if (cnv._id !== updatedConv._id) return false;
+												convIndex = index;
+												return true;
+											});
+											if (!foundConversation) return {
+												userConversations: { conversationArr: [...prevConvArr, updatedConv] }
+											};
+
+											const editedConv = Object.assign({}, foundConversation, updatedConv);
+											prevConvArr.splice(convIndex!, 1);
+											prevConvArr.splice(convIndex!, 0, editedConv);
+
+											return {
+												userConversations: Object.assign({},
+													prev.userConversations,
+													{ conversationArr: prevConvArr }
+												)
+											};
+										}
+									})}
+								/>;
 							}}
 						</Query>
 					</div>
