@@ -37,3 +37,21 @@ export interface IGetConversationResponse {
 		draft: string;
 	};
 }
+
+
+
+export const NEW_MESSAGES_SUBSCRIPTION = gql`
+	subscription($convId: ID!) {
+		newMessageAdded(conversationId: $convId) {
+			_id
+			author {
+				name
+			}
+			time
+			me
+			content
+			conversation
+		}
+	}
+`;
+
