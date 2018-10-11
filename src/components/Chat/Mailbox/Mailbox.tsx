@@ -83,14 +83,13 @@ class Mailbox extends React.Component<WithApolloClient<IMailboxProps>> {
 						}
 					}: IGetConversationResponse = data;
 
-					this.subscribe(variables);
-
 					return (
 						<div id='mailbox'>
 							<Header conversationName={name} />
 							<div className='content'>
 								<div className='main'>
 									<Inbox
+										subscribe={() => this.subscribe(variables)}
 										messages={messages}
 										mgsToFetch={mgsToFetch}
 										onLoadMore={() => fetchMore({
