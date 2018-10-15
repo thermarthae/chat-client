@@ -5,7 +5,9 @@ import { Redirect } from 'react-router';
 import { withApollo, WithApolloClient } from 'react-apollo';
 import Query from 'react-apollo/Query';
 import {
-	GET_CONVERSATION, IGetConversationResponse, NEW_MESSAGES_SUBSCRIPTION, IMessage
+	GET_CONVERSATION, IGetConversationResponse,
+	NEW_MESSAGES_SUBSCRIPTION, IMessage,
+	GET_MX_SUB_STATUS, IGetMxSubStatusRes, TOGGLE_MX_SUB_STATUS
 } from './Mailbox.apollo';
 
 import './Mailbox.style.scss';
@@ -14,10 +16,6 @@ import Header from './Header/Header';
 import Inbox from './Inbox/Inbox';
 import MessageInput from './MessageInput/MessageInput';
 import Aside from './Aside/Aside';
-
-interface IMailboxProps {
-	oponentId?: string;
-}
 
 const Empty = ({ i18nID }: { i18nID: string }) => {
 	return (
@@ -29,34 +27,56 @@ const Empty = ({ i18nID }: { i18nID: string }) => {
 	);
 };
 
-class Mailbox extends React.Component<WithApolloClient<IMailboxProps>> {
-	private subscribe = (variables: { id: string; skip: number; limit: number; }) => {
-		const { client, oponentId } = this.props;
+interface IMailboxProps {
+	oponentId?: string;
+}
 
+interface IMailboxState {
+	mgsToFetch: number;
+}
+
+class Mailbox extends React.Component<WithApolloClient<IMailboxProps>, IMailboxState> {
+	public state = {
+		mgsToFetch: 10
+	};
+
+	private subscribe = () => {
+		const { client } = this.props;
+		const { mgsToFetch } = this.state;
+		const { subscriptions } = client.readQuery<IGetMxSubStatusRes>({ query: GET_MX_SUB_STATUS })!;
+		if (subscriptions.mailbox) return;
+
+		client.mutate({ mutation: TOGGLE_MX_SUB_STATUS });
 		client.subscribe({
-			query: NEW_MESSAGES_SUBSCRIPTION,
-			variables: { convId: oponentId }
+			query: NEW_MESSAGES_SUBSCRIPTION
 		}).subscribe({
 			next(res) {
-				const newMsg = res.data.newMessageAdded as IMessage;
-				const { getConversation } = client.cache.readQuery({
-					query: GET_CONVERSATION,
-					variables
-				}) as IGetConversationResponse;
+				try {
+					const newMsg = res.data.newMessageAdded as IMessage;
+					const variables = { id: newMsg.conversation, skip: 0, limit: mgsToFetch };
+					const { getConversation } = client.readQuery({
+						query: GET_CONVERSATION,
+						variables,
+					}) as IGetConversationResponse;
 
-				const msgExists = getConversation.messages.find(msg => msg._id === newMsg._id);
-				if (!msgExists) client.cache.writeQuery({
-					query: GET_CONVERSATION,
-					variables,
-					data: {
-						getConversation: Object.assign({}, getConversation, {
-							messages: [...getConversation.messages, newMsg]
-						})
-					},
-				});
+					const msgExists = getConversation.messages.find(msg => msg._id === newMsg._id);
+					if (!msgExists) client.writeQuery({
+						query: GET_CONVERSATION,
+						variables,
+						data: {
+							getConversation: Object.assign({}, getConversation, {
+								messages: [...getConversation.messages, newMsg]
+							})
+						},
+					});
+				} catch (error) { } // tslint:disable-line
 			},
-			error(err) { console.error('Subscribe error:', err); },
+			error(err) { console.error('Mailbox subscription error:', err); },
 		});
+	}
+
+	public componentDidMount() {
+		this.subscribe();
 	}
 
 	public render() {
@@ -89,7 +109,6 @@ class Mailbox extends React.Component<WithApolloClient<IMailboxProps>> {
 							<div className='content'>
 								<div className='main'>
 									<Inbox
-										subscribe={() => this.subscribe(variables)}
 										messages={messages}
 										mgsToFetch={mgsToFetch}
 										onLoadMore={() => fetchMore({

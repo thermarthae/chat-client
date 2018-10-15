@@ -39,10 +39,28 @@ export interface IGetConversationResponse {
 }
 
 
+export const GET_MX_SUB_STATUS = gql`
+	query {
+		subscriptions @client {
+			mailbox
+		}
+	}
+`;
+export interface IGetMxSubStatusRes {
+	subscriptions: {
+		mailbox: boolean;
+	};
+}
+
+export const TOGGLE_MX_SUB_STATUS = gql`
+	mutation {
+		toggleSubsciptionStatus(subName: "mailbox") @client
+	}
+`;
 
 export const NEW_MESSAGES_SUBSCRIPTION = gql`
-	subscription($convId: ID!) {
-		newMessageAdded(conversationId: $convId) {
+	subscription {
+		newMessageAdded {
 			_id
 			author {
 				name
@@ -54,4 +72,3 @@ export const NEW_MESSAGES_SUBSCRIPTION = gql`
 		}
 	}
 `;
-

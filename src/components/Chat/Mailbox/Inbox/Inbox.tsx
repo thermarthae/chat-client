@@ -14,7 +14,6 @@ import MessageGroup from './MessageGroup';
 import { IMessage } from '../Mailbox.apollo';
 
 interface IInboxProps {
-	subscribe: () => void;
 	messages: IMessage[];
 	mgsToFetch: number;
 	onLoadMore: () => Promise<any>;
@@ -37,7 +36,6 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 	};
 
 	public async componentDidMount() {
-		this.props.subscribe();
 		this.scrollToBottom('instant');
 		if (this.contentRef.current!.scrollTop < 300) await this.fetchMoreMsgs();
 	}
