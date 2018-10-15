@@ -22,12 +22,12 @@ export default class ConversationList extends React.PureComponent<IConversationL
 		menuAnchorEl: undefined
 	};
 
-	public handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+	private handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
 		event.preventDefault();
 		this.setState({ menuAnchorEl: event.currentTarget });
 	}
 
-	public handleMenuClose = () => {
+	private handleMenuClose = () => {
 		this.setState({ menuAnchorEl: undefined });
 	}
 
