@@ -70,6 +70,7 @@ const client = new ApolloClient({
 client.onResetStore(stateLink.writeDefaults as any);
 
 const theme = createMuiTheme({
+	typography: { useNextVariants: true },
 	palette: {
 		primary: {
 			main: '#3a3d5a'

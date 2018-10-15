@@ -163,7 +163,7 @@ class Login extends React.PureComponent<WithApolloClient<ILoginProps>, ILoginSta
 					</CardContent>
 					<CardActions className='buttons'>
 						<Button
-							variant='flat'
+							variant='text'
 							color='primary'
 							className='btn'
 							size='small'
@@ -173,7 +173,7 @@ class Login extends React.PureComponent<WithApolloClient<ILoginProps>, ILoginSta
 						<div className='buttonWrapper'>
 							<Button
 								color='primary'
-								variant='raised'
+								variant='contained'
 								className='btn'
 								size='small'
 								type='submit'
