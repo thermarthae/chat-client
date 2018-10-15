@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import Query from 'react-apollo/Query';
+import { Query, withApollo, WithApolloClient } from 'react-apollo';
 
 import './Conversations.style.scss';
 import {
 	GET_CHAT_FILTER, TInboxFilter,
 	GET_CONV_ARR, IGetConvArrResponse,
-	UPDATED_CONV_SUBSCRIPTION, IConversation
+	UPDATED_CONV_SUBSCRIPTION, IConversation,
+	GET_SUB_STATUS, IGetConvSubStatusRes, TOGGLE_CONV_SUB_STATUS
 } from './Conversations.apollo';
 
 import Searchbox from './Serachbox/Searchbox';
@@ -18,82 +19,85 @@ interface IConversationsProps {
 	oponentId?: string;
 }
 
-const Conversations: React.SFC<IConversationsProps> = ({ oponentId }) => {
-	return (
-		<Query query={GET_CHAT_FILTER} >
-			{({ data: { chat: { inboxFilter } } }) => {
-				return (
-					<div id='conversations'>
-						<Searchbox oponentId={oponentId} inboxFilter={inboxFilter} />
-						<Query query={GET_CONV_ARR} >
-							{({ loading, error, data, subscribeToMore }) => {
-								if (error) return `Error! ${error.message}`;
-								if (loading) return <FakeConversations />;
+class Conversations extends React.Component<WithApolloClient<IConversationsProps>> {
+	private subscribe = () => {
+		const { client } = this.props;
+		const { subscriptions } = client.readQuery<IGetConvSubStatusRes>({ query: GET_SUB_STATUS })!;
+		if (subscriptions.conversations) return;
 
-								const {
-									userConversations: { conversationArr }
-								}: IGetConvArrResponse = data;
+		client.mutate({ mutation: TOGGLE_CONV_SUB_STATUS });
+		client.subscribe({
+			query: UPDATED_CONV_SUBSCRIPTION,
+		}).subscribe({
+			next({ data }) {
+				const updatedConv = data.updatedConversation as IConversation;
+				const {
+					userConversations: { conversationArr }
+				} = client.readQuery<IGetConvArrResponse>({ query: GET_CONV_ARR })!;
+				const convExist = conversationArr.find(cnv => cnv._id === updatedConv._id);
 
-								let filteredConv = [];
-								switch (inboxFilter as TInboxFilter) {
-									case 'SEARCH':
-										return null;
-										break;
-									case 'DRAFT':
-										filteredConv = conversationArr.filter(conv => conv.draft);
-										break;
-									case 'UNREAD':
-										filteredConv = conversationArr.filter(conv => !conv.seen);
-										break;
-									default:
-										filteredConv = conversationArr;
-										break;
-								}
+				if (!convExist) client.writeQuery({
+					query: GET_CONV_ARR,
+					data: {
+						userConversations: {
+							conversationArr: [...conversationArr, updatedConv],
+							__typename: 'userConversations'
+						}
+					}
+				});
+			},
+			error(err) { console.error('Conversations subscription error:', err); },
+		});
+	}
 
-								if (!filteredConv[0]) return <EmptyItem>
-									<FormattedMessage id='chat.conversations.nothingToShow' />
-								</EmptyItem>;
+	public componentDidMount() {
+		this.subscribe();
+	}
 
-								return <ConversationList
-									oponentId={oponentId}
-									conversationArr={filteredConv}
-									subscribe={() => subscribeToMore({
-										document: UPDATED_CONV_SUBSCRIPTION,
-										updateQuery: (prev: IGetConvArrResponse, { subscriptionData }) => {
-											if (!subscriptionData.data) return prev;
-											const prevConvArr = prev.userConversations.conversationArr.slice();
-											const updatedConv: IConversation = subscriptionData.data.updatedConversation;
+	public render() {
+		const { oponentId } = this.props;
 
-											let convIndex: number;
-											const foundConversation = prevConvArr.find((cnv, index) => {
-												if (cnv._id !== updatedConv._id) return false;
-												convIndex = index;
-												return true;
-											});
-											if (!foundConversation) return {
-												userConversations: { conversationArr: [...prevConvArr, updatedConv] }
-											};
+		return <Query query={GET_CHAT_FILTER} >{
+			({ data: { chat: { inboxFilter } } }) =>
+				<div id='conversations'>
+					<Searchbox oponentId={oponentId} inboxFilter={inboxFilter} />
+					<Query query={GET_CONV_ARR} >
+						{({ loading, error, data }) => {
+							if (error) return `Error! ${error.message}`;
+							if (loading) return <FakeConversations />;
 
-											const editedConv = Object.assign({}, foundConversation, updatedConv);
-											prevConvArr.splice(convIndex!, 1);
-											prevConvArr.splice(convIndex!, 0, editedConv);
+							const {
+								userConversations: { conversationArr }
+							}: IGetConvArrResponse = data;
 
-											return {
-												userConversations: Object.assign({},
-													prev.userConversations,
-													{ conversationArr: prevConvArr }
-												)
-											};
-										}
-									})}
-								/>;
-							}}
-						</Query>
-					</div>
-				);
-			}}
-		</Query>
-	);
-};
+							let filteredConv = [];
+							switch (inboxFilter as TInboxFilter) {
+								case 'SEARCH':
+									return null;
+									break;
+								case 'DRAFT':
+									filteredConv = conversationArr.filter(conv => conv.draft);
+									break;
+								case 'UNREAD':
+									filteredConv = conversationArr.filter(conv => !conv.seen);
+									break;
+								default:
+									filteredConv = conversationArr;
+									break;
+							}
 
-export default Conversations;
+							if (!filteredConv[0]) return <EmptyItem>
+								<FormattedMessage id='chat.conversations.nothingToShow' />
+							</EmptyItem>;
+
+							return <ConversationList
+								oponentId={oponentId}
+								conversationArr={filteredConv}
+							/>;
+						}}
+					</Query>
+				</div>
+		}</Query>;
+	}
+}
+export default withApollo(Conversations);

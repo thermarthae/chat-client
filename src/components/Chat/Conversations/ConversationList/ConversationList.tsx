@@ -11,7 +11,6 @@ import { IConversation } from '../Conversations.apollo';
 interface IConversationListProps {
 	conversationArr: IConversation[];
 	oponentId?: string;
-	subscribe?: () => void;
 }
 
 interface IConversationListStates {
@@ -22,11 +21,6 @@ export default class ConversationList extends React.PureComponent<IConversationL
 	public state = {
 		menuAnchorEl: undefined
 	};
-
-	public componentDidMount() {
-		const { subscribe } = this.props;
-		if (subscribe) subscribe();
-	}
 
 	public handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
 		event.preventDefault();

@@ -16,18 +16,18 @@ export interface IGetChatFilterRes {
 
 export const ConvNavFragment = gql`
 	fragment ConversationNav on Conversation {
-				_id
-				name
-				seen
-				draft
-				messages(limit: 1) {
-					_id
-					content
-					time
-					me
-					conversation
-				}
-			}
+		_id
+		name
+		seen
+		draft
+		messages(limit: 1) {
+			_id
+			content
+			time
+			me
+			conversation
+		}
+	}
 `;
 export const GET_CONV_ARR = gql`
 	query {
@@ -60,6 +60,25 @@ export interface IGetConvArrResponse {
 	};
 }
 
+
+export const GET_SUB_STATUS = gql`
+	query {
+		subscriptions @client {
+			conversations
+		}
+	}
+`;
+export interface IGetConvSubStatusRes {
+	subscriptions: {
+		conversations: boolean;
+	};
+}
+
+export const TOGGLE_CONV_SUB_STATUS = gql`
+	mutation {
+		toggleSubsciptionStatus(subName: "conversations") @client
+	}
+`;
 
 export const UPDATED_CONV_SUBSCRIPTION = gql`
 	subscription {
