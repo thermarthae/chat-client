@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { ConvNavFragment, IConversation } from '../Conversations.apollo';
 
 export const SET_INBOX_FILTER = gql`
 	mutation ($inboxFilter: String!){
@@ -11,37 +12,16 @@ export const SET_INBOX_FILTER = gql`
 export const FIND_CONV_AND_USR = gql`
 	query ($query: String!){
 		findConversation(query: $query) {
-			_id
-			name
-			seen
-			draft
-			messages(limit: 1) {
-				_id
-				content
-				time
-				me
-				conversation
-			}
+			...ConversationNav
 		}
 		findUser(query: $query) {
 			_id
 			name
 		}
 	}
+	${ConvNavFragment}
 `;
-export interface IConversation {
-	_id: string;
-	name: string;
-	seen: boolean;
-	draft: string;
-	messages: [{
-		_id: string;
-		content: string;
-		time: string;
-		me: boolean;
-		conversation: string;
-	}];
-}
+
 export interface IUser {
 	_id: string;
 	name: string;

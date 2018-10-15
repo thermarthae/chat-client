@@ -14,12 +14,8 @@ export interface IGetChatFilterRes {
 	};
 }
 
-
-
-export const GET_CONV_ARR = gql`
-	query {
-		userConversations {
-			conversationArr {
+export const ConvNavFragment = gql`
+	fragment ConversationNav on Conversation {
 				_id
 				name
 				seen
@@ -32,9 +28,18 @@ export const GET_CONV_ARR = gql`
 					conversation
 				}
 			}
+`;
+export const GET_CONV_ARR = gql`
+	query {
+		userConversations {
+			conversationArr {
+				...ConversationNav
+			}
 		}
 	}
+	${ConvNavFragment}
 `;
+
 export interface IMessage {
 	_id: string;
 	content: string;
@@ -59,17 +64,8 @@ export interface IGetConvArrResponse {
 export const UPDATED_CONV_SUBSCRIPTION = gql`
 	subscription {
 		updatedConversation {
-			_id
-			name
-			seen
-			draft
-			messages(limit: 1) {
-				_id
-				content
-				time
-				me
-				conversation
-			}
+			...ConversationNav
 		}
 	}
+	${ConvNavFragment}
 `;
