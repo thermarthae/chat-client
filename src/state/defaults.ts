@@ -8,5 +8,10 @@ export default {
 		__typename: 'Chat',
 		isAsideOpen: false,
 		inboxFilter: 'ALL',
+	},
+	subscriptions: {
+		__typename: 'Subscriptions',
+		conversations: false,
+		mailbox: false
 	}
 };
