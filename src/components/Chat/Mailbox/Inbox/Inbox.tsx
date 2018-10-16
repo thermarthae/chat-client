@@ -48,12 +48,12 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 		return null;
 	}
 
-	public componentDidUpdate({ }, { }, snapshot: number) {
+	public componentDidUpdate({ }, prevState: IInboxState, snapshot: number | null) {
 		if (snapshot !== null) {
 			const inbox = this.contentRef.current!;
-			inbox.scrollTop = inbox.scrollHeight - snapshot;
+			if (prevState.isFetching) inbox.scrollTop = inbox.scrollHeight - snapshot;
+			else if (snapshot === inbox.clientHeight) this.scrollToBottom('smooth');
 		}
-		// else this.scrollToBottom('smooth'); //TODO: Scroll when new message
 	}
 
 	private scrollToBottom = (behavior: 'smooth' | 'instant') => {
