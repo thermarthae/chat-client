@@ -8,7 +8,7 @@ interface IMenuItemProps {
 	l18nID: string;
 	setInboxFilter?: () => void;
 	active?: boolean;
-	count?: number;
+	count?: number | null;
 }
 
 class MenuItem extends React.Component<IMenuItemProps> {
@@ -26,7 +26,7 @@ class MenuItem extends React.Component<IMenuItemProps> {
 			case 'number':
 				countElement = <span className='count'>{count}</span>;
 				break;
-			case null:
+			case 'object': //if null
 				countElement = <CircularProgress size='1em' color='inherit' />;
 				break;
 		}
