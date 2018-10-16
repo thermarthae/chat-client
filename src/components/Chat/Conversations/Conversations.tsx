@@ -30,21 +30,23 @@ class Conversations extends React.Component<WithApolloClient<IConversationsProps
 			query: UPDATED_CONV_SUBSCRIPTION,
 		}).subscribe({
 			next({ data }) {
-				const updatedConv = data.updatedConversation as IConversation;
-				const {
-					userConversations: { conversationArr }
-				} = client.readQuery<IGetConvArrResponse>({ query: GET_CONV_ARR })!;
-				const convExist = conversationArr.find(cnv => cnv._id === updatedConv._id);
+				try {
+					const updatedConv = data.updatedConversation as IConversation;
+					const {
+						userConversations: { conversationArr }
+					} = client.readQuery<IGetConvArrResponse>({ query: GET_CONV_ARR })!;
+					const convExist = conversationArr.find(cnv => cnv._id === updatedConv._id);
 
-				if (!convExist) client.writeQuery({
-					query: GET_CONV_ARR,
-					data: {
-						userConversations: {
-							conversationArr: [...conversationArr, updatedConv],
-							__typename: 'userConversations'
+					if (!convExist) client.writeQuery({
+						query: GET_CONV_ARR,
+						data: {
+							userConversations: {
+								conversationArr: [...conversationArr, updatedConv],
+								__typename: 'userConversations'
+							}
 						}
-					}
-				});
+					});
+				} catch (err) { } // tslint:disable-line
 			},
 			error(err) { console.error('Conversations subscription error:', err); },
 		});
