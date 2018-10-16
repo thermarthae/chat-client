@@ -14,9 +14,9 @@ interface IConvFiltersProps {
 }
 const ConvFilters: React.SFC<IConvFiltersProps> = ({ filter, setFilter }) => {
 	const emptyInboxFilters = [
-		{ name: 'UNREAD', l18nID: 'chat.menu.inbox', count: null },
-		{ name: 'ALL', l18nID: 'chat.menu.allMessages', count: null },
-		{ name: 'DRAFT', l18nID: 'chat.menu.draft', count: null },
+		{ name: 'UNREAD', l18nID: 'chat.menu.inbox' },
+		{ name: 'ALL', l18nID: 'chat.menu.allMessages' },
+		{ name: 'DRAFT', l18nID: 'chat.menu.draft' }
 	];
 
 	return (
@@ -24,7 +24,9 @@ const ConvFilters: React.SFC<IConvFiltersProps> = ({ filter, setFilter }) => {
 			<Query<IGetCurrentUserResponse> query={GET_CURRENT_USER}>
 				{({ loading, error, data }) => {
 					if (error) return `Error! ${error.message}`;
-					if (loading) return emptyInboxFilters.map(f => <MenuItem key={f.name} l18nID={f.l18nID} />);
+					if (loading) return emptyInboxFilters.map(
+						f => <MenuItem key={f.name} l18nID={f.l18nID} count={null} />
+					);
 
 					const {
 						userConversations: {
