@@ -1,19 +1,16 @@
 const path = require('path');
-const webpackServeWaitpage = require('webpack-serve-waitpage');
-const convert = require('koa-connect');
-const history = require('connect-history-api-fallback');
+const webpack = require('webpack');
+const merge = require('webpack-merge');
+const baseCfg = require('./base.config');
 
-module.exports = {
-	name: 'dev',
-	extends: path.join(__dirname, 'base.config.js'),
+module.exports = merge(baseCfg, {
 	mode: 'development',
 	devtool: 'cheap-module-eval-source-map',
-	serve: {
-		content: path.resolve(__dirname, '../../dist'),
-		add: (app, middleware, options) => {
-			app.use(webpackServeWaitpage(options));
-			app.use(convert(history({})));
-		}
+	devServer: {
+		inline: true,
+		progress: true,
+		hot: true,
+		historyApiFallback: true,
 	},
 	module: {
 		rules: [
@@ -37,5 +34,8 @@ module.exports = {
 				]
 			}
 		]
-	}
-};
+	},
+	plugins: [
+		new webpack.HotModuleReplacementPlugin()
+	],
+});

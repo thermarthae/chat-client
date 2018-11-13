@@ -4,7 +4,6 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const tsconfigPath = path.resolve(__dirname, '../../tsconfig.json');
 
 module.exports = {
-	name: 'base',
 	entry: './index.tsx',
 	context: path.resolve(__dirname, '../../src'),
 	resolve: {

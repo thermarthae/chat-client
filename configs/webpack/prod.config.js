@@ -1,12 +1,12 @@
 const path = require('path');
+const merge = require('webpack-merge');
+const baseCfg = require('./base.config');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-module.exports = {
-	name: 'prod',
-	extends: path.join(__dirname, 'base.config.js'),
+module.exports =  merge(baseCfg, {
 	mode: 'production',
 	devtool: 'source-map',
 	output: {
@@ -70,6 +70,6 @@ module.exports = {
 		}),
 		new BundleAnalyzerPlugin(),
 	]
-};
+});
 //TODO html minify
 //TODO css minify => webpack 5
