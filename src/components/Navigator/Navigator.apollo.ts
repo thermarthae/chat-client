@@ -7,3 +7,11 @@ export const GET_LOGIN_STATUS = gql`
 		}
 	}
 `;
+
+export const LOGOUT = gql`
+	query logout {
+		logout {
+			_id
+		}
+	}
+`;

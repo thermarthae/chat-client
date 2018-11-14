@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { NavLink } from 'react-router-dom';
 
+import ApolloClient from 'apollo-client';
 import Query from 'react-apollo/Query';
-import { GET_LOGIN_STATUS } from './Navigator.apollo';
+import { GET_LOGIN_STATUS, LOGOUT } from './Navigator.apollo';
 
 import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -10,12 +11,6 @@ import Chat from '@material-ui/icons/Chat';
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew';
 
 import './Navigator.style.scss';
-
-const handleLogout = (client: any) => {
-	document.cookie = 'sign_token' + '=; Max-Age=0';
-	client.resetStore();
-};
-
 
 interface INavigatorProps {
 	locationHref: string;
@@ -27,6 +22,11 @@ export default class Navigator extends React.Component<INavigatorProps> {
 		return false;
 	}
 
+	private handleLogout = async (client: ApolloClient<any>) => {
+		await client.query({ query: LOGOUT, fetchPolicy: 'no-cache', errorPolicy: 'all' });
+		client.resetStore();
+	}
+
 	public render() {
 		return (
 			<Query query={GET_LOGIN_STATUS}>{
@@ -35,7 +35,7 @@ export default class Navigator extends React.Component<INavigatorProps> {
 
 					return <nav id='navigator'>
 						<div className='btn btn-big'>
-							<IconButton className='btn' onClick={() => handleLogout(client)}>
+							<IconButton className='btn' onClick={() => this.handleLogout(client)}>
 								<PowerSettingsNew style={{ fontSize: 'inherit' }} />
 							</IconButton>
 						</div>
