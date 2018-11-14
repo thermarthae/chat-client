@@ -14,6 +14,7 @@
 		"test": "jest --watchAll --coverage --config=configs/jest.json"
 	},
 	"devDependencies": {
+		"@types/cookie": "^0.3.1",
 		"@types/draft-js": "^0.10.25",
 		"@types/emoji-mart": "^2.8.0",
 		"@types/flat": "^0.0.28",
@@ -62,6 +63,7 @@
 		"apollo-link-error": "^1.1.1",
 		"apollo-link-state": "0.4.2",
 		"apollo-link-ws": "^1.0.9",
+		"cookie": "^0.3.1",
 		"decorate-component-with-props": "^1.1.0",
 		"draft-js": "^0.10.5",
 		"draft-js-plugins-editor": "^2.1.1",

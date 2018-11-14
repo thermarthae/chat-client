@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Route, Redirect, RouteProps } from 'react-router';
 import { BrowserRouter, Switch } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
+import * as cookie from 'cookie';
 import messages from '../locales';
 
 import Query from 'react-apollo/Query';
@@ -59,7 +60,12 @@ type IAppPropsType = WithApolloClient<IAppProps>;
 class App extends React.PureComponent<IAppPropsType> {
 	constructor(props: IAppPropsType) {
 		super(props);
-		const isLoggedIn = document.cookie.includes('sign_token=');
+		this.checkAuthStatus();
+	}
+
+	private checkAuthStatus = () => {
+		const { logged_in } = cookie.parse(document.cookie);
+		const isLoggedIn = logged_in === 'true' ? true : false;
 		this.props.client.writeData({ data: { app: { __typename: 'App', isLoggedIn } } });
 	}
 
