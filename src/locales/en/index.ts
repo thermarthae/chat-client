@@ -6,13 +6,20 @@ addLocaleData(en);
 
 export default flatten({
 	error: {
-		unknown: 'Something went wrong!',
 		404: `Error 404 - ${location.pathname}`,
-		Err100: 'Username doesn\'t belong to any account',
-		Err101: 'User not found',
-		Err102: 'Users not found',
-		Err200: 'Password is incorrect',
-		Err999: 'Unknown error. Check your connection',
+		UnknownError: 'Something went wrong!',
+		UserExistsError: 'User with the given username is already registered',
+		UserNotExistsError: 'User not exist',
+		MissingUsernameError: 'No username was given',
+		IncorrectUsernameError: 'The specified user does not exist',
+		MissingPasswordError: 'No password was given',
+		IncorrectPasswordError: 'Incorrect password',
+		AlreadyLoggedIn: 'You are already logged in',
+		AlreadyLoggedOut: 'You are already logged out',
+		NotLoggedInForbidden: 'Access forbidden. You must be logged in',
+		RightsForbidden: 'Access denied',
+		UsernameIsTooShort: 'Username is too short (min 3 characters)',
+		PasswordIsTooShort: 'Password is too short (min 8 characters)',
 	},
 	menuItem: {
 		delete: 'Delete'

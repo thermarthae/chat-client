@@ -6,13 +6,20 @@ addLocaleData(pl);
 
 export default flatten({
 	error: {
-		unknown: 'Coś poszło nie tak!',
 		404: `Błąd 404 - ${location.pathname}`,
-		Err100: 'Użytkownik z podanym adresem nie istnieje',
-		Err101: 'Nie znaleziono użytkownika',
-		Err102: 'Nie znaleziono użytkowników',
-		Err200: 'Niepoprawne hasło',
-		Err999: 'Wystąpił nieznany błąd. Sprawdz połączenie',
+		UnknownError: 'Coś poszło nie tak!',
+		UserExistsError: 'Użytkownik z podaną nazwą już istnieje',
+		UserNotExistsError: 'Użytkownik nie istnieje',
+		MissingUsernameError: 'Nie podano nazwy użytkownika',
+		IncorrectUsernameError: 'Użytkownik z podaną nazwą nie istnieje',
+		MissingPasswordError: 'Nie podano hasła',
+		IncorrectPasswordError: 'Hasło nieprawidłowe',
+		AlreadyLoggedIn: 'Jesteś już zalogowany',
+		AlreadyLoggedOut: 'Jesteś już wylogowany',
+		NotLoggedInForbidden: 'Brak dostępu. Musisz być zalogowany',
+		RightsForbidden: 'Odmowa dostępu',
+		UsernameIsTooShort: 'Nazwa użytkownika za krótka (minimum 3 znaki)',
+		PasswordIsTooShort: 'Hasło za krótkie (minimum 8 znaków)',
 	},
 	menuItem: {
 		delete: 'Usuń'
