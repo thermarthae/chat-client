@@ -31,16 +31,18 @@ interface ILoginStates {
 	passwordError: boolean;
 	showPassword: boolean;
 	waitingForServer: boolean;
+	errorName?: string;
 }
 
 class Login extends React.PureComponent<WithApolloClient<ILoginProps>, ILoginStates> {
 	public state = {
-		username: 'admin',
-		password: 'admin1',
+		username: 'andrzej@duda.gov',
+		password: 'andrzej',
 		usernameError: false,
 		passwordError: false,
 		showPassword: false,
 		waitingForServer: false,
+		errorName: undefined,
 	};
 
 	private handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,32 +61,52 @@ class Login extends React.PureComponent<WithApolloClient<ILoginProps>, ILoginSta
 		const { client, history } = this.props;
 
 		try {
-			this.setState({ waitingForServer: true });
+			this.setState({
+				waitingForServer: true,
+				usernameError: false,
+				passwordError: false,
+				errorName: undefined,
+			});
 
-			const { data: { getAccess } } = await client.query<ILogInResponse>({
+			const res = await client.query<ILogInResponse>({
 				query: LOG_IN,
 				fetchPolicy: 'no-cache',
 				variables: { username, password },
+				errorPolicy: 'all'
 			});
-			if (getAccess.error) throw getAccess;
-
+			if (res.errors) {
+				const err = res.errors[0];
+				if (err.extensions) throw err.extensions.code;
+				throw err;
+			}
 			await client.mutate({ mutation: SET_LOGIN_STATUS });
+
 			history.push('/');
 		} catch (err) {
-			const errorInfo = err.error ? `Error ${err.error.code}: ${err.error.message}` : err;
-			console.error(errorInfo);
+			console.error(err);
+			let usernameError = true;
+			let passwordError = true;
+			let errorName = 'UnknownError';
 
-			let usernameErr = true;
-			let passwordErr = true;
-
-			if (err.error)
-				if (err.error.code === 100) passwordErr = false; // 100 => username
-				else if (err.error.code === 200) usernameErr = false; // 200 => password
+			if (typeof err === 'string') switch (err) {
+				case 'MissingPasswordError':
+				case 'IncorrectPasswordError':
+					errorName = err;
+					usernameError = false;
+					break;
+				case 'MissingUsernameError':
+				case 'IncorrectUsernameError':
+				case 'AlreadyLoggedIn':
+					errorName = err;
+					passwordError = false;
+					break;
+			}
 
 			this.setState({
-				usernameError: usernameErr,
-				passwordError: passwordErr,
-				waitingForServer: false
+				waitingForServer: false,
+				usernameError,
+				passwordError,
+				errorName,
 			});
 		}
 	}
@@ -97,17 +119,11 @@ class Login extends React.PureComponent<WithApolloClient<ILoginProps>, ILoginSta
 			passwordError,
 			showPassword,
 			waitingForServer,
+			errorName
 		} = this.state;
 		const { formatMessage } = this.props.intl;
 
-		let usernameHelper: any;
-		let passwordHelper: any;
-		if (usernameError && passwordError) {
-			usernameHelper = formatMessage({ id: 'error.Err999' });
-			passwordHelper = <FormHelperText>{usernameHelper}</FormHelperText>;
-		}
-		else if (usernameError) usernameHelper = formatMessage({ id: 'error.Err100' });
-		else if (passwordError) passwordHelper = <FormHelperText>{formatMessage({ id: 'error.Err200' })}</FormHelperText>;
+		const errorMsg = errorName ? formatMessage({ id: 'error.' + errorName }) : undefined;
 
 		return (
 			<form action='' id='login' onSubmit={this.handleSubmit}>
@@ -130,7 +146,7 @@ class Login extends React.PureComponent<WithApolloClient<ILoginProps>, ILoginSta
 								onChange={this.handleChange}
 								error={usernameError}
 								label={formatMessage({ id: 'login.username' })}
-								helperText={usernameHelper}
+								helperText={usernameError ? errorMsg : ''}
 							/>
 							<FormControl
 								fullWidth
@@ -157,7 +173,7 @@ class Login extends React.PureComponent<WithApolloClient<ILoginProps>, ILoginSta
 										</InputAdornment>
 									}
 								/>
-								{passwordHelper}
+								{passwordError && <FormHelperText>{errorMsg}</FormHelperText>}
 							</FormControl>
 						</div>
 					</CardContent>
