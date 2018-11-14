@@ -16,10 +16,16 @@ import Navigator from './Navigator/Navigator';
 import Chat from './Chat/Chat';
 import Login from './Login/Login';
 
-class UpdateBlocker extends React.Component<{ children: (href: string) => React.ReactNode }> {
+interface IUpdateBlocker {
+	isLoggedIn: boolean;
+	children: (href: string) => React.ReactNode;
+}
+class UpdateBlocker extends React.Component<IUpdateBlocker> {
 	private locationHref = location.href.replace(/\/$/, '');
 
-	public shouldComponentUpdate() {
+	public shouldComponentUpdate(nextProps: IUpdateBlocker) {
+		if (nextProps.isLoggedIn !== this.props.isLoggedIn) return true;
+
 		const newLocation = location.href.replace(/\/$/, '');
 		if (this.locationHref !== newLocation) {
 			this.locationHref = newLocation;
@@ -75,7 +81,7 @@ class App extends React.PureComponent<IAppPropsType> {
 				({ data: { app: { language, isLoggedIn } } }) => {
 					return <IntlProvider locale={language} messages={messages[language]}>
 						<BrowserRouter>
-							<UpdateBlocker>
+							<UpdateBlocker isLoggedIn={isLoggedIn}>
 								{locationHref => {
 									return <div id='app'>
 										<Navigator locationHref={locationHref} />
