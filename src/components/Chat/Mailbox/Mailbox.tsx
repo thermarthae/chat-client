@@ -86,22 +86,17 @@ class Mailbox extends React.Component<WithApolloClient<IMailboxProps>, IMailboxS
 		const variables = { id: oponentId, skip: 0, limit: mgsToFetch };
 
 		return (
-			<Query query={GET_CONVERSATION} variables={variables}>{
+			<Query query={GET_CONVERSATION} variables={variables} errorPolicy='all'>{
 				({ loading, error, data, fetchMore }) => {
-					if (error) {
-						if (error.message && error.message.includes('404 (Not Found)')) return <Redirect to='/' push />;
-						return <Empty i18nID='error.unknown' />;
-					}
 					if (loading) return <Empty i18nID='chat.mailbox.loading' />;
 					if (!data) return <Empty i18nID='chat.mailbox.nothingSelected' />;
 
-					const {
-						getConversation: {
-							name,
-							messages,
-							draft,
-						}
-					}: IGetConversationResponse = data;
+					const { getConversation }: IGetConversationResponse = data;
+					if (error) {
+						if (getConversation === null) return <Redirect to='/' push />;
+						return <Empty i18nID='error.UnknownError' />;
+					}
+					const { name, messages, draft } = getConversation;
 
 					return (
 						<div id='mailbox'>
