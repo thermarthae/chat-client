@@ -11,7 +11,6 @@ interface IMessageGroupProps {
 	handleMenuClick: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
-
 export default class MessageGroup extends React.Component<IMessageGroupProps> {
 	public shouldComponentUpdate(nextProps: IMessageGroupProps) {
 		if (nextProps.group.length !== this.props.group.length) return true;
@@ -20,14 +19,14 @@ export default class MessageGroup extends React.Component<IMessageGroupProps> {
 
 	public render() {
 		const { group, handleMenuClick } = this.props;
-		const firstMsg = group[0];
+		const { me, time, author } = group[0]; //first message
 
 		return (
-			<div className={'group' + (!firstMsg.me ? ' left' : ' right')}>
+			<div className={'group' + (!me ? ' left' : ' right')}>
 				<div className='header'>
 					<div className='time'>
 						<FormattedDate
-							value={new Date(parseInt(firstMsg.time, 10))}
+							value={new Date(time)}
 							year='numeric'
 							weekday='long'
 							month='long'
@@ -38,11 +37,13 @@ export default class MessageGroup extends React.Component<IMessageGroupProps> {
 					</div>
 				</div>
 				<div className='container'>
-					{!firstMsg.me && <div className='author'>
-						<Avatar>{firstMsg.author.name[0]}</Avatar>
+					{!me && <div className='author'>
+						<Avatar>{author.name[0]}</Avatar>
 					</div>}
 					<div className='list'>
-						{group.map(msg => <MessageItem key={msg._id} message={msg} handleMenuClick={handleMenuClick} />)}
+						{group.map(msg =>
+							<MessageItem key={msg._id} message={msg} handleMenuClick={handleMenuClick} />
+						)}
 					</div>
 				</div>
 			</div>
