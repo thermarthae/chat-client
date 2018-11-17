@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const tsconfigPath = path.resolve(__dirname, '../../tsconfig.json');
+const getTransformer = require('ts-transform-graphql-tag').getTransformer;
 
 module.exports = {
 	entry: './index.tsx',
@@ -38,6 +39,7 @@ module.exports = {
 					{
 						loader: 'ts-loader',
 						options: {
+							getCustomTransformers: () => ({ before: [getTransformer()] }),
 							configFile: tsconfigPath,
 							happyPackMode: true
 						}

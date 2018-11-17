@@ -80,6 +80,7 @@
 		"react-router": "^4.3.1",
 		"react-router-dom": "^4.3.1",
 		"subscriptions-transport-ws": "^0.9.15",
+		"ts-transform-graphql-tag": "^0.2.1",
 		"twemoji": "^11.2.0"
 	}
 }
