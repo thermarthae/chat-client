@@ -25,10 +25,34 @@ interface IMessageInputState {
 
 type TProps = IMessageInputProps & InjectedIntlProps;
 class MessageInput extends React.PureComponent<TProps, IMessageInputState>{
-	private messageEditor = React.createRef<any>();
+	constructor(props: TProps) {
+		super(props);
+		const { intl: { formatMessage } } = this.props;
+		this.emojiSelectI18N = {
+			search: formatMessage({ id: 'emojiPicker.search' }),
+			notfound: formatMessage({ id: 'emojiPicker.notfound' }),
+			categories: {
+				search: formatMessage({ id: 'emojiPicker.categories.search' }),
+				recent: formatMessage({ id: 'emojiPicker.categories.recent' }),
+				people: formatMessage({ id: 'emojiPicker.categories.people' }),
+				nature: formatMessage({ id: 'emojiPicker.categories.nature' }),
+				foods: formatMessage({ id: 'emojiPicker.categories.foods' }),
+				activity: formatMessage({ id: 'emojiPicker.categories.activity' }),
+				places: formatMessage({ id: 'emojiPicker.categories.places' }),
+				objects: formatMessage({ id: 'emojiPicker.categories.objects' }),
+				symbols: formatMessage({ id: 'emojiPicker.categories.symbols' }),
+				flags: formatMessage({ id: 'emojiPicker.categories.flags' }),
+				custom: formatMessage({ id: 'emojiPicker.categories.custom' }),
+			}
+		};
+	}
+
 	public state = {
 		emojiPickerIsOpen: false
 	};
+
+	private emojiSelectI18N = {};
+	private messageEditor = React.createRef<any>();
 
 	private handleSendMessage = () => {
 		this.messageEditor.current!.getWrappedInstance().sendMessage();
@@ -60,23 +84,7 @@ class MessageInput extends React.PureComponent<TProps, IMessageInputState>{
 							custom={[]}
 							emojiTooltip
 							showPreview={false}
-							i18n={{
-								search: formatMessage({ id: 'emojiPicker.search' }),
-								notfound: formatMessage({ id: 'emojiPicker.notfound' }),
-								categories: {
-									search: formatMessage({ id: 'emojiPicker.categories.search' }),
-									recent: formatMessage({ id: 'emojiPicker.categories.recent' }),
-									people: formatMessage({ id: 'emojiPicker.categories.people' }),
-									nature: formatMessage({ id: 'emojiPicker.categories.nature' }),
-									foods: formatMessage({ id: 'emojiPicker.categories.foods' }),
-									activity: formatMessage({ id: 'emojiPicker.categories.activity' }),
-									places: formatMessage({ id: 'emojiPicker.categories.places' }),
-									objects: formatMessage({ id: 'emojiPicker.categories.objects' }),
-									symbols: formatMessage({ id: 'emojiPicker.categories.symbols' }),
-									flags: formatMessage({ id: 'emojiPicker.categories.flags' }),
-									custom: formatMessage({ id: 'emojiPicker.categories.custom' }),
-								}
-							}}
+							i18n={this.emojiSelectI18N}
 						/>
 					</Slide>
 					<IconButton className='btn emoticon'
