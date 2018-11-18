@@ -3,16 +3,16 @@ import { FormattedDate } from 'react-intl';
 
 import Avatar from '@material-ui/core/Avatar';
 
-import MessageItem from './MessageItem';
-import { IMessage } from '../Mailbox.apollo';
+import { IMessage } from '../../Mailbox.apollo';
+import Message from './Message';
 
-interface IMessageGroupProps {
+interface IClusterProps {
 	group: IMessage[];
 	handleMenuClick: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
-export default class MessageGroup extends React.Component<IMessageGroupProps> {
-	public shouldComponentUpdate(nextProps: IMessageGroupProps) {
+export default class Cluster extends React.Component<IClusterProps> {
+	public shouldComponentUpdate(nextProps: IClusterProps) {
 		if (nextProps.group.length !== this.props.group.length) return true;
 		return false;
 	}
@@ -42,7 +42,7 @@ export default class MessageGroup extends React.Component<IMessageGroupProps> {
 					</div>}
 					<div className='list'>
 						{group.map(msg =>
-							<MessageItem key={msg._id} message={msg} handleMenuClick={handleMenuClick} />
+							<Message key={msg._id} message={msg} handleMenuClick={handleMenuClick} />
 						)}
 					</div>
 				</div>

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import memoizeOne from 'memoize-one';
 
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -10,7 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import MessageGroup from './MessageGroup';
+import MessageGroupWrapper from './MessageGroups/MessageGroups';
 import { IMessage } from '../Mailbox.apollo';
 
 interface IInboxProps {
@@ -85,29 +84,9 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 		}));
 	}
 
-	private groupMessages = memoizeOne((msgs: IMessage[]) => {
-		let lastMsg = msgs[0];
-		let currentGroup: IMessage[] = [];
-		const msgGroups: IMessage[][] = [];
-
-		msgs.forEach(msg => {
-			const moreThan2h = parseInt(msg.time, 10) - parseInt(lastMsg.time, 10) > 1000 * 60 * 60 * 2;
-			if (lastMsg.me === msg.me && !moreThan2h) currentGroup.push(msg);
-			else {
-				msgGroups.push(currentGroup);
-				currentGroup = [msg];
-			}
-			lastMsg = msg;
-		});
-		msgGroups.push(currentGroup);
-
-		return msgGroups;
-	});
-
 	public render() {
 		const { messages } = this.props;
 		const { menuAnchorEl, isFetching } = this.state;
-		const msgGroups = this.groupMessages(messages);
 
 		return (
 			<div className='align--bottom inbox'>
@@ -116,11 +95,7 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 						{isFetching && <div className='align--center fetching'>
 							<CircularProgress size='1.5em' color='inherit' />
 						</div>}
-						{msgGroups.map(grp => <MessageGroup
-							key={'G-' + grp[0].time} //TODO: fix key
-							group={grp}
-							handleMenuClick={this.handleMenuClick}
-						/>)}
+						<MessageGroupWrapper messages={messages} handleMenuClick={this.handleMenuClick} />
 						<div className='clear' />
 					</div>
 				</div>

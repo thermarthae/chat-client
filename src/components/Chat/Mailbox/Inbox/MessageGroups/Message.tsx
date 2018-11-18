@@ -4,15 +4,15 @@ import { parseEmoji } from 'Utils/emoji.utils';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVert from '@material-ui/icons/MoreVert';
 
-import { IMessage } from '../Mailbox.apollo';
+import { IMessage } from '../../Mailbox.apollo';
 
-interface IMessageItemProps {
+interface IMessageProps {
 	handleMenuClick: (event: React.MouseEvent<HTMLElement>) => void;
 	message: IMessage;
 }
 
-export default class MessageItem extends React.Component<IMessageItemProps> {
-	public shouldComponentUpdate(nextProps: IMessageItemProps) {
+export default class Message extends React.Component<IMessageProps> {
+	public shouldComponentUpdate(nextProps: IMessageProps) {
 		if (this.props.message.content !== nextProps.message.content) return true;
 		return false;
 	}
