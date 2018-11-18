@@ -101,7 +101,7 @@ class MessageEditor extends React.PureComponent<TProps, IMessageEditorStates> {
 						},
 						content: message,
 						conversation: oponentId,
-						time: Date.now()
+						time: new Date().toISOString()
 					}
 				}
 			});
