@@ -8,6 +8,7 @@ export default {
 		__typename: 'Chat',
 		isAsideOpen: false,
 		inboxFilter: 'ALL',
+		oponentId: null,
 	},
 	subscriptions: {
 		__typename: 'Subscriptions',
