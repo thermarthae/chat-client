@@ -15,7 +15,6 @@ const { EmojiSelect } = emojiPlugin;
 const plugins = [emojiPlugin];
 
 interface IMessageInputProps {
-	oponentId: string;
 	draft: string;
 }
 
@@ -65,7 +64,7 @@ class MessageInput extends React.PureComponent<TProps, IMessageInputState>{
 	}
 
 	public render() {
-		const { oponentId, draft, intl: { formatMessage } } = this.props;
+		const { draft, intl: { formatMessage } } = this.props;
 		const { emojiPickerIsOpen } = this.state;
 
 		return (
@@ -73,7 +72,6 @@ class MessageInput extends React.PureComponent<TProps, IMessageInputState>{
 				<div className='bottom'>
 					<MessageEditor
 						className='input'
-						oponentId={oponentId}
 						ref={this.messageEditor}
 						plugins={plugins}
 						draft={draft}

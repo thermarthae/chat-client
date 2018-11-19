@@ -7,7 +7,8 @@ import Query from 'react-apollo/Query';
 import {
 	GET_CONVERSATION, IGetConversationResponse,
 	NEW_MESSAGES_SUBSCRIPTION, IMessage,
-	GET_MX_SUB_STATUS, IGetMxSubStatusRes, TOGGLE_MX_SUB_STATUS
+	GET_MX_SUB_STATUS, IGetMxSubStatusRes, TOGGLE_MX_SUB_STATUS,
+	GET_OPONENT_ID
 } from './Mailbox.apollo';
 
 import './Mailbox.style.scss';
@@ -27,13 +28,8 @@ const Empty = ({ i18nID }: { i18nID: string }) => {
 	);
 };
 
-interface IMailboxProps {
-	oponentId?: string;
-}
-
-interface IMailboxState {
-	mgsToFetch: number;
-}
+interface IMailboxProps { }
+interface IMailboxState { }
 
 class Mailbox extends React.Component<WithApolloClient<IMailboxProps>, IMailboxState> {
 	public state = {
@@ -80,26 +76,25 @@ class Mailbox extends React.Component<WithApolloClient<IMailboxProps>, IMailboxS
 	}
 
 	public render() {
-		const { oponentId } = this.props;
-		if (!oponentId) return <Empty i18nID='chat.mailbox.nothingSelected' />;
-		const mgsToFetch = 10;
-		const variables = { id: oponentId, skip: 0, limit: mgsToFetch };
+		return <Query query={GET_OPONENT_ID}>
+			{({ data: { chat: { oponentId } } }) => {
+				if (!oponentId) return <Empty i18nID='chat.mailbox.nothingSelected' />;
+				const { mgsToFetch } = this.state;
+				const variables = { id: oponentId, skip: 0, limit: mgsToFetch };
 
-		return (
-			<Query query={GET_CONVERSATION} variables={variables} errorPolicy='all'>{
-				({ loading, error, data, fetchMore }) => {
-					if (loading) return <Empty i18nID='chat.mailbox.loading' />;
-					if (!data) return <Empty i18nID='chat.mailbox.nothingSelected' />;
+				return <Query query={GET_CONVERSATION} variables={variables} errorPolicy='all'>
+					{({ loading, error, data, fetchMore }) => {
+						if (loading) return <Empty i18nID='chat.mailbox.loading' />;
+						if (!data) return <Empty i18nID='chat.mailbox.nothingSelected' />;
 
-					const { getConversation }: IGetConversationResponse = data;
-					if (error) {
-						if (getConversation === null) return <Redirect to='/' push />;
-						return <Empty i18nID='error.UnknownError' />;
-					}
-					const { name, messages, draft } = getConversation;
+						const { getConversation }: IGetConversationResponse = data;
+						if (error) {
+							if (getConversation === null) return <Redirect to='/' push />;
+							return <Empty i18nID='error.UnknownError' />;
+						}
+						const { name, messages, draft } = getConversation;
 
-					return (
-						<div id='mailbox'>
+						return <div id='mailbox'>
 							<Header conversationName={name} />
 							<div className='content'>
 								<div className='main'>
@@ -123,15 +118,15 @@ class Mailbox extends React.Component<WithApolloClient<IMailboxProps>, IMailboxS
 											}
 										})}
 									/>
-									<MessageInput draft={draft} oponentId={oponentId} />
+									<MessageInput draft={draft} />
 								</div>
 								<Aside />
 							</div>
-						</div>
-					);
-				}
-			}</Query>
-		);
+						</div>;
+					}}
+				</Query>;
+			}}
+		</Query>;
 	}
 }
 

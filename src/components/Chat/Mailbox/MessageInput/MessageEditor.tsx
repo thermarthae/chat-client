@@ -7,6 +7,8 @@ import {
 	SEND_MESSAGE,
 	GET_MESSAGES,
 	IGetMessagesResponse,
+	GET_OPONENT_ID,
+	IGetOponentIdResponse,
 } from './MessageEditor.apollo';
 
 
@@ -14,7 +16,6 @@ interface IMessageEditorProps {
 	className?: string;
 	plugins?: any;
 	placeholder?: string;
-	oponentId: string;
 	draft: string;
 }
 
@@ -68,7 +69,7 @@ class MessageEditor extends React.PureComponent<TProps, IMessageEditorStates> {
 	}
 
 	private sendMessage = async () => {
-		const { oponentId, client } = this.props;
+		const { client } = this.props;
 		const { editorState } = this.state;
 		const contentState = editorState.getCurrentContent();
 		const message = contentState.getPlainText();
@@ -77,6 +78,9 @@ class MessageEditor extends React.PureComponent<TProps, IMessageEditorStates> {
 
 		try {
 			this.clearEditorContent(editorState, contentState);
+			const { data: { chat: { oponentId } } } = await client.query<IGetOponentIdResponse>({
+				query: GET_OPONENT_ID
+			});
 			await client.mutate({
 				mutation: SEND_MESSAGE,
 				variables: { conversationId: oponentId, message },

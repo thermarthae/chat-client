@@ -1,5 +1,18 @@
 import gql from 'graphql-tag';
 
+export const GET_OPONENT_ID = gql`
+	query {
+		chat @client {
+			oponentId
+		}
+	}
+`;
+export interface IGetOponentIdResponse {
+	chat: {
+		oponentId: string;
+	};
+}
+
 export const SEND_MESSAGE = gql`
 	mutation ($conversationId: ID!, $message: String!) {
 		sendMessage(conversationId: $conversationId, message: $message){

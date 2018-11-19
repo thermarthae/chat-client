@@ -19,7 +19,6 @@ import EmptyItem from '../EmptyItem';
 
 interface ISearchboxProps {
 	inboxFilter: TInboxFilter;
-	oponentId?: string;
 }
 
 interface ISearchboxState {
@@ -89,7 +88,7 @@ class Searchbox extends React.PureComponent<WithApolloClient<ISearchboxProps>, I
 	}
 
 	public render() {
-		const { inboxFilter, oponentId } = this.props;
+		const { inboxFilter } = this.props;
 		const { query, isQueryShort, waitingForRes, result } = this.state;
 		const shouldDisplay = (inboxFilter === 'SEARCH') ? true : false;
 
@@ -122,7 +121,7 @@ class Searchbox extends React.PureComponent<WithApolloClient<ISearchboxProps>, I
 						? <EmptyItem><FormattedMessage id={'chat.searchbox.isQueryShort'} /></EmptyItem>
 						: waitingForRes
 							? <FakeConversations />
-							: <SerachResult result={result} oponentId={oponentId} />
+							: <SerachResult result={result} />
 				}</>}
 
 			</>

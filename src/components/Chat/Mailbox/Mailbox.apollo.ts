@@ -1,5 +1,18 @@
 import gql from 'graphql-tag';
 
+export const GET_OPONENT_ID = gql`
+	query {
+		chat @client {
+			oponentId
+		}
+	}
+`;
+export interface IGetOponentIdResponse {
+	chat: {
+		oponentId: string;
+	};
+}
+
 export const GET_CONVERSATION = gql`
 	query($id: ID!, $skip: Int!, $limit: Int!) {
 		getConversation(id: $id){
@@ -19,6 +32,7 @@ export const GET_CONVERSATION = gql`
 		}
 	}
 `;
+
 export interface IMessage {
 	_id: string;
 	author: {

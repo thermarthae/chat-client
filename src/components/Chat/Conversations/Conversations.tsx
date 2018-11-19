@@ -15,10 +15,7 @@ import ConversationList from './ConversationList/ConversationList';
 import FakeConversations from './FakeConversations';
 import EmptyItem from './EmptyItem';
 
-interface IConversationsProps {
-	oponentId?: string;
-}
-
+interface IConversationsProps { }
 class Conversations extends React.Component<WithApolloClient<IConversationsProps>> {
 	private subscribe = () => {
 		const { client } = this.props;
@@ -57,12 +54,10 @@ class Conversations extends React.Component<WithApolloClient<IConversationsProps
 	}
 
 	public render() {
-		const { oponentId } = this.props;
-
 		return <Query query={GET_CHAT_FILTER} >{
 			({ data: { chat: { inboxFilter } } }) =>
 				<div id='conversations'>
-					<Searchbox oponentId={oponentId} inboxFilter={inboxFilter} />
+					<Searchbox inboxFilter={inboxFilter} />
 					<Query query={GET_CONV_ARR} >
 						{({ loading, error, data }) => {
 							if (error) return `Error! ${error.message}`;
@@ -92,10 +87,7 @@ class Conversations extends React.Component<WithApolloClient<IConversationsProps
 								<FormattedMessage id='chat.conversations.nothingToShow' />
 							</EmptyItem>;
 
-							return <ConversationList
-								oponentId={oponentId}
-								conversationArr={filteredConv}
-							/>;
+							return <ConversationList conversationArr={filteredConv} />;
 						}}
 					</Query>
 				</div>

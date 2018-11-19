@@ -12,12 +12,11 @@ import EmptyItem from '../EmptyItem';
 
 interface ISearchboxProps {
 	result: IFindConvAndUsrRes;
-	oponentId?: string;
 }
 
 class Searchbox extends React.PureComponent<ISearchboxProps> {
 	public render() {
-		const { result, oponentId } = this.props;
+		const { result } = this.props;
 		const { findConversation, findUser } = result as IFindConvAndUsrRes;
 
 		const isConvArr = !!findConversation[0];
@@ -41,7 +40,7 @@ class Searchbox extends React.PureComponent<ISearchboxProps> {
 					<ListSubheader className='subheader'>
 						<FormattedMessage id={'chat.searchbox.conversations'} />
 					</ListSubheader>
-					<ConversationList oponentId={oponentId} conversationArr={findConversation} />
+					<ConversationList conversationArr={findConversation} />
 				</>}
 			</div>
 		);
