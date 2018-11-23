@@ -1,7 +1,4 @@
 import * as React from 'react';
-
-import { Mutation, Query } from 'react-apollo';
-import { MARK_CONV_AS_READ, GET_OPONENT_ID, IGetOponentIdResponse } from './MessageGroups.apollo';
 import { IMessage } from '../../Mailbox.apollo';
 
 import Cluster from './Cluster';
@@ -29,22 +26,13 @@ const MessageGroups = ({ messages, handleMenuClick }: IMessageGroups) => {
 	});
 	msgGroups.push(currentGroup);
 
-	return (
-		<Mutation mutation={MARK_CONV_AS_READ} ignoreResults>{
-			markAsRead => <Query<IGetOponentIdResponse> query={GET_OPONENT_ID}>{
-				({ data }) => {
-					const { chat: { oponentId } } = data!;
-					markAsRead({ variables: { id: oponentId } });
+	const clusters = msgGroups.map(grp => <Cluster
+		key={'G-' + grp[0].time} //TODO: fix key
+		group={grp}
+		handleMenuClick={handleMenuClick}
+	/>);
 
-					return msgGroups.map(grp => <Cluster
-						key={'G-' + grp[0].time} //TODO: fix key
-						group={grp}
-						handleMenuClick={handleMenuClick}
-					/>);
-				}
-			}</Query>
-		}</Mutation>
-	);
+	return <>{clusters}</>;
 };
 
 export default React.memo(MessageGroups);
