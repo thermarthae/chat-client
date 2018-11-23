@@ -55,6 +55,7 @@
 				overflow: auto;
 				flex: 1 0 1px;
 				z-index: -1;
+				position: relative;
 
 				.overflow {
 					overflow: auto;
@@ -175,6 +176,23 @@
 							}
 						}
 					}
+				}
+
+				.scrollDownInfo {
+					position: absolute;
+					margin: auto;
+					width: max-content;
+					max-width: 50%;
+					right: 0;
+					left: 0;
+					bottom: 0px;
+					padding: 0.7em;
+					border-radius: 0.7em 0.7em 0px 0px;
+					color: $text-primary__color--light;
+					cursor: pointer;
+					text-align: center;
+					background-color: $bg-primary__color-30;
+					box-shadow: $shadow-1;
 				}
 			}
 

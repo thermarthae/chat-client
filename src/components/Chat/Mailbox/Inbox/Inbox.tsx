@@ -11,6 +11,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import MessageGroups from './MessageGroups/MessageGroups';
 import { IMessage } from '../Mailbox.apollo';
+import ScrollDownInfo from './ScrollDownInfo';
 
 interface IInboxProps {
 	messages: IMessage[];
@@ -24,6 +25,7 @@ interface IInboxState {
 	menuAnchorEl: HTMLElement | undefined;
 	isFetching: boolean;
 	noMoreMsgToFetch: boolean;
+	scrollDownInfo: boolean;
 }
 
 class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
@@ -35,6 +37,7 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 		menuAnchorEl: undefined,
 		isFetching: false,
 		noMoreMsgToFetch: false,
+		scrollDownInfo: false,
 	};
 
 	public async componentDidMount() {
@@ -57,12 +60,18 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 			if (prevState.isFetching) inbox.scrollTop = inbox.scrollHeight - snapshot;
 			else if (snapshot === inbox.clientHeight) this.scrollToBottom('smooth');
 		}
-		if (prevProps.seen && !this.props.seen) await this.markConvAsRead();
+		if (prevProps.seen && !this.props.seen) {
+			const inbox = this.contentRef.current!;
+			const distanceFromBottom = inbox.scrollHeight - inbox.scrollTop - inbox.clientHeight;
+			if (distanceFromBottom > 150) this.setState({ scrollDownInfo: true });
+			else await this.markConvAsRead();
+		}
 	}
 
 	private markConvAsRead = async () => {
 		if (this.props.seen || this.isMarkingAsRead) return;
 		this.isMarkingAsRead = true;
+		this.setState({ scrollDownInfo: false });
 		await this.props.markConvAsRead();
 		this.isMarkingAsRead = false;
 	}
@@ -83,8 +92,17 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 		}));
 	}
 
-	private handleScroll = async (event: React.ChangeEvent<HTMLDivElement>) => {
-		if (event.target.scrollTop < 300) await this.fetchMoreMsgs();
+	private handleScroll = async ({ target }: React.ChangeEvent<HTMLDivElement>, byUser?: boolean) => {
+		if (!byUser) return;
+		if (target.scrollTop < 300) await this.fetchMoreMsgs();
+
+		const distanceFromBottom = target.scrollHeight - target.scrollTop - target.clientHeight;
+		if (distanceFromBottom < 150) await this.markConvAsRead();
+	}
+
+	private handleScrollInfoClick = () => {
+		this.markConvAsRead();
+		this.scrollToBottom('smooth');
 	}
 
 	private handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -98,11 +116,11 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 
 	public render() {
 		const { messages } = this.props;
-		const { menuAnchorEl, isFetching } = this.state;
+		const { menuAnchorEl, isFetching, scrollDownInfo } = this.state;
 
 		return (
 			<div className='align--bottom inbox'>
-				<div className='overflow' ref={this.contentRef} onScroll={this.handleScroll as any}>
+				<div className='overflow' ref={this.contentRef} onScroll={(event: any) => this.handleScroll(event, true)}>
 					<div className='groups' ref={this.groupsRef}>
 						{isFetching && <div className='align--center fetching'>
 							<CircularProgress size='1.5em' color='inherit' />
@@ -111,6 +129,7 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 						<div className='clear' />
 					</div>
 				</div>
+				<ScrollDownInfo open={scrollDownInfo} onClick={this.handleScrollInfoClick} />
 				<Popper open={!!menuAnchorEl} anchorEl={menuAnchorEl} transition disablePortal>
 					{({ TransitionProps }) => (
 						<Grow {...TransitionProps} >

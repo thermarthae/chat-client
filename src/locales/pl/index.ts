@@ -50,6 +50,9 @@ export default flatten({
 			isTyping: ' pisze...',
 			typeYourMessage: 'Napisz wiadomość...',
 		},
+		inbox: {
+			scrollDownToSee: 'Przewiń w dół, aby zobaczyć nową wiadomość',
+		},
 		conversations: {
 			search: 'Szukaj...',
 			nothingToShow: 'Brak elementów do wyświetlenia...',
