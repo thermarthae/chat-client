@@ -17,50 +17,40 @@ interface IConversationItemProps {
 	currentConv: boolean;
 	lastMsgId: string;
 }
-class ConversationItem extends React.Component<IConversationItemProps & InjectedIntlProps> {
-	public shouldComponentUpdate(nextProps: IConversationItemProps) {
-		if (this.props.currentConv !== nextProps.currentConv) return true;
-		if (this.props.lastMsgId !== nextProps.lastMsgId) return true;
-		return false;
-	}
+const ConversationItem = React.memo((props: IConversationItemProps & InjectedIntlProps) => {
+	const { conversation, currentConv, handleMenuClick, intl: { formatMessage } } = props;
+	const parsedMsg = parseEmoji(conversation.messages[0].content);
 
-	public render() {
-		const { conversation, currentConv, handleMenuClick, intl: { formatMessage } } = this.props;
-		const parsedMsg = parseEmoji(conversation.messages[0].content);
-
-		return (
-			<Link to={'/chat/' + conversation._id}>
-				<ListItem
-					component='div'
-					className={
-						'line'
-						+ (conversation.seen ? '' : ' unseen')
-						+ (currentConv ? ' active' : '')
-					}
-				>
-					<div className='left'>
-						<div className='avatar'>
-							<div className='status' />
-							<Avatar>
-								{conversation.name[0] || ''}
-							</Avatar>
-						</div>
+	return (
+		<Link to={'/chat/' + conversation._id}>
+			<ListItem
+				component='div'
+				className={
+					'line'
+					+ (conversation.seen ? '' : ' unseen')
+					+ (currentConv ? ' active' : '')
+				}
+			>
+				<div className='left'>
+					<div className='avatar'>
+						<div className='status' />
+						<Avatar>{conversation.name[0] || ''}</Avatar>
 					</div>
-					<div className='center'>
-						<span className='name'>
-							{conversation.name || formatMessage({ id: 'chat.conversations.conversationName' })}
-						</span>
-						<span className='message' dangerouslySetInnerHTML={{ __html: parsedMsg }} />
-					</div>
-					<div className='right'>
-						<IconButton className='menu' onClick={handleMenuClick} >
-							<MoreHoriz style={{ fontSize: 'inherit' }} />
-						</IconButton>
-					</div>
-				</ListItem>
-			</Link>
-		);
-	}
-}
+				</div>
+				<div className='center'>
+					<span className='name'>
+						{conversation.name || formatMessage({ id: 'chat.conversations.conversationName' })}
+					</span>
+					<span className='message' dangerouslySetInnerHTML={{ __html: parsedMsg }} />
+				</div>
+				<div className='right'>
+					<IconButton className='menu' onClick={handleMenuClick} >
+						<MoreHoriz style={{ fontSize: 'inherit' }} />
+					</IconButton>
+				</div>
+			</ListItem>
+		</Link>
+	);
+});
 
 export default injectIntl(ConversationItem);
