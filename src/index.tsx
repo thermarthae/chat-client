@@ -20,7 +20,9 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import './style/index.scss';
 import App from './components/App';
 
-const cache = new InMemoryCache();
+const cache = new InMemoryCache({
+	dataIdFromObject: (object: any) => object._id,
+});
 
 const stateLink = withClientState({
 	cache,
