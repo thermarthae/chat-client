@@ -8,8 +8,10 @@ import {
 	GET_CONVERSATION, IGetConversationResponse,
 	NEW_MESSAGES_SUBSCRIPTION, IMessage,
 	GET_MX_SUB_STATUS, IGetMxSubStatusRes, TOGGLE_MX_SUB_STATUS,
-	GET_OPONENT_ID
+	MARK_CONV_AS_READ,
+	IMarkConvAsReadRes
 } from './Mailbox.apollo';
+import { ConvNavFragment } from 'Components/Chat/Conversations/Conversations.apollo';
 
 import './Mailbox.style.scss';
 
@@ -28,13 +30,19 @@ const Empty = ({ i18nID }: { i18nID: string }) => {
 	);
 };
 
-interface IMailboxProps { }
+interface IMailboxProps {
+	oponentId?: string;
+}
 interface IMailboxState { }
 
 class Mailbox extends React.Component<WithApolloClient<IMailboxProps>, IMailboxState> {
 	public state = {
 		mgsToFetch: 10
 	};
+
+	public componentDidMount() {
+		this.subscribe();
+	}
 
 	private subscribe = () => {
 		const { client } = this.props;
@@ -71,60 +79,78 @@ class Mailbox extends React.Component<WithApolloClient<IMailboxProps>, IMailboxS
 		});
 	}
 
-	public componentDidMount() {
-		this.subscribe();
+	private markConvAsRead = async () => {
+		const { oponentId, client } = this.props;
+		const { cache } = client;
+
+		const { data: { markConversationAsRead } } = await client.mutate({
+			mutation: MARK_CONV_AS_READ,
+			variables: { id: oponentId }
+		}) as IMarkConvAsReadRes;
+
+		if (!markConversationAsRead) return;
+		const getConversation = cache.readFragment({
+			id: oponentId!,
+			fragment: ConvNavFragment,
+		})!;
+
+		cache.writeFragment({
+			id: oponentId!,
+			fragment: ConvNavFragment,
+			data: Object.assign(getConversation, { seen: true })
+		});
+		client.queryManager!.broadcastQueries();
 	}
 
 	public render() {
-		return <Query query={GET_OPONENT_ID}>
-			{({ data: { chat: { oponentId } } }) => {
-				if (!oponentId) return <Empty i18nID='chat.mailbox.nothingSelected' />;
-				const { mgsToFetch } = this.state;
-				const variables = { id: oponentId, skip: 0, limit: mgsToFetch };
+		const { oponentId } = this.props;
+		if (!oponentId) return <Empty i18nID='chat.mailbox.nothingSelected' />;
+		const { mgsToFetch } = this.state;
+		const variables = { id: oponentId, skip: 0, limit: mgsToFetch };
 
-				return <Query query={GET_CONVERSATION} variables={variables} errorPolicy='all'>
-					{({ loading, error, data, fetchMore }) => {
-						if (loading) return <Empty i18nID='chat.mailbox.loading' />;
-						if (!data) return <Empty i18nID='chat.mailbox.nothingSelected' />;
+		return <Query query={GET_CONVERSATION} variables={variables} errorPolicy='all'>
+			{({ loading, error, data, fetchMore }) => {
+				if (loading) return <Empty i18nID='chat.mailbox.loading' />;
+				if (!data) return <Empty i18nID='chat.mailbox.nothingSelected' />;
 
-						const { getConversation }: IGetConversationResponse = data;
-						if (error) {
-							if (getConversation === null) return <Redirect to='/' push />;
-							return <Empty i18nID='error.UnknownError' />;
-						}
-						const { name, messages, draft } = getConversation;
+				const { getConversation }: IGetConversationResponse = data;
+				if (error) {
+					if (getConversation === null) return <Redirect to='/' push />;
+					return <Empty i18nID='error.UnknownError' />;
+				}
+				const { name, messages, draft, seen } = getConversation;
 
-						return <div id='mailbox'>
-							<Header conversationName={name} />
-							<div className='content'>
-								<div className='main'>
-									<Inbox
-										messages={messages}
-										mgsToFetch={mgsToFetch}
-										onLoadMore={() => fetchMore({
-											variables: { skip: messages.length },
-											updateQuery: (prev: IGetConversationResponse, { fetchMoreResult }) => {
-												if (!fetchMoreResult || !fetchMoreResult.getConversation.messages)
-													return prev;
+				return <div id='mailbox'>
+					<Header conversationName={name} />
+					<div className='content'>
+						<div className='main'>
+							<Inbox
+								messages={messages}
+								seen={seen}
+								mgsToFetch={mgsToFetch}
+								markConvAsRead={this.markConvAsRead}
+								onLoadMore={() => fetchMore({
+									variables: { skip: messages.length },
+									updateQuery: (prev: IGetConversationResponse, { fetchMoreResult }) => {
+										if (!fetchMoreResult || !fetchMoreResult.getConversation.messages)
+											return prev;
 
-												return {
-													getConversation: Object.assign({}, prev.getConversation, {
-														messages: [
-															...fetchMoreResult.getConversation.messages,
-															...prev.getConversation.messages,
-														]
-													})
-												};
-											}
-										})}
-									/>
-									<MessageInput draft={draft} />
-								</div>
-								<Aside />
-							</div>
-						</div>;
-					}}
-				</Query>;
+										return {
+											getConversation: Object.assign({}, prev.getConversation, {
+												messages: [
+													...fetchMoreResult.getConversation.messages,
+													...prev.getConversation.messages,
+												]
+											})
+										};
+									}
+								})}
+							/>
+							<MessageInput draft={draft} />
+						</div>
+						<Aside />
+					</div>
+				</div>;
 			}}
 		</Query>;
 	}

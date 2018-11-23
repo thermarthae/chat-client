@@ -9,12 +9,14 @@ import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import MessageGroupWrapper from './MessageGroups/MessageGroups';
+import MessageGroups from './MessageGroups/MessageGroups';
 import { IMessage } from '../Mailbox.apollo';
 
 interface IInboxProps {
 	messages: IMessage[];
 	mgsToFetch: number;
+	seen: boolean;
+	markConvAsRead: () => Promise<void>;
 	onLoadMore: () => Promise<any>;
 }
 
@@ -27,6 +29,7 @@ interface IInboxState {
 class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 	private groupsRef = React.createRef<HTMLDivElement>();
 	private contentRef = React.createRef<HTMLDivElement>();
+	private isMarkingAsRead = false;
 
 	public state = {
 		menuAnchorEl: undefined,
@@ -37,6 +40,7 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 	public async componentDidMount() {
 		this.scrollToBottom('instant');
 		if (this.contentRef.current!.scrollTop < 300) await this.fetchMoreMsgs();
+		await this.markConvAsRead();
 	}
 
 	public getSnapshotBeforeUpdate(prevProps: IInboxProps) {
@@ -47,12 +51,20 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 		return null;
 	}
 
-	public componentDidUpdate({ }, prevState: IInboxState, snapshot: number | null) {
+	public async componentDidUpdate(prevProps: IInboxProps, prevState: IInboxState, snapshot: number | null) {
 		if (snapshot !== null) {
 			const inbox = this.contentRef.current!;
 			if (prevState.isFetching) inbox.scrollTop = inbox.scrollHeight - snapshot;
 			else if (snapshot === inbox.clientHeight) this.scrollToBottom('smooth');
 		}
+		if (prevProps.seen && !this.props.seen) await this.markConvAsRead();
+	}
+
+	private markConvAsRead = async () => {
+		if (this.props.seen || this.isMarkingAsRead) return;
+		this.isMarkingAsRead = true;
+		await this.props.markConvAsRead();
+		this.isMarkingAsRead = false;
 	}
 
 	private scrollToBottom = (behavior: 'smooth' | 'instant') => {
@@ -95,7 +107,7 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 						{isFetching && <div className='align--center fetching'>
 							<CircularProgress size='1.5em' color='inherit' />
 						</div>}
-						<MessageGroupWrapper messages={messages} handleMenuClick={this.handleMenuClick} />
+						<MessageGroups messages={messages} handleMenuClick={this.handleMenuClick} />
 						<div className='clear' />
 					</div>
 				</div>

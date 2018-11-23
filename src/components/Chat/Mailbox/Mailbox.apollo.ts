@@ -1,23 +1,24 @@
 import gql from 'graphql-tag';
 
-export const GET_OPONENT_ID = gql`
-	query {
-		chat @client {
-			oponentId
-		}
+export const MARK_CONV_AS_READ = gql`
+	mutation ($id: ID!){
+		markConversationAsRead(conversationId: $id)
 	}
 `;
-export interface IGetOponentIdResponse {
-	chat: {
-		oponentId: string;
+export interface IMarkConvAsReadRes {
+	data: {
+		markConversationAsRead: string | null
 	};
 }
+
+
 
 export const GET_CONVERSATION = gql`
 	query($id: ID!, $skip: Int!, $limit: Int!) {
 		getConversation(id: $id){
 			_id
 			name
+			seen
 			messages(skip: $skip, limit: $limit) {
 				_id
 				author {
@@ -47,6 +48,7 @@ export interface IGetConversationResponse {
 	getConversation: {
 		_id: string;
 		name: string;
+		seen: boolean;
 		messages: IMessage[];
 		draft: string;
 	};

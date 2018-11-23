@@ -28,7 +28,7 @@ export default class Chat extends React.Component<IChatProps> {
 						<div id='chat'>
 							<Menu />
 							<Conversations />
-							<Mailbox />
+							<Mailbox oponentId={oponentId} />
 						</div>
 					);
 				}}
