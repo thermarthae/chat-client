@@ -1,11 +1,11 @@
 {
-	"name": "newChat",
+	"name": "chat-client",
 	"version": "0.0.0",
-	"description": "newChat",
-	"license": "Apache-2.0",
+	"license": "MIT",
+	"private": true,
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/thermarthae/reactstarter.git"
+		"url": "https://github.com/thermarthae/chat-client.git"
 	},
 	"scripts": {
 		"build": "webpack -p  --progress --config=configs/webpack/prod.config.js",
