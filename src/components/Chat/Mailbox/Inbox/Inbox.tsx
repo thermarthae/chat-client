@@ -41,7 +41,7 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 	};
 
 	public async componentDidMount() {
-		this.scrollToBottom('instant');
+		this.scrollToBottom('auto');
 		if (this.contentRef.current!.scrollTop < 300) await this.fetchMoreMsgs();
 		await this.markConvAsRead();
 	}
@@ -76,7 +76,7 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 		this.isMarkingAsRead = false;
 	}
 
-	private scrollToBottom = (behavior: 'smooth' | 'instant') => {
+	private scrollToBottom = (behavior: 'smooth' | 'auto') => {
 		this.groupsRef.current!.scrollIntoView({ behavior, block: 'end', inline: 'end' });
 	}
 
