@@ -30,11 +30,9 @@ export const ConvNavFragment = gql`
 	}
 `;
 export const GET_CONV_ARR = gql`
-	query {
-		userConversations {
-			conversationArr {
-				...ConversationNav
-			}
+	query getConvArr {
+		getUserConversations {
+			...ConversationNav
 		}
 	}
 	${ConvNavFragment}
@@ -55,9 +53,7 @@ export interface IConversation {
 	messages: IMessage[];
 }
 export interface IGetConvArrResponse {
-	userConversations: {
-		conversationArr: IConversation[];
-	};
+	getUserConversations: IConversation[];
 }
 
 

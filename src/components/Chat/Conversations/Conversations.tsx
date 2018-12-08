@@ -29,18 +29,13 @@ class Conversations extends React.Component<WithApolloClient<IConversationsProps
 			next({ data }) {
 				try {
 					const updatedConv = data.updatedConversation as IConversation;
-					const {
-						userConversations: { conversationArr }
-					} = client.readQuery<IGetConvArrResponse>({ query: GET_CONV_ARR })!;
-					const convExist = conversationArr.find(cnv => cnv._id === updatedConv._id);
+					const { getUserConversations } = client.readQuery<IGetConvArrResponse>({ query: GET_CONV_ARR })!;
+					const convExist = getUserConversations.find(cnv => cnv._id === updatedConv._id);
 
 					if (!convExist) client.writeQuery({
 						query: GET_CONV_ARR,
 						data: {
-							userConversations: {
-								conversationArr: [...conversationArr, updatedConv],
-								__typename: 'userConversations'
-							}
+							getUserConversations: [...getUserConversations, updatedConv],
 						}
 					});
 				} catch (err) { } // tslint:disable-line
@@ -64,7 +59,7 @@ class Conversations extends React.Component<WithApolloClient<IConversationsProps
 							if (loading) return <FakeConversations />;
 
 							const {
-								userConversations: { conversationArr }
+								getUserConversations
 							}: IGetConvArrResponse = data;
 
 							let filteredConv = [];
@@ -73,13 +68,13 @@ class Conversations extends React.Component<WithApolloClient<IConversationsProps
 									return null;
 									break;
 								case 'DRAFT':
-									filteredConv = conversationArr.filter(conv => conv.draft);
+									filteredConv = getUserConversations.filter(conv => conv.draft);
 									break;
 								case 'UNREAD':
-									filteredConv = conversationArr.filter(conv => !conv.seen);
+									filteredConv = getUserConversations.filter(conv => !conv.seen);
 									break;
 								default:
-									filteredConv = conversationArr;
+									filteredConv = getUserConversations;
 									break;
 							}
 

@@ -29,7 +29,7 @@ const ConvFilters: React.SFC<IConvFiltersProps> = ({ filter, setFilter }) => {
 					);
 
 					const {
-						userConversations: {
+						getChatJewels: {
 							conversationCount,
 							draftCount,
 							unreadCount

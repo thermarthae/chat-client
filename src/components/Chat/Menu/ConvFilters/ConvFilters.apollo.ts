@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 export const GET_CURRENT_USER = gql`
 	query {
-		userConversations {
+		getChatJewels {
 			conversationCount
 			draftCount
 			unreadCount
@@ -11,7 +11,7 @@ export const GET_CURRENT_USER = gql`
 `;
 
 export interface IGetCurrentUserResponse {
-	userConversations: {
+	getChatJewels: {
 		conversationCount: number;
 		draftCount: number;
 		unreadCount: number;
