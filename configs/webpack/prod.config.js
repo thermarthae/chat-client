@@ -3,10 +3,9 @@ const merge = require('webpack-merge');
 const baseCfg = require('./base.config');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-module.exports =  merge(baseCfg, {
+module.exports = merge(baseCfg, {
 	mode: 'production',
 	devtool: 'source-map',
 	output: {
@@ -49,24 +48,6 @@ module.exports =  merge(baseCfg, {
 		new MiniCssExtractPlugin({
 			filename: 'css/[name].css',
 			chunkFilename: 'css/[id].css'
-		}),
-		new FaviconsWebpackPlugin({
-			logo: './assets/img/favicon.png',
-			prefix: 'icons/',
-			inject: true,
-			persistentCache: false,
-			icons: {
-				android: true,
-				appleIcon: true,
-				appleStartup: true,
-				coast: true,
-				favicons: true,
-				firefox: true,
-				opengraph: true,
-				twitter: true,
-				yandex: true,
-				windows: true
-			}
 		}),
 		new BundleAnalyzerPlugin(),
 	]
