@@ -10,7 +10,7 @@ module.exports = merge(baseCfg, {
 	devtool: 'source-map',
 	output: {
 		filename: 'js/bundle.min.js',
-		chunkFilename: '[name].bundle.js',
+		chunkFilename: 'js/[name].bundle.js',
 		path: path.resolve(__dirname, '../../dist')
 	},
 	optimization: {
