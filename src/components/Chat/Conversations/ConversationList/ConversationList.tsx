@@ -4,6 +4,7 @@ import { Query } from 'react-apollo';
 
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import List from './../List';
 
 import { GET_OPONENT_ID, IGetOponentIdResponse } from './ConversationList.apollo';
 import ConversationItem from './ConversationItem';
@@ -41,7 +42,7 @@ export default class ConversationList extends React.PureComponent<IConversationL
 				{({ data }) => {
 					const { chat: { oponentId } } = data!;
 					return (
-						<div className='conversations list'>
+						<List>
 							{conversationArr.map(item =>
 								<ConversationItem
 									key={item._id}
@@ -60,7 +61,7 @@ export default class ConversationList extends React.PureComponent<IConversationL
 									<FormattedMessage id='menuItem.delete' />
 								</MenuItem>
 							</Menu>
-						</div>
+						</List>
 					);
 				}}
 			</Query>

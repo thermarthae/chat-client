@@ -8,6 +8,7 @@ import ConversationList from '../ConversationList/ConversationList';
 import UserList from '../UserList/UserList';
 
 import EmptyItem from '../EmptyItem';
+import List from '../List';
 
 
 interface ISearchboxProps {
@@ -29,7 +30,7 @@ class Searchbox extends React.PureComponent<ISearchboxProps> {
 		);
 
 		return (
-			<div className='list search-result'>
+			<List className='search-result'>
 				{isUserArr && <>
 					<ListSubheader className='subheader'>
 						<FormattedMessage id={'chat.searchbox.users'} />
@@ -42,7 +43,7 @@ class Searchbox extends React.PureComponent<ISearchboxProps> {
 					</ListSubheader>
 					<ConversationList conversationArr={findConversation} />
 				</>}
-			</div>
+			</List>
 		);
 	}
 }

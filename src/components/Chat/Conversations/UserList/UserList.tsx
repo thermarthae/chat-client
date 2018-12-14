@@ -6,6 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import UserItem from './UserItem';
 import { IUser } from '../Serachbox/Searchbox.apollo';
+import List from '../List';
 
 
 interface IUserListProps {
@@ -35,7 +36,7 @@ class UserList extends React.PureComponent<IUserListProps, IUserListStates> {
 		const { menuAnchorEl } = this.state;
 
 		return (
-			<div className='users list'>
+			<List>
 				{userArr.map(item =>
 					<UserItem
 						key={item._id}
@@ -52,7 +53,7 @@ class UserList extends React.PureComponent<IUserListProps, IUserListStates> {
 						<FormattedMessage id='menuItem.delete' />
 					</MenuItem>
 				</Menu>
-			</div>
+			</List>
 		);
 	}
 }
