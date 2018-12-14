@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import { withStyles } from '@material-ui/styles';
 
-import './Chat.style.scss';
+import chatStyles, { TChatStyles } from './Chat.style';
 
 import Menu from './Menu/Menu';
 import Conversations from './Conversations/Conversations';
@@ -9,9 +10,9 @@ import Mailbox from './Mailbox/Mailbox';
 import { Mutation } from 'react-apollo';
 import { SET_OPONENT_ID } from './Chat.apollo';
 
-interface IChatProps extends RouteComponentProps<{ oponentId?: string }> { }
+interface IChatProps extends TChatStyles, RouteComponentProps<{ oponentId?: string }> { }
 
-export default class Chat extends React.Component<IChatProps> {
+class Chat extends React.Component<IChatProps> {
 	public shouldComponentUpdate(nextProps: IChatProps) {
 		if (JSON.stringify(this.props.match) !== JSON.stringify(nextProps.match)) return true;
 		return false;
@@ -19,13 +20,14 @@ export default class Chat extends React.Component<IChatProps> {
 
 	public render() {
 		const oponentId = this.props.match.params.oponentId;
+		const { classes } = this.props;
 
 		return (
 			<Mutation mutation={SET_OPONENT_ID} ignoreResults>
 				{setOponentId => {
 					setOponentId({ variables: { id: oponentId } });
 					return (
-						<div id='chat'>
+						<div className={classes.root}>
 							<Menu />
 							<Conversations />
 							<Mailbox oponentId={oponentId} />
@@ -36,3 +38,4 @@ export default class Chat extends React.Component<IChatProps> {
 		);
 	}
 }
+export default withStyles(chatStyles)(Chat);
