@@ -11,15 +11,14 @@ import { withClientState } from 'apollo-link-state';
 import { BatchHttpLink } from 'apollo-link-batch-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getOperationAST } from 'graphql/utilities/getOperationAST';
+import { ThemeProvider } from '@material-ui/styles';
 
 import defaults from './state/defaults';
 import mutations from './state/mutations';
 // import queries from './apollo/state/resolvers/queries';
 
-import { ThemeProvider } from '@material-ui/styles';
-import { createMuiTheme } from '@material-ui/core/styles';
-
 import './style/index.scss';
+import theme from './theme';
 import App from './components/App';
 
 const cache = new InMemoryCache({
@@ -72,18 +71,6 @@ const client = new ApolloClient({
 	])
 });
 client.onResetStore(stateLink.writeDefaults as any);
-
-const theme = createMuiTheme({
-	typography: { useNextVariants: true },
-	palette: {
-		primary: {
-			main: '#3a3d5a'
-		},
-		secondary: {
-			main: '#ff0000'
-		}
-	}
-});
 
 const Hot = hot(module)(() => (
 	<ApolloProvider client={client}>
