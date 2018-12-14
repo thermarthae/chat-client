@@ -15,7 +15,9 @@ import defaults from './state/defaults';
 import mutations from './state/mutations';
 // import queries from './apollo/state/resolvers/queries';
 
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
+
 import './style/index.scss';
 import App from './components/App';
 
@@ -84,9 +86,9 @@ const theme = createMuiTheme({
 
 const Hot = hot(module)(() => (
 	<ApolloProvider client={client}>
-		<MuiThemeProvider theme={theme}>
+		<ThemeProvider theme={theme}>
 			<App />
-		</MuiThemeProvider>
+		</ThemeProvider>
 	</ApolloProvider>
 ));
 
