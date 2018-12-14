@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { render } from 'react-dom';
-import { AppContainer } from 'react-hot-loader';
-
+import { hot } from 'react-hot-loader';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
@@ -83,29 +82,15 @@ const theme = createMuiTheme({
 	}
 });
 
-const rootEl = document.getElementById('root');
+const Hot = hot(module)(() => (
+	<ApolloProvider client={client}>
+		<MuiThemeProvider theme={theme}>
+			<App />
+		</MuiThemeProvider>
+	</ApolloProvider>
+));
 
-const renderComponent = (Component: any) => {
-	render(
-		<AppContainer>
-			<ApolloProvider client={client}>
-				<MuiThemeProvider theme={theme}>
-					<Component />
-				</MuiThemeProvider>
-			</ApolloProvider>
-		</AppContainer>,
-		rootEl
-	);
-};
-renderComponent(App);
-
-// Webpack Hot Module Replacement API
-declare let module: {
-	hot: any;
-};
-
-if (module.hot)
-	module.hot.accept('./components/App', () => {
-		const NewApp = require('./components/App').default;
-		renderComponent(NewApp);
-	});
+render(
+	<Hot />,
+	document.getElementById('root')
+);
