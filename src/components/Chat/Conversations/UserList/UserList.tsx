@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import UserItem from './UserItem';
+import Line from '../Line/Line';
 import { IUser } from '../Serachbox/Searchbox.apollo';
 import List from '../List';
 
@@ -38,10 +38,11 @@ class UserList extends React.PureComponent<IUserListProps, IUserListStates> {
 		return (
 			<List>
 				{userArr.map(item =>
-					<UserItem
+					<Line
 						key={item._id}
+						avatar={item.name[0]}
+						name={item.name}
 						handleMenuClick={this.handleMenuClick}
-						user={item}
 					/>
 				)}
 				<Menu

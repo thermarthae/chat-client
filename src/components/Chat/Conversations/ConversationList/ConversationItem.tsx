@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 
-import Line from '../Line/Line'; //TODO
+import Line from '../Line/Line';
 
 import { IConversation } from '../Conversations.apollo';
 
