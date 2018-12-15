@@ -13,7 +13,7 @@ import { SET_INBOX_FILTER, FIND_CONV_AND_USR, IFindConvAndUsrRes } from './Searc
 import { TInboxFilter } from '../Conversations.apollo';
 
 import './Searchbox.style.scss';
-import FakeConversations from '../FakeConversations';
+import FakeConversations from '../FakeConversations/FakeConversations';
 import SerachResult from './SearchResult';
 import EmptyItem from '../EmptyItem';
 

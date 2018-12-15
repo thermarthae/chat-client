@@ -12,7 +12,7 @@ import {
 
 import Searchbox from './Serachbox/Searchbox';
 import ConversationList from './ConversationList/ConversationList';
-import FakeConversations from './FakeConversations';
+import FakeConversations from './FakeConversations/FakeConversations';
 import EmptyItem from './EmptyItem';
 
 interface IConversationsProps { }
