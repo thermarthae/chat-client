@@ -14,7 +14,7 @@ import { TInboxFilter } from '../Conversations.apollo';
 
 import './Searchbox.style.scss';
 import FakeConversations from '../FakeConversations/FakeConversations';
-import SerachResult from './SearchResult';
+import SearchResult from './SearchResult';
 import EmptyItem from '../EmptyItem';
 
 interface ISearchboxProps {
@@ -121,7 +121,7 @@ class Searchbox extends React.PureComponent<WithApolloClient<ISearchboxProps>, I
 						? <EmptyItem><FormattedMessage id={'chat.searchbox.isQueryShort'} /></EmptyItem>
 						: waitingForRes
 							? <FakeConversations />
-							: <SerachResult result={result} />
+							: <SearchResult result={result} />
 				}</>}
 
 			</>

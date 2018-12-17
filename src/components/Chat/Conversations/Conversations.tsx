@@ -10,7 +10,7 @@ import {
 	GET_SUB_STATUS, IGetConvSubStatusRes, TOGGLE_CONV_SUB_STATUS
 } from './Conversations.apollo';
 
-import Searchbox from './Serachbox/Searchbox';
+import Searchbox from './Searchbox/Searchbox';
 import ConversationList from './ConversationList/ConversationList';
 import FakeConversations from './FakeConversations/FakeConversations';
 import EmptyItem from './EmptyItem';

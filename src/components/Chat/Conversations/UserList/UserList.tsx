@@ -5,7 +5,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import Line from '../Line/Line';
-import { IUser } from '../Serachbox/Searchbox.apollo';
+import { IUser } from '../Searchbox/Searchbox.apollo';
 import List from '../List';
 
 
