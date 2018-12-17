@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Query, withApollo, WithApolloClient } from 'react-apollo';
-
-import './Conversations.style.scss';
+import { withStyles } from '@material-ui/styles';
+import convStyles, { TConvStyles } from './Conversations.style';
 import {
 	GET_CHAT_FILTER, TInboxFilter,
 	GET_CONV_ARR, IGetConvArrResponse,
@@ -15,7 +15,7 @@ import ConversationList from './ConversationList/ConversationList';
 import FakeConversations from './FakeConversations/FakeConversations';
 import EmptyItem from './EmptyItem';
 
-interface IConversationsProps { }
+interface IConversationsProps extends TConvStyles { }
 class Conversations extends React.Component<WithApolloClient<IConversationsProps>> {
 	private subscribe = () => {
 		const { client } = this.props;
@@ -51,16 +51,14 @@ class Conversations extends React.Component<WithApolloClient<IConversationsProps
 	public render() {
 		return <Query query={GET_CHAT_FILTER} >{
 			({ data: { chat: { inboxFilter } } }) =>
-				<div id='conversations'>
+				<div className={this.props.classes.root}>
 					<Searchbox inboxFilter={inboxFilter} />
 					<Query query={GET_CONV_ARR} >
 						{({ loading, error, data }) => {
 							if (error) return `Error! ${error.message}`;
 							if (loading) return <FakeConversations />;
 
-							const {
-								getUserConversations
-							}: IGetConvArrResponse = data;
+							const { getUserConversations }: IGetConvArrResponse = data;
 
 							let filteredConv = [];
 							switch (inboxFilter as TInboxFilter) {
@@ -89,4 +87,4 @@ class Conversations extends React.Component<WithApolloClient<IConversationsProps
 		}</Query>;
 	}
 }
-export default withApollo(Conversations);
+export default withApollo(withStyles(convStyles)(Conversations));
