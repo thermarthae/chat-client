@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Query } from 'react-apollo';
+import { Link } from 'react-router-dom';
 
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import List from './../List';
+import Line from '../Line/Line';
 
 import { GET_OPONENT_ID, IGetOponentIdResponse } from './ConversationList.apollo';
-import ConversationItem from './ConversationItem';
 import { IConversation } from '../Conversations.apollo';
 
 
@@ -44,13 +45,16 @@ export default class ConversationList extends React.PureComponent<IConversationL
 					return (
 						<List>
 							{conversationArr.map(item =>
-								<ConversationItem
-									key={item._id}
-									lastMsgId={item.messages[0]._id}
-									handleMenuClick={this.handleMenuClick}
-									conversation={item}
-									currentConv={item._id === oponentId}
-								/>
+								<Link to={'/chat/' + item._id} key={item._id}>
+									<Line
+										avatar={item.name[0]}
+										name={item.name}
+										message={item.messages[0].content}
+										isActive={item._id === oponentId}
+										isUnseen={!item.seen}
+										handleMenuClick={this.handleMenuClick}
+									/>
+								</Link>
 							)}
 							<Menu
 								open={Boolean(menuAnchorEl)}
