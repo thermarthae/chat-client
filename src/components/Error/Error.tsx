@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import './Error.style.scss';
+import errorStyles from './Error.style';
 
 const Error = () => {
-	return <div id='error'>
+	const classes = errorStyles({});
+	return <div className={classes.root}>
 		<FormattedMessage id='error.404' />
 	</div>;
 };
