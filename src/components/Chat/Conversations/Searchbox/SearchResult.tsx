@@ -3,6 +3,8 @@ import { FormattedMessage } from 'react-intl';
 
 import { IFindConvAndUsrRes } from './Searchbox.apollo';
 import ListSubheader from '@material-ui/core/ListSubheader';
+import { Theme } from '@material-ui/core';
+import { styled } from '@material-ui/styles';
 
 import ConversationList from '../ConversationList/ConversationList';
 import UserList from '../UserList/UserList';
@@ -10,6 +12,10 @@ import UserList from '../UserList/UserList';
 import EmptyItem from '../EmptyItem';
 import List from '../List';
 
+const StyledListSubheader = styled(ListSubheader)(({ palette }: Theme) => ({
+	backgroundColor: palette.primary.dark,
+	color: palette.textLight.secondary,
+}));
 
 interface ISearchResultProps {
 	result: IFindConvAndUsrRes;
@@ -30,17 +36,17 @@ class SearchResult extends React.PureComponent<ISearchResultProps> {
 		);
 
 		return (
-			<List className='search-result'>
+			<List>
 				{isUserArr && <>
-					<ListSubheader className='subheader'>
+					<StyledListSubheader>
 						<FormattedMessage id={'chat.searchbox.users'} />
-					</ListSubheader>
+					</StyledListSubheader>
 					<UserList userArr={findUser} />
 				</>}
 				{isConvArr && <>
-					<ListSubheader className='subheader'>
+					<StyledListSubheader>
 						<FormattedMessage id={'chat.searchbox.conversations'} />
-					</ListSubheader>
+					</StyledListSubheader>
 					<ConversationList conversationArr={findConversation} />
 				</>}
 			</List>
