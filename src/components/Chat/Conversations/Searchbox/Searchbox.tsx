@@ -117,14 +117,14 @@ class Searchbox extends React.PureComponent<WithApolloClient<ISearchboxProps>, I
 					}</FormattedMessage>
 					{waitingForRes && <LinearProgress className={classes.progressBar} variant='query' />}
 				</div>
-				{shouldDisplay && <>{
-					isQueryShort
+				{!shouldDisplay
+					? null
+					: isQueryShort
 						? <EmptyItem><FormattedMessage id={'chat.searchbox.isQueryShort'} /></EmptyItem>
 						: waitingForRes
 							? <FakeConversations />
 							: <SearchResult result={result} />
-				}</>}
-
+				}
 			</>
 		);
 	}
