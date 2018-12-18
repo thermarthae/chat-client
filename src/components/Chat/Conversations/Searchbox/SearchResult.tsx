@@ -11,11 +11,11 @@ import EmptyItem from '../EmptyItem';
 import List from '../List';
 
 
-interface ISearchboxProps {
+interface ISearchResultProps {
 	result: IFindConvAndUsrRes;
 }
 
-class Searchbox extends React.PureComponent<ISearchboxProps> {
+class SearchResult extends React.PureComponent<ISearchResultProps> {
 	public render() {
 		const { result } = this.props;
 		const { findConversation, findUser } = result as IFindConvAndUsrRes;
@@ -48,4 +48,4 @@ class Searchbox extends React.PureComponent<ISearchboxProps> {
 	}
 }
 
-export default Searchbox;
+export default SearchResult;
