@@ -16,9 +16,7 @@ type IDiv = React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDi
 const List = ({ children, className, ...others }: IDiv) => {
 	const classes = listStyles({});
 	return (
-		<div {...others}
-			className={classes.root + (className ? (' ' + className) : '')}
-		>
+		<div {...others} className={classes.root}>
 			{children}
 		</div>
 	);
