@@ -6,13 +6,14 @@ import { TInboxFilter } from '../Menu.apollo';
 
 import List from '@material-ui/core/List';
 
-import MenuItem from '../MenuItem';
+import MenuItem from '../MenuItem/MenuItem';
 
 interface IConvFiltersProps {
 	filter: TInboxFilter;
 	setFilter: (inboxFilter: TInboxFilter) => void;
+	className?: string;
 }
-const ConvFilters: React.SFC<IConvFiltersProps> = ({ filter, setFilter }) => {
+const ConvFilters: React.SFC<IConvFiltersProps> = ({ filter, setFilter, className }) => {
 	const emptyInboxFilters = [
 		{ name: 'UNREAD', l18nID: 'chat.menu.inbox' },
 		{ name: 'ALL', l18nID: 'chat.menu.allMessages' },
@@ -20,7 +21,7 @@ const ConvFilters: React.SFC<IConvFiltersProps> = ({ filter, setFilter }) => {
 	];
 
 	return (
-		<List className='container'>
+		<List className={className}>
 			<Query<IGetCurrentUserResponse> query={GET_CURRENT_USER}>
 				{({ loading, error, data }) => {
 					if (error) return `Error! ${error.message}`;

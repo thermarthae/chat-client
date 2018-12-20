@@ -5,19 +5,20 @@ import { SET_INBOX_FILTER, GET_INBOX_FILTER, IGetInboxFilterResponse, TInboxFilt
 
 import List from '@material-ui/core/List';
 
-import './Menu.style.scss';
+import menuStyles from './Menu.style';
 
 import Header from './Header/Header';
 import ConvFilters from './ConvFilters/ConvFilters';
-import MenuItem from './MenuItem';
+import MenuItem from './MenuItem/MenuItem';
 
 const options = [
 	{ name: 'HELP', l18nID: 'chat.menu.help' },
 	{ name: 'SETTINGS', l18nID: 'chat.menu.settings' }
 ];
 
-const Menu = React.memo(() => (
-	<Mutation mutation={SET_INBOX_FILTER} ignoreResults>{
+const Menu = React.memo(() => {
+	const classes = menuStyles({});
+	return <Mutation mutation={SET_INBOX_FILTER} ignoreResults>{
 		setInboxFilter =>
 			<Query<IGetInboxFilterResponse> query={GET_INBOX_FILTER}>{
 				({ data }) => {
@@ -27,12 +28,16 @@ const Menu = React.memo(() => (
 					});
 
 					return (
-						<div id='menu'>
+						<div className={classes.root}>
 							<Header />
-							<div className='wrapper'>
-								<ConvFilters filter={inboxFilter} setFilter={setFilter} />
-								<div className='separator' />
-								<List className='container'>
+							<div className={classes.wrapper}>
+								<ConvFilters
+									filter={inboxFilter}
+									setFilter={setFilter}
+									className={classes.container}
+								/>
+								<div className={classes.separator} />
+								<List className={classes.container}>
 									<MenuItem
 										l18nID={'chat.menu.searchResult'}
 										active={inboxFilter === 'SEARCH'}
@@ -45,6 +50,6 @@ const Menu = React.memo(() => (
 					);
 				}
 			}</Query>
-	}</Mutation>
-));
+	}</Mutation>;
+});
 export default Menu;
