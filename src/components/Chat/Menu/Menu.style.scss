@@ -10,19 +10,6 @@
 	.header {
 		padding: 0 25px 0 30px;
 		font-size: round($font-size * 1.5);
-
-		.btn {
-			height: 1em;
-			width: 1em;
-			font-size: 1em;
-			padding: 5px;
-			box-sizing: content-box;
-			color: $text-secondary__color--light;
-
-			&:hover {
-				background-color: $transparent-primary__color--light;
-			}
-		}
 	}
 
 	.wrapper {
