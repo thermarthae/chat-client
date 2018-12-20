@@ -7,7 +7,7 @@ import List from '@material-ui/core/List';
 
 import './Menu.style.scss';
 
-import Header from './Header';
+import Header from './Header/Header';
 import ConvFilters from './ConvFilters/ConvFilters';
 import MenuItem from './MenuItem';
 
