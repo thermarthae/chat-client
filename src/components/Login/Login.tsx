@@ -19,10 +19,11 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import { withStyles } from '@material-ui/styles';
 
-import './Login.style.scss';
+import loginStyles, { TLoginStyles } from './Login.style';
 
-interface ILoginProps extends InjectedIntlProps, RouterProps { }
+interface ILoginProps extends InjectedIntlProps, RouterProps, TLoginStyles { }
 
 interface ILoginStates {
 	username: string;
@@ -121,21 +122,21 @@ class Login extends React.PureComponent<WithApolloClient<ILoginProps>, ILoginSta
 			waitingForServer,
 			errorName
 		} = this.state;
-		const { formatMessage } = this.props.intl;
+		const { classes, intl: { formatMessage } } = this.props;
 
 		const errorMsg = errorName ? formatMessage({ id: 'error.' + errorName }) : undefined;
 
 		return (
-			<form action='' id='login' onSubmit={this.handleSubmit}>
-				<Card className='container'>
+			<form action='' className={classes.root} onSubmit={this.handleSubmit}>
+				<Card className={classes.container}>
 					<CardContent>
-						<div className='title'>
+						<div className={classes.title}>
 							{formatMessage({ id: 'login.title' })}
 						</div>
-						<div className='subtitle'>
+						<div className={classes.subtitle}>
 							{formatMessage({ id: 'login.subtitle' })}
 						</div>
-						<div className='form'>
+						<div className={classes.form}>
 							<TextField
 								required
 								fullWidth
@@ -177,7 +178,7 @@ class Login extends React.PureComponent<WithApolloClient<ILoginProps>, ILoginSta
 							</FormControl>
 						</div>
 					</CardContent>
-					<CardActions className='buttons'>
+					<CardActions className={classes.actions}>
 						<Button
 							variant='text'
 							color='primary'
@@ -186,7 +187,7 @@ class Login extends React.PureComponent<WithApolloClient<ILoginProps>, ILoginSta
 						>
 							{formatMessage({ id: 'login.forgotPasswordButton' })}
 						</Button>
-						<div className='buttonWrapper'>
+						<div className={classes.btnWrapper}>
 							<Button
 								color='primary'
 								variant='contained'
@@ -197,7 +198,7 @@ class Login extends React.PureComponent<WithApolloClient<ILoginProps>, ILoginSta
 							>
 								{formatMessage({ id: 'login.loginButton' })}
 							</Button>
-							{waitingForServer ? <CircularProgress size='1.5em' className='progress' /> : ''}
+							{waitingForServer ? <CircularProgress size='1.5em' className={classes.progress} /> : ''}
 						</div>
 					</CardActions>
 				</Card>
@@ -206,4 +207,4 @@ class Login extends React.PureComponent<WithApolloClient<ILoginProps>, ILoginSta
 
 	}
 }
-export default injectIntl(withApollo(Login));
+export default withStyles(loginStyles, { name: 'Login' })(injectIntl(withApollo(Login)));
