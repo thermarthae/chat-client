@@ -10,29 +10,25 @@ interface IHeaderProps {
 	conversationName: string;
 }
 
-class Header extends React.PureComponent<IHeaderProps> {
-	public render() {
-		const { conversationName } = this.props;
-
-		return (
-			<Mutation mutation={TOGGLE_ASIDE}>
-				{toggleAside =>
-					<div className='head'>
-						<div className='id'>
-							<span className='name'>{conversationName}</span>
-						</div>
-						<ButtonBase
-							focusRipple
-							className='btn btn-big'
-							onClick={() => toggleAside({})}
-						>
-							<SettingsSharp style={{ fontSize: 'inherit' }} />
-						</ButtonBase>
+const Header = React.memo(({ conversationName }: IHeaderProps) => {
+	return (
+		<Mutation mutation={TOGGLE_ASIDE}>
+			{toggleAside =>
+				<div className='head'>
+					<div className='id'>
+						<span className='name'>{conversationName}</span>
 					</div>
-				}
-			</Mutation>
-		);
-	}
-}
+					<ButtonBase
+						focusRipple
+						className='btn btn-big'
+						onClick={() => toggleAside({})}
+					>
+						<SettingsSharp style={{ fontSize: 'inherit' }} />
+					</ButtonBase>
+				</div>
+			}
+		</Mutation>
+	);
+});
 
 export default Header;
