@@ -8,12 +8,14 @@ import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { withStyles } from '@material-ui/styles';
+import inboxStyles, { TInboxStyles } from './Inbox.style';
 
 import MessageGroups from './MessageGroups/MessageGroups';
 import { IMessage } from '../Mailbox.apollo';
-import ScrollDownInfo from './ScrollDownInfo';
+import ScrollDownInfo from './ScrollDownInfo/ScrollDownInfo';
 
-interface IInboxProps {
+interface IInboxProps extends TInboxStyles {
 	messages: IMessage[];
 	mgsToFetch: number;
 	seen: boolean;
@@ -115,18 +117,18 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 	}
 
 	public render() {
-		const { messages } = this.props;
+		const { messages, classes } = this.props;
 		const { menuAnchorEl, isFetching, scrollDownInfo } = this.state;
 
 		return (
-			<div className='align--bottom inbox'>
-				<div className='overflow' ref={this.contentRef} onScroll={(event: any) => this.handleScroll(event, true)}>
-					<div className='groups' ref={this.groupsRef}>
-						{isFetching && <div className='align--center fetching'>
+			<div className={classes.root}>
+				<div className={classes.overflow} ref={this.contentRef} onScroll={(event: any) => this.handleScroll(event, true)}>
+					<div className={classes.groups} ref={this.groupsRef}>
+						{isFetching && <div className={classes.fetching}>
 							<CircularProgress size='1.5em' color='inherit' />
 						</div>}
 						<MessageGroups messages={messages} handleMenuClick={this.handleMenuClick} />
-						<div className='clear' />
+						<div className={classes.clear} />
 					</div>
 				</div>
 				<ScrollDownInfo open={scrollDownInfo} onClick={this.handleScrollInfoClick} />
@@ -137,7 +139,7 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 								<ClickAwayListener onClickAway={this.handleMenuClick as any}>
 									<MenuList>
 										<MenuItem className='menuItem' onClick={this.handleMenuClick}>
-											<FormattedMessage id='menuItem.delete' />
+											<FormattedMessage id='menuItem.delete' /> //TODO
 										</MenuItem>
 									</MenuList>
 								</ClickAwayListener>
@@ -150,4 +152,4 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 	}
 }
 
-export default Inbox;
+export default withStyles(inboxStyles)(Inbox);
