@@ -18,7 +18,6 @@ import mutations from './state/mutations';
 // import queries from './apollo/state/resolvers/queries';
 
 import 'normalize.css';
-import './style/index.scss';
 import theme from './theme';
 import App from './components/App';
 
