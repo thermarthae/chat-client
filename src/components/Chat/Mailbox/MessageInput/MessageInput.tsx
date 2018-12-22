@@ -6,6 +6,8 @@ import Slide from '@material-ui/core/Slide';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Send from '@material-ui/icons/Send';
 import InsertEmoticon from '@material-ui/icons/InsertEmoticon';
+import { withStyles } from '@material-ui/styles';
+import messageInputStyles, { TMessageInputStyles } from './MessageInput.style';
 
 import MessageEditor from './MessageEditor';
 
@@ -22,7 +24,7 @@ interface IMessageInputState {
 	emojiPickerIsOpen: boolean;
 }
 
-type TProps = IMessageInputProps & InjectedIntlProps;
+type TProps = IMessageInputProps & InjectedIntlProps & TMessageInputStyles;
 class MessageInput extends React.PureComponent<TProps, IMessageInputState>{
 	constructor(props: TProps) {
 		super(props);
@@ -64,14 +66,14 @@ class MessageInput extends React.PureComponent<TProps, IMessageInputState>{
 	}
 
 	public render() {
-		const { draft, intl: { formatMessage } } = this.props;
+		const { draft, classes, intl: { formatMessage } } = this.props;
 		const { emojiPickerIsOpen } = this.state;
 
 		return (
 			<ClickAwayListener onClickAway={this.handleEmojiPickerClose}>
-				<div className='bottom'>
+				<div className={classes.root}>
 					<MessageEditor
-						className='input'
+						className={classes.input}
 						ref={this.messageEditor}
 						plugins={plugins}
 						draft={draft}
@@ -85,12 +87,12 @@ class MessageInput extends React.PureComponent<TProps, IMessageInputState>{
 							i18n={this.emojiSelectI18N}
 						/>
 					</Slide>
-					<IconButton className='btn emoticon'
+					<IconButton className={classes.btn}
 						onClick={this.handleEmojiPickerToggle}
 					>
 						<InsertEmoticon style={{ fontSize: 'inherit' }} />
 					</IconButton>
-					<IconButton className='btn send'
+					<IconButton className={classes.btn}
 						onClick={this.handleSendMessage}
 					>
 						<Send style={{ fontSize: 'inherit' }} />
@@ -101,4 +103,4 @@ class MessageInput extends React.PureComponent<TProps, IMessageInputState>{
 	}
 }
 
-export default injectIntl(MessageInput);
+export default withStyles(messageInputStyles, { name: 'MessageInput' })(injectIntl(MessageInput));
