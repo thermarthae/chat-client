@@ -35,7 +35,7 @@ const Cluster = React.memo(({ group, handleMenuClick }: IClusterProps) => {
 				</div>}
 				<div className='list'>
 					{group.map(msg =>
-						<Message key={msg._id} message={msg} handleMenuClick={handleMenuClick} />
+						<Message key={msg._id} message={msg} me={me} handleMenuClick={handleMenuClick} />
 					)}
 				</div>
 			</div>

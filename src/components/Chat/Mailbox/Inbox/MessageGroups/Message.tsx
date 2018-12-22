@@ -5,28 +5,31 @@ import IconButton from '@material-ui/core/IconButton';
 import MoreVert from '@material-ui/icons/MoreVert';
 
 import { IMessage } from '../../Mailbox.apollo';
+import messageStyles from './Message.style';
 
 interface IMessageProps {
 	message: IMessage;
+	me: boolean;
 	handleMenuClick: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
-const Message = React.memo(({ message, handleMenuClick }: IMessageProps) => {
+const Message = React.memo(({ message, me, handleMenuClick }: IMessageProps) => {
 	const parsedMsg = parseEmoji(message.content);
+	const classes = messageStyles({});
 
 	return (
-		<div className='message'>
-			<div className='wrapper'>
-				<div className='content'>
+		<div className={classes.root + (me ? ' ' + classes.me : '')}>
+			<div className={classes.wrapper}>
+				<div className={classes.content}>
 					<span dangerouslySetInnerHTML={{ __html: parsedMsg }} />
 				</div>
 			</div>
-			<div className='options'>
-				<IconButton className='btn' onClick={handleMenuClick}>
-					<MoreVert style={{ fontSize: 'inherit' }} />
+			<div className={classes.options}>
+				<IconButton className={classes.btn} onClick={handleMenuClick}>
+					<MoreVert className={classes.ico} />
 				</IconButton>
 			</div>
-			<div className='clear'></div>
+			<div className={classes.clear}></div>
 		</div>
 	);
 },
