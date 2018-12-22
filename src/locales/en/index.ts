@@ -21,7 +21,7 @@ export default flatten({
 		UsernameIsTooShort: 'Username is too short (min 3 characters)',
 		PasswordIsTooShort: 'Password is too short (min 8 characters)',
 	},
-	menuItem: {
+	optionList: {
 		delete: 'Delete'
 	},
 

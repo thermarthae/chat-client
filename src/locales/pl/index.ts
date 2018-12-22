@@ -21,7 +21,7 @@ export default flatten({
 		UsernameIsTooShort: 'Nazwa użytkownika za krótka (minimum 3 znaki)',
 		PasswordIsTooShort: 'Hasło za krótkie (minimum 8 znaków)',
 	},
-	menuItem: {
+	optionList: {
 		delete: 'Usuń'
 	},
 

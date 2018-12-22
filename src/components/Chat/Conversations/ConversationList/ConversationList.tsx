@@ -4,7 +4,7 @@ import { Query } from 'react-apollo';
 import { Link } from 'react-router-dom';
 
 import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import OptionList from 'Components/OptionList/OptionList';
 import List from './../List';
 import Line from '../Line/Line';
 
@@ -61,9 +61,9 @@ export default class ConversationList extends React.PureComponent<IConversationL
 								onClose={this.handleMenuClose}
 								anchorEl={menuAnchorEl}
 							>
-								<MenuItem className='menuItem' onClick={this.handleMenuClose}>
-									<FormattedMessage id='menuItem.delete' />
-								</MenuItem>
+								<OptionList onClick={this.handleMenuClose}>
+									<FormattedMessage id='optionList.delete' />
+								</OptionList>
 							</Menu>
 						</List>
 					);

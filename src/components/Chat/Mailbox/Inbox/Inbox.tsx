@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import MenuList from '@material-ui/core/MenuList';
-import MenuItem from '@material-ui/core/MenuItem';
+import OptionList from 'Components/OptionList/OptionList';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
@@ -138,9 +138,9 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 							<Paper>
 								<ClickAwayListener onClickAway={this.handleMenuClick as any}>
 									<MenuList>
-										<MenuItem className='menuItem' onClick={this.handleMenuClick}>
-											<FormattedMessage id='menuItem.delete' /> //TODO
-										</MenuItem>
+										<OptionList onClick={this.handleMenuClick}>
+											<FormattedMessage id='optionList.delete' />
+										</OptionList>
 									</MenuList>
 								</ClickAwayListener>
 							</Paper>

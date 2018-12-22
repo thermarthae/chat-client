@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import OptionList from 'Components/OptionList/OptionList';
 
 import Line from '../Line/Line';
 import { IUser } from '../Searchbox/Searchbox.apollo';
@@ -50,9 +50,9 @@ class UserList extends React.PureComponent<IUserListProps, IUserListStates> {
 					onClose={this.handleMenuClose}
 					anchorEl={menuAnchorEl}
 				>
-					<MenuItem className='menuItem' onClick={this.handleMenuClose}>
-						<FormattedMessage id='menuItem.delete' />
-					</MenuItem>
+					<OptionList onClick={this.handleMenuClose}>
+						<FormattedMessage id='optionList.delete' />
+					</OptionList>
 				</Menu>
 			</List>
 		);
