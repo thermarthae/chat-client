@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Redirect } from 'react-router';
+import { withStyles } from '@material-ui/styles';
 
 import { withApollo, WithApolloClient } from 'react-apollo';
 import Query from 'react-apollo/Query';
@@ -13,24 +14,24 @@ import {
 } from './Mailbox.apollo';
 import { ConvNavFragment } from 'Components/Chat/Conversations/Conversations.apollo';
 
-import './Mailbox.style.scss';
+import mailboxStyles, { TMailboxStyles } from './Mailbox.style';
 
 import Header from './Header/Header';
 import Inbox from './Inbox/Inbox';
 import MessageInput from './MessageInput/MessageInput';
 import Aside from './Aside/Aside';
 
-const Empty = ({ i18nID }: { i18nID: string }) => {
+const Empty = ({ i18nID, classes }: { i18nID: string; } & TMailboxStyles) => {
 	return (
-		<div id='mailbox'>
-			<div className='item--empty align--center empty'>
+		<div className={classes.root}>
+			<div className={classes.empty}>
 				<FormattedMessage id={i18nID} />
 			</div>
 		</div>
 	);
 };
 
-interface IMailboxProps {
+interface IMailboxProps extends TMailboxStyles {
 	oponentId?: string;
 }
 interface IMailboxState { }
@@ -103,27 +104,27 @@ class Mailbox extends React.Component<WithApolloClient<IMailboxProps>, IMailboxS
 	}
 
 	public render() {
-		const { oponentId } = this.props;
-		if (!oponentId) return <Empty i18nID='chat.mailbox.nothingSelected' />;
+		const { oponentId, classes } = this.props;
+		if (!oponentId) return <Empty classes={classes} i18nID='chat.mailbox.nothingSelected' />;
 		const { mgsToFetch } = this.state;
 		const variables = { id: oponentId, skip: 0, limit: mgsToFetch };
 
 		return <Query query={GET_CONVERSATION} variables={variables} errorPolicy='all'>
 			{({ loading, error, data, fetchMore }) => {
-				if (loading) return <Empty i18nID='chat.mailbox.loading' />;
-				if (!data) return <Empty i18nID='chat.mailbox.nothingSelected' />;
+				if (loading) return <Empty classes={classes} i18nID='chat.mailbox.loading' />;
+				if (!data) return <Empty classes={classes} i18nID='chat.mailbox.nothingSelected' />;
 
 				const { getConversation }: IGetConversationResponse = data;
 				if (error) {
 					if (getConversation === null) return <Redirect to='/' push />;
-					return <Empty i18nID='error.UnknownError' />;
+					return <Empty classes={classes} i18nID='error.UnknownError' />;
 				}
 				const { name, messages, draft, seen } = getConversation;
 
-				return <div id='mailbox'>
+				return <div className={classes.root}>
 					<Header conversationName={name} />
-					<div className='content'>
-						<div className='main'>
+					<div className={classes.content}>
+						<div className={classes.main}>
 							<Inbox
 								messages={messages}
 								seen={seen}
@@ -156,4 +157,4 @@ class Mailbox extends React.Component<WithApolloClient<IMailboxProps>, IMailboxS
 	}
 }
 
-export default withApollo(Mailbox);
+export default withStyles(mailboxStyles, { name: 'Mailbox' })(withApollo(Mailbox));
