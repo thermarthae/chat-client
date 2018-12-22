@@ -7,34 +7,32 @@ import MoreVert from '@material-ui/icons/MoreVert';
 import { IMessage } from '../../Mailbox.apollo';
 
 interface IMessageProps {
-	handleMenuClick: (event: React.MouseEvent<HTMLElement>) => void;
 	message: IMessage;
+	handleMenuClick: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
-export default class Message extends React.Component<IMessageProps> {
-	public shouldComponentUpdate(nextProps: IMessageProps) {
-		if (this.props.message.content !== nextProps.message.content) return true;
-		return false;
-	}
+const Message = React.memo(({ message, handleMenuClick }: IMessageProps) => {
+	const parsedMsg = parseEmoji(message.content);
 
-	public render() {
-		const { message, handleMenuClick } = this.props;
-		const parsedMsg = parseEmoji(message.content);
-
-		return (
-			<div className='message'>
-				<div className='wrapper'>
-					<div className='content'>
-						<span dangerouslySetInnerHTML={{ __html: parsedMsg }} />
-					</div>
+	return (
+		<div className='message'>
+			<div className='wrapper'>
+				<div className='content'>
+					<span dangerouslySetInnerHTML={{ __html: parsedMsg }} />
 				</div>
-				<div className='options'>
-					<IconButton className='btn' onClick={handleMenuClick}>
-						<MoreVert style={{ fontSize: 'inherit' }} />
-					</IconButton>
-				</div>
-				<div className='clear'></div>
 			</div>
-		);
+			<div className='options'>
+				<IconButton className='btn' onClick={handleMenuClick}>
+					<MoreVert style={{ fontSize: 'inherit' }} />
+				</IconButton>
+			</div>
+			<div className='clear'></div>
+		</div>
+	);
+},
+	(prevProps, nextProps) => {
+		if (prevProps.message.content !== nextProps.message.content) return false;
+		return true;
 	}
-}
+);
+export default Message;
