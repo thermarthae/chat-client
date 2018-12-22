@@ -8,8 +8,8 @@ import messages from '../locales';
 import Query from 'react-apollo/Query';
 import withApollo, { WithApolloClient } from 'react-apollo/withApollo';
 import { GET_APP_DATA } from './App.apollo';
-
-import './App.style.scss';
+import { withStyles } from '@material-ui/styles';
+import appStyles, { TAppStyles } from './App.style';
 
 import Error from './Error/Error';
 import Navigator from './Navigator/Navigator';
@@ -60,7 +60,7 @@ const PrivateRoute = ({ auth, component: Component, whenUnlogged, ...rest }: IPr
 	);
 };
 
-interface IAppProps { }
+interface IAppProps extends TAppStyles { }
 type IAppPropsType = WithApolloClient<IAppProps>;
 
 class App extends React.PureComponent<IAppPropsType> {
@@ -76,6 +76,8 @@ class App extends React.PureComponent<IAppPropsType> {
 	}
 
 	public render() {
+		const { classes } = this.props;
+
 		return (
 			<Query query={GET_APP_DATA}>{
 				({ data: { app: { language, isLoggedIn } } }) => {
@@ -83,7 +85,7 @@ class App extends React.PureComponent<IAppPropsType> {
 						<BrowserRouter>
 							<UpdateBlocker isLoggedIn={isLoggedIn}>
 								{locationHref => {
-									return <div id='app'>
+									return <div className={classes.root}>
 										<Navigator locationHref={locationHref} />
 										<Switch>
 											<Redirect exact from='/' to='/chat' />
@@ -102,4 +104,4 @@ class App extends React.PureComponent<IAppPropsType> {
 	}
 }
 
-export default withApollo(App);
+export default withStyles(appStyles, { name: 'App' })(withApollo(App));
