@@ -15,20 +15,13 @@ module.exports = merge(baseCfg, {
 	module: {
 		rules: [
 			{
-				test: /\.(sa|sc|c)ss$/,
+				test: /\.css$/,
 				use: [
 					'style-loader',
 					{
 						loader: 'css-loader',
 						options: {
 							sourceMap: true
-						}
-					},
-					{
-						loader: 'sass-loader',
-						options: {
-							sourceMap: true,
-							data: '@import \'~Style/variables\';'
 						}
 					}
 				]
