@@ -11,42 +11,40 @@ interface IClusterProps {
 	handleMenuClick: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
-export default class Cluster extends React.Component<IClusterProps> {
-	public shouldComponentUpdate(nextProps: IClusterProps) {
-		if (nextProps.group.length !== this.props.group.length) return true;
-		return false;
-	}
+const Cluster = React.memo(({ group, handleMenuClick }: IClusterProps) => {
+	const { me, time, author } = group[0]; //first message
 
-	public render() {
-		const { group, handleMenuClick } = this.props;
-		const { me, time, author } = group[0]; //first message
-
-		return (
-			<div className={'group' + (!me ? ' left' : ' right')}>
-				<div className='header'>
-					<div className='time'>
-						<FormattedDate
-							value={new Date(time)}
-							year='numeric'
-							weekday='long'
-							month='long'
-							day='numeric'
-							hour='numeric'
-							minute='numeric'
-						/>
-					</div>
-				</div>
-				<div className='container'>
-					{!me && <div className='author'>
-						<Avatar>{author.name[0]}</Avatar>
-					</div>}
-					<div className='list'>
-						{group.map(msg =>
-							<Message key={msg._id} message={msg} handleMenuClick={handleMenuClick} />
-						)}
-					</div>
+	return (
+		<div className={'group' + (!me ? ' left' : ' right')}>
+			<div className='header'>
+				<div className='time'>
+					<FormattedDate
+						value={new Date(time)}
+						year='numeric'
+						weekday='long'
+						month='long'
+						day='numeric'
+						hour='numeric'
+						minute='numeric'
+					/>
 				</div>
 			</div>
-		);
+			<div className='container'>
+				{!me && <div className='author'>
+					<Avatar>{author.name[0]}</Avatar>
+				</div>}
+				<div className='list'>
+					{group.map(msg =>
+						<Message key={msg._id} message={msg} handleMenuClick={handleMenuClick} />
+					)}
+				</div>
+			</div>
+		</div>
+	);
+},
+	(prevProps, nextProps) => {
+		if (prevProps.group.length !== nextProps.group.length) return false;
+		return true;
 	}
-}
+);
+export default Cluster;
