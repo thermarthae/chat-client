@@ -8,7 +8,7 @@ const errorStyles = makeStyles(({ palette }: Theme) => ({
 		justifyContent: 'center',
 		fontSize: '4em',
 		width: '100%',
-		background: palette.primary.main,
+		background: palette.primary.light,
 		padding: '5em',
 		wordBreak: 'break-all',
 	}

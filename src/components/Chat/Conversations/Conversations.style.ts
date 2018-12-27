@@ -7,7 +7,7 @@ const convStyles = ({ palette }: Theme) => createStyles({
 	root: {
 		display: 'flex',
 		flexDirection: 'column',
-		backgroundColor: palette.primary.main,
+		backgroundColor: palette.primary.light,
 		zIndex: 1,
 	}
 });

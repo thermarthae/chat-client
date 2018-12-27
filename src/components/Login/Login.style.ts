@@ -6,7 +6,7 @@ export type TLoginStyles = WithStyles<typeof loginStyles>;
 
 const loginStyles = ({ palette, typography }: Theme) => createStyles({
 	root: {
-		backgroundColor: palette.primary.dark,
+		backgroundColor: palette.primary.main,
 		width: '100%',
 		display: 'flex',
 		alignItems: 'center',
@@ -32,7 +32,7 @@ const loginStyles = ({ palette, typography }: Theme) => createStyles({
 	actions: {
 		display: 'flex',
 		justifyContent: 'space-between',
-		backgroundColor: rgba(palette.primary.main, 0.05)
+		backgroundColor: rgba(palette.primary.light, 0.05)
 	},
 	btnWrapper: {
 		display: 'flex',

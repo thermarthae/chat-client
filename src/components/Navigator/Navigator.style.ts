@@ -1,12 +1,11 @@
 import { createStyles, WithStyles } from '@material-ui/styles';
 import { Theme } from '@material-ui/core';
-import { mix } from 'polished';
 
 export type TNavigatorStyles = WithStyles<typeof navigatorStyles>;
 
 const navigatorStyles = ({ palette }: Theme) => createStyles({
 	root: {
-		backgroundColor: mix(0.8, palette.primary.dark, '#000'),
+		backgroundColor: palette.primary.dark,
 		display: 'flex',
 		flexDirection: 'column',
 		boxShadow: 'inset -1px 0 rgba(0, 0, 0, 0.12)',
@@ -33,7 +32,7 @@ const navigatorStyles = ({ palette }: Theme) => createStyles({
 		}
 	},
 	active: {
-		backgroundColor: palette.primary.dark
+		backgroundColor: palette.primary.main
 	}
 });
 export default navigatorStyles;

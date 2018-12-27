@@ -14,7 +14,7 @@ const messageStyles = makeStyles(({ palette, typography }: Theme) => ({
 		flexDirection: 'row-reverse',
 		'& $content': {
 			color: palette.textLight.primary,
-			backgroundColor: palette.primary.main,
+			backgroundColor: palette.primary.light,
 			borderRadius: '2em 0 0 2em'
 		},
 		'&:first-child $content': { borderRadius: '2em 2em 0 2em' }

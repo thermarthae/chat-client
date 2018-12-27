@@ -13,7 +13,7 @@ import EmptyItem from '../EmptyItem';
 import List from '../List';
 
 const StyledListSubheader = styled(ListSubheader)(({ palette }: Theme) => ({
-	backgroundColor: palette.primary.dark,
+	backgroundColor: palette.primary.main,
 	color: palette.textLight.secondary,
 }));
 

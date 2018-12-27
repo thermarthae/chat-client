@@ -38,17 +38,12 @@ export default createMuiTheme({
 			default: '#fafafa'
 		},
 		primary: {
-			main: '#26293b',
-			// light: 'rgba(101, 103, 135, 1)',
-			// main: 'rgba(58, 61, 90, 1)',
-			// dark: 'rgba(18, 23, 48, 1)',
-			// contrastText: '#fff'
+			light: 'hsl(234, 22%, 25%)',
+			main: 'hsl(234, 22%, 17%)',
+			dark: 'hsl(234, 22%, 14%)'
 		},
 		secondary: {
-			// light: '#1c2566',
 			main: '#283593',
-			// dark: '#535da8',
-			// contrastText: '#fff'
 		},
 		error: {
 			light: 'rgba(255, 81, 49, 1)',

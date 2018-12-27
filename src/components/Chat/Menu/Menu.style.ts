@@ -5,7 +5,7 @@ const menuStyles = makeStyles(({ palette }: Theme) => ({
 	root: {
 		display: 'flex',
 		flexDirection: 'column',
-		backgroundColor: palette.primary.dark
+		backgroundColor: palette.primary.main
 	},
 	wrapper: {
 		flexGrow: 1,

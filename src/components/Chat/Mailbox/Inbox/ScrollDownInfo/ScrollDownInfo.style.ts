@@ -17,7 +17,7 @@ const scrollDownInfoStyles = makeStyles(({ palette, typography }: Theme) => {
 			color: palette.textLight.primary,
 			cursor: 'pointer',
 			textAlign: 'center',
-			backgroundColor: palette.primary.main,
+			backgroundColor: palette.primary.light,
 			boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.1)',
 		},
 	};

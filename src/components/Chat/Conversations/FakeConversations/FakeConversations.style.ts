@@ -31,13 +31,13 @@ const fakeConvStyles = makeStyles(({ palette }: Theme) => ({
 		margin: '0 -16px -16px 0',
 		top: -8,
 		left: -8,
-		border: `8px solid ${palette.primary.main}`,
+		border: `8px solid ${palette.primary.light}`,
 		borderRadius: '50%'
 	},
 	avatarClear: {
 		width: 10,
 		height: 40,
-		background: palette.primary.main
+		background: palette.primary.light
 	},
 	center: {
 		flexGrow: 1
@@ -47,14 +47,14 @@ const fakeConvStyles = makeStyles(({ palette }: Theme) => ({
 		flexGrow: 1,
 		position: 'relative',
 		marginBottom: 3,
-		boxShadow: `0 3px 0 0 ${palette.primary.main}`,
+		boxShadow: `0 3px 0 0 ${palette.primary.light}`,
 	},
 	topClear: {
 		width: '25%',
 		height: '100%',
 		position: 'absolute',
 		right: 0,
-		background: palette.primary.main
+		background: palette.primary.light
 	},
 	bottom: {
 		width: '100%',
@@ -66,7 +66,7 @@ const fakeConvStyles = makeStyles(({ palette }: Theme) => ({
 		height: '100%',
 		position: 'absolute',
 		right: 0,
-		background: palette.primary.main
+		background: palette.primary.light
 	}
 }), { name: 'FakeConversation' });
 export default fakeConvStyles;
