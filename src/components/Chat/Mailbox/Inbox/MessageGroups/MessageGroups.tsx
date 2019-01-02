@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { IMessage } from '../../Mailbox.apollo';
 
 import Cluster from './Cluster';

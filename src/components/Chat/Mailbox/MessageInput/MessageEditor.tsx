@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { SelectionState, Modifier, EditorState, ContentState } from 'draft-js';
 import Editor, { createEditorStateWithText } from 'draft-js-plugins-editor';
 

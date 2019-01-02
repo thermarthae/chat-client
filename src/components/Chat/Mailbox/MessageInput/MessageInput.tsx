@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 import IconButton from '@material-ui/core/IconButton';

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Mutation from 'react-apollo/Mutation';
 import Query from 'react-apollo/Query';
 import { SET_INBOX_FILTER, GET_INBOX_FILTER, IGetInboxFilterResponse, TInboxFilter } from './Menu.apollo';

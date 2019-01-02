@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { FormattedDate } from 'react-intl';
 
 import Avatar from '@material-ui/core/Avatar';

@@ -1,8 +1,8 @@
-import * as React from 'react';
+import React from 'react';
 import { Route, Redirect, RouteProps } from 'react-router';
 import { BrowserRouter, Switch } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
-import * as cookie from 'cookie';
+import cookie from 'cookie';
 import messages from '../locales';
 
 import Query from 'react-apollo/Query';

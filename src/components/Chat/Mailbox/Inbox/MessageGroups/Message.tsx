@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { parseEmoji } from 'Utils/emoji.utils';
 
 import IconButton from '@material-ui/core/IconButton';

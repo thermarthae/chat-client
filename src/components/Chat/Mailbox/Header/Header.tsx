@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import Mutation from 'react-apollo/Mutation';
 import { TOGGLE_ASIDE } from './Header.apollo';

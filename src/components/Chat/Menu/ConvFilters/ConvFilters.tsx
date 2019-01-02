@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import Query from 'react-apollo/Query';
 import { GET_CURRENT_USER, IGetCurrentUserResponse } from './ConvFilters.apollo';

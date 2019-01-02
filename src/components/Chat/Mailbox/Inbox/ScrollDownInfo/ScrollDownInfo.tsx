@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import Slide from '@material-ui/core/Slide';
 import scrollDownInfoStyles from './ScrollDownInfo.style';

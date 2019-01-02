@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import twemoji from 'twemoji';
 import emojiStyles from './Emoji.style';
 
