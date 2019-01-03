@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Redirect, RouteProps } from 'react-router';
+import { Route, Redirect } from 'react-router';
 import { BrowserRouter, Switch } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
 import cookie from 'cookie';
@@ -11,6 +11,7 @@ import { GET_APP_DATA } from './App.apollo';
 import { withStyles } from '@material-ui/styles';
 import appStyles, { TAppStyles } from './App.style';
 
+import PrivateRoute from './RouterHelpers/PrivateRoute';
 import Error from './Error/Error';
 import Navigator from './Navigator/Navigator';
 import Chat from './Chat/Chat';
@@ -38,27 +39,6 @@ class UpdateBlocker extends React.Component<IUpdateBlocker> {
 		return this.props.children(this.locationHref);
 	}
 }
-
-interface IPrivateRouteProps extends RouteProps {
-	auth: boolean;
-	component: React.ComponentType<any>;
-	whenUnlogged?: boolean;
-}
-
-const PrivateRoute = ({ auth, component: Component, whenUnlogged, ...rest }: IPrivateRouteProps) => {
-	return (
-		<Route {...rest} render={props => {
-			if (whenUnlogged) {
-				if (!auth) return <Component {...props} />;
-				return <Redirect to={{ pathname: '/', state: { from: props.location } }} />;
-			}
-			else {
-				if (auth) return <Component {...props} />;
-				return <Redirect to={{ pathname: '/login', state: { from: props.location } }} />;
-			}
-		}} />
-	);
-};
 
 interface IAppProps extends TAppStyles { }
 type IAppPropsType = WithApolloClient<IAppProps>;
