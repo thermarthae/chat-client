@@ -1,10 +1,14 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const tsconfigPath = path.resolve(__dirname, '../../tsconfig.json');
-const getTransformer = require('ts-transform-graphql-tag').getTransformer;
+import webpack from 'webpack';
+import path from 'path';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import { getTransformer } from 'ts-transform-graphql-tag';
 
-module.exports = {
+import packageJson from '../../package.json';
+
+const tsconfigPath = path.resolve(__dirname, '../../tsconfig.json');
+
+const baseConfig: webpack.Configuration = {
 	entry: './index.tsx',
 	context: path.resolve(__dirname, '../../src'),
 	resolve: {
@@ -22,7 +26,7 @@ module.exports = {
 			{
 				test: /\.mjs$/,
 				include: /node_modules/,
-				type: "javascript/auto",
+				type: 'javascript/auto',
 			},
 			{
 				test: /\.tsx?$/,
@@ -66,7 +70,7 @@ module.exports = {
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
-			title: require('../../package.json').name,
+			title: packageJson.name,
 			template: 'index.html.ejs',
 			favicon: 'favicon.png',
 
@@ -78,3 +82,4 @@ module.exports = {
 		}),
 	]
 };
+export default baseConfig;

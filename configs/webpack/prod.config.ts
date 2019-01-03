@@ -1,17 +1,17 @@
-const path = require('path');
-const merge = require('webpack-merge');
-const baseCfg = require('./base.config');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+import path from 'path';
+import CleanWebpackPlugin from 'clean-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import merge from 'webpack-merge';
+import baseConfig from './base.config';
 
-module.exports = merge(baseCfg, {
+const prodConfig = merge(baseConfig, {
 	mode: 'production',
 	devtool: 'source-map',
 	output: {
-		filename: 'js/bundle.min.js',
-		chunkFilename: 'js/[name].bundle.js',
-		path: path.resolve(__dirname, '../../dist')
+		path: path.resolve(__dirname, '../../dist'),
+		filename: 'js/[name].[chunkhash:8].min.js',
+		chunkFilename: 'js/[name].[chunkhash:8].chunk.js',
 	},
 	optimization: {
 		splitChunks: {
@@ -45,5 +45,7 @@ module.exports = merge(baseCfg, {
 		new BundleAnalyzerPlugin(),
 	]
 });
+export default prodConfig;
+
 //TODO html minify
 //TODO css minify => webpack 5

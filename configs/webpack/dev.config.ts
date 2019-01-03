@@ -1,17 +1,16 @@
-const path = require('path');
-const webpack = require('webpack');
-const merge = require('webpack-merge');
-const baseCfg = require('./base.config');
+import webpack from 'webpack';
+import merge from 'webpack-merge';
+import baseConfig from './base.config';
 
-module.exports = merge(baseCfg, {
+const devConfig = merge(baseConfig, {
 	mode: 'development',
 	devtool: 'cheap-module-eval-source-map',
 	devServer: {
 		inline: true,
 		progress: true,
 		hot: true,
-		historyApiFallback: true,
-	},
+		historyApiFallback: true
+	} as any,
 	module: {
 		rules: [
 			{
@@ -32,3 +31,4 @@ module.exports = merge(baseCfg, {
 		new webpack.HotModuleReplacementPlugin()
 	],
 });
+export default devConfig;
