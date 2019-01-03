@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router';
-import { BrowserRouter, Switch } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
 import cookie from 'cookie';
 import messages from '../locales';
@@ -11,34 +11,13 @@ import { GET_APP_DATA } from './App.apollo';
 import { withStyles } from '@material-ui/styles';
 import appStyles, { TAppStyles } from './App.style';
 
+import CustomRouter from './RouterHelpers/CustomRouter';
 import PrivateRoute from './RouterHelpers/PrivateRoute';
 import Error from './Error/Error';
 import Navigator from './Navigator/Navigator';
 import Chat from './Chat/Chat';
 import Login from './Login/Login';
 
-interface IUpdateBlocker {
-	isLoggedIn: boolean;
-	children: (href: string) => React.ReactNode;
-}
-class UpdateBlocker extends React.Component<IUpdateBlocker> {
-	private locationHref = location.href.replace(/\/$/, '');
-
-	public shouldComponentUpdate(nextProps: IUpdateBlocker) {
-		if (nextProps.isLoggedIn !== this.props.isLoggedIn) return true;
-
-		const newLocation = location.href.replace(/\/$/, '');
-		if (this.locationHref !== newLocation) {
-			this.locationHref = newLocation;
-			return true;
-		}
-		return false;
-	}
-
-	public render() {
-		return this.props.children(this.locationHref);
-	}
-}
 
 interface IAppProps extends TAppStyles { }
 type IAppPropsType = WithApolloClient<IAppProps>;
@@ -59,29 +38,22 @@ class App extends React.PureComponent<IAppPropsType> {
 		const { classes } = this.props;
 
 		return (
-			<Query query={GET_APP_DATA}>{
-				({ data: { app: { language, isLoggedIn } } }) => {
-					return <IntlProvider locale={language} messages={messages[language]}>
-						<BrowserRouter>
-							<UpdateBlocker isLoggedIn={isLoggedIn}>
-								{locationHref => {
-									return <div className={classes.root}>
-										<Navigator locationHref={locationHref} />
-										<Switch>
-											<Redirect exact from='/' to='/chat' />
-											<PrivateRoute auth={isLoggedIn} path='/chat/:oponentId?' component={Chat} />
-											<PrivateRoute auth={isLoggedIn} path='/login' component={Login} whenUnlogged />
-											<Route component={Error} />
-										</Switch>
-									</div>;
-								}}
-							</UpdateBlocker>
-						</BrowserRouter>
-					</IntlProvider>;
-				}
-			}</Query>
+			<Query query={GET_APP_DATA}>{({ data: { app: { language, isLoggedIn } } }) => (
+				<IntlProvider locale={language} messages={messages[language]}>
+					<CustomRouter isLoggedIn={isLoggedIn}>{locationHref =>
+						<div className={classes.root}>
+							<Navigator locationHref={locationHref} />
+							<Switch>
+								<Redirect exact from='/' to='/chat' />
+								<PrivateRoute auth={isLoggedIn} path='/chat/:oponentId?' component={Chat} />
+								<PrivateRoute auth={isLoggedIn} path='/login' component={Login} whenUnlogged />
+								<Route component={Error} />
+							</Switch>
+						</div>
+					}</CustomRouter>
+				</IntlProvider>
+			)}</Query>
 		);
 	}
 }
-
 export default withStyles(appStyles, { name: 'App' })(withApollo(App));
