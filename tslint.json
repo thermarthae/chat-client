@@ -2,6 +2,9 @@
 	"defaultSeverity": "error",
 	"extends": ["tslint:recommended"],
 	"jsRules": {},
+	"linterOptions": {
+		"exclude": ["*.json", "**/*.json"]
+	},
 	"rules": {
 		"arrow-parens": [true, "ban-single-arg-parens"],
 		"curly": [true, "as-needed"],
