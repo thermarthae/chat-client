@@ -9,6 +9,7 @@ import packageJson from '../../package.json';
 const rootPath = path.resolve(__dirname, '../../');
 const srcPath = path.resolve(rootPath, 'src');
 const tsconfigPath = path.resolve(rootPath, 'tsconfig.json');
+const tslintPath = path.resolve(rootPath, 'tslint.json');
 
 const baseConfig: webpack.Configuration = {
 	entry: './index.tsx',
@@ -74,7 +75,8 @@ const baseConfig: webpack.Configuration = {
 		new ForkTsCheckerWebpackPlugin({
 			checkSyntacticErrors: true,
 			async: false,
-			tsconfig: tsconfigPath
+			tsconfig: tsconfigPath,
+			tslint: tslintPath
 		}),
 	]
 };
