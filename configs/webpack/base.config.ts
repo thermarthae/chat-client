@@ -12,7 +12,7 @@ const baseConfig: webpack.Configuration = {
 	entry: './index.tsx',
 	context: path.resolve(__dirname, '../../src'),
 	resolve: {
-		extensions: ['.mjs', '.ts', '.tsx', '.js', '.jsx'],
+		extensions: ['.mjs', '.js', '.jsx', '.ts', '.tsx', '.json'],
 		alias: {
 			Components: path.resolve(__dirname, '../../src/components/'),
 			Utils: path.resolve(__dirname, '../../src/utils/')
@@ -23,11 +23,6 @@ const baseConfig: webpack.Configuration = {
 	},
 	module: {
 		rules: [
-			{
-				test: /\.mjs$/,
-				include: /node_modules/,
-				type: 'javascript/auto',
-			},
 			{
 				test: /\.tsx?$/,
 				exclude: /node_modules/,
