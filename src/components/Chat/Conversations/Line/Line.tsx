@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { parseEmoji } from 'Utils/emoji.utils';
+import { parseEmoji } from '@src/utils/emoji.utils';
 
 import ListItem from '@material-ui/core/ListItem';
 import Avatar from '@material-ui/core/Avatar';

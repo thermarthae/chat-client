@@ -12,7 +12,7 @@ import {
 	MARK_CONV_AS_READ,
 	IMarkConvAsReadRes
 } from './Mailbox.apollo';
-import { ConvNavFragment } from 'Components/Chat/Conversations/Conversations.apollo';
+import { ConvNavFragment } from '@src/components/Chat/Conversations/Conversations.apollo';
 
 import mailboxStyles, { TMailboxStyles } from './Mailbox.style';
 

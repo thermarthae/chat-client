@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import MenuList from '@material-ui/core/MenuList';
-import OptionList from 'Components/OptionList/OptionList';
+import OptionList from '@src/components/OptionList/OptionList';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';

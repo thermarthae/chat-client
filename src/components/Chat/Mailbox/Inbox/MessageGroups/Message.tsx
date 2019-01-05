@@ -1,5 +1,5 @@
 import React from 'react';
-import { parseEmoji } from 'Utils/emoji.utils';
+import { parseEmoji } from '@src/utils/emoji.utils';
 
 import IconButton from '@material-ui/core/IconButton';
 import MoreVert from '@material-ui/icons/MoreVert';

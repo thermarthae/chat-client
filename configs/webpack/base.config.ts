@@ -6,16 +6,17 @@ import { getTransformer } from 'ts-transform-graphql-tag';
 
 import packageJson from '../../package.json';
 
-const tsconfigPath = path.resolve(__dirname, '../../tsconfig.json');
+const rootPath = path.resolve(__dirname, '../../');
+const srcPath = path.resolve(rootPath, 'src');
+const tsconfigPath = path.resolve(rootPath, 'tsconfig.json');
 
 const baseConfig: webpack.Configuration = {
 	entry: './index.tsx',
-	context: path.resolve(__dirname, '../../src'),
+	context: srcPath,
 	resolve: {
 		extensions: ['.mjs', '.js', '.jsx', '.ts', '.tsx', '.json'],
 		alias: {
-			Components: path.resolve(__dirname, '../../src/components/'),
-			Utils: path.resolve(__dirname, '../../src/utils/')
+			'@src': srcPath
 		}
 	},
 	output: {

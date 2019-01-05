@@ -11,7 +11,7 @@ import messageInputStyles, { TMessageInputStyles } from './MessageInput.style';
 
 import MessageEditor from './MessageEditor';
 
-import createEmojiPlugin from 'Components/EmojiPlugin';
+import createEmojiPlugin from '@src/components/EmojiPlugin';
 const emojiPlugin = createEmojiPlugin();
 const { EmojiSelect } = emojiPlugin;
 const plugins = [emojiPlugin];

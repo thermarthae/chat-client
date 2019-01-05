@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Menu from '@material-ui/core/Menu';
-import OptionList from 'Components/OptionList/OptionList';
+import OptionList from '@src/components/OptionList/OptionList';
 
 import Line from '../Line/Line';
 import { IUser } from '../Searchbox/Searchbox.apollo';
