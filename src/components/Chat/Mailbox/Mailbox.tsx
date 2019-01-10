@@ -109,7 +109,8 @@ class Mailbox extends React.Component<WithApolloClient<IMailboxProps>, IMailboxS
 		const { mgsToFetch } = this.state;
 		const variables = { id: oponentId, skip: 0, limit: mgsToFetch };
 
-		return <Query query={GET_CONVERSATION} variables={variables} errorPolicy='all'>
+		return (
+			<Query query={GET_CONVERSATION} variables={variables} errorPolicy='all'>
 			{({ loading, error, data, fetchMore }) => {
 				if (loading) return <Empty classes={classes} i18nID='chat.mailbox.loading' />;
 				if (!data) return <Empty classes={classes} i18nID='chat.mailbox.nothingSelected' />;
@@ -153,7 +154,8 @@ class Mailbox extends React.Component<WithApolloClient<IMailboxProps>, IMailboxS
 					</div>
 				</div>;
 			}}
-		</Query>;
+			</Query>
+		);
 	}
 }
 

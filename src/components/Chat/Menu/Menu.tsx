@@ -18,38 +18,40 @@ const options = [
 
 const Menu = React.memo(() => {
 	const classes = menuStyles({});
-	return <Mutation mutation={SET_INBOX_FILTER} ignoreResults>{
-		setInboxFilter =>
-			<Query<IGetInboxFilterResponse> query={GET_INBOX_FILTER}>{
-				({ data }) => {
-					const { chat: { inboxFilter } } = data!;
-					const setFilter = (f: TInboxFilter) => setInboxFilter({
-						variables: { inboxFilter: f }
-					});
+	return (
+		<Mutation mutation={SET_INBOX_FILTER} ignoreResults>{
+			setInboxFilter =>
+				<Query<IGetInboxFilterResponse> query={GET_INBOX_FILTER}>{
+					({ data }) => {
+						const { chat: { inboxFilter } } = data!;
+						const setFilter = (f: TInboxFilter) => setInboxFilter({
+							variables: { inboxFilter: f }
+						});
 
-					return (
-						<div className={classes.root}>
-							<Header />
-							<div className={classes.wrapper}>
-								<ConvFilters
-									filter={inboxFilter}
-									setFilter={setFilter}
-									className={classes.container}
-								/>
-								<div className={classes.separator} />
-								<List className={classes.container}>
-									<MenuItem
-										l18nID={'chat.menu.searchResult'}
-										active={inboxFilter === 'SEARCH'}
-										setInboxFilter={() => setFilter('SEARCH')}
+						return (
+							<div className={classes.root}>
+								<Header />
+								<div className={classes.wrapper}>
+									<ConvFilters
+										filter={inboxFilter}
+										setFilter={setFilter}
+										className={classes.container}
 									/>
-									{options.map(o => <MenuItem key={o.name} l18nID={o.l18nID} />)}
-								</List>
+									<div className={classes.separator} />
+									<List className={classes.container}>
+										<MenuItem
+											l18nID={'chat.menu.searchResult'}
+											active={inboxFilter === 'SEARCH'}
+											setInboxFilter={() => setFilter('SEARCH')}
+										/>
+										{options.map(o => <MenuItem key={o.name} l18nID={o.l18nID} />)}
+									</List>
+								</div>
 							</div>
-						</div>
-					);
-				}
-			}</Query>
-	}</Mutation>;
+						);
+					}
+				}</Query>
+		}</Mutation>
+	);
 });
 export default Menu;
