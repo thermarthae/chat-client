@@ -94,8 +94,7 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 		}));
 	}
 
-	private handleScroll = async ({ target }: React.ChangeEvent<HTMLDivElement>, byUser?: boolean) => {
-		if (!byUser) return;
+	private handleScroll = async ({ target }: React.ChangeEvent<HTMLDivElement>) => {
 		if (target.scrollTop < 300) await this.fetchMoreMsgs();
 
 		const distanceFromBottom = target.scrollHeight - target.scrollTop - target.clientHeight;
@@ -122,7 +121,7 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 
 		return (
 			<div className={classes.root}>
-				<div className={classes.overflow} ref={this.contentRef} onScroll={(event: any) => this.handleScroll(event, true)}>
+				<div className={classes.overflow} ref={this.contentRef} onScroll={(event: any) => this.handleScroll(event)}>
 					<div className={classes.groups} ref={this.groupsRef}>
 						{isFetching && <div className={classes.fetching}>
 							<CircularProgress size='1.5em' color='inherit' />
