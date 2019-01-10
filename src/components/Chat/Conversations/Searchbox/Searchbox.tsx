@@ -58,7 +58,7 @@ class Searchbox extends React.PureComponent<WithApolloClient<ISearchboxProps>, I
 		const query = event.target.value;
 		this.setState({ query });
 
-		if (query.length < 1) return await this.setInboxFilter(this.state.prevInboxFilter);
+		if (query.length < 1) return this.setInboxFilter(this.state.prevInboxFilter);
 		await this.setInboxFilter('SEARCH');
 		if (query.length <= 3) return this.setState({ isQueryShort: true });
 
@@ -70,7 +70,7 @@ class Searchbox extends React.PureComponent<WithApolloClient<ISearchboxProps>, I
 	}
 
 	private setInboxFilter = async (inboxFilter: TInboxFilter) => {
-		return await this.props.client.mutate({
+		return this.props.client.mutate({
 			mutation: SET_INBOX_FILTER,
 			variables: { inboxFilter }
 		});
