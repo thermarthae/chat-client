@@ -10,7 +10,7 @@ const Aside = () => {
 	return (
 		<Query query={GET_ASIDE_STATUS}>
 			{({ data: { chat: { isAsideOpen } } }) =>
-				<div className={classes.root + (isAsideOpen ? (' ' + classes.active) : '')}></div>
+				<div className={classes.root + (isAsideOpen ? (' ' + classes.active) : '')} />
 			}
 		</Query>
 	);

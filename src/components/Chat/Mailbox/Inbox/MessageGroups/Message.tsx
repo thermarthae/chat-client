@@ -29,7 +29,7 @@ const Message = React.memo(({ message, me, handleMenuClick }: IMessageProps) => 
 					<MoreVert className={classes.ico} />
 				</IconButton>
 			</div>
-			<div className={classes.clear}></div>
+			<div className={classes.clear} />
 		</div>
 	);
 },
