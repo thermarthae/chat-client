@@ -25,7 +25,8 @@ const MenuItem = React.memo(({ setInboxFilter, active, l18nID, count }: IMenuIte
 	const classes = menuItemStyles({});
 
 	return (
-		<ListItem button
+		<ListItem
+			button
 			onClick={setInboxFilter}
 			className={classes.root + (active ? (' ' + classes.active) : '')}
 		>

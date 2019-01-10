@@ -87,14 +87,10 @@ class MessageInput extends React.PureComponent<TProps, IMessageInputState>{
 							i18n={this.emojiSelectI18N}
 						/>
 					</Slide>
-					<IconButton className={classes.btn}
-						onClick={this.handleEmojiPickerToggle}
-					>
+					<IconButton className={classes.btn} onClick={this.handleEmojiPickerToggle}>
 						<InsertEmoticon style={{ fontSize: 'inherit' }} />
 					</IconButton>
-					<IconButton className={classes.btn}
-						onClick={this.handleSendMessage}
-					>
+					<IconButton className={classes.btn} onClick={this.handleSendMessage}>
 						<Send style={{ fontSize: 'inherit' }} />
 					</IconButton>
 				</div>
