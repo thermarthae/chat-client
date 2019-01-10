@@ -8,13 +8,21 @@ import List from '@material-ui/core/List';
 
 import MenuItem from '../MenuItem/MenuItem';
 
+interface IEmptyFilter {
+	name: TInboxFilter;
+	l18nID: string;
+}
+interface IFilter extends IEmptyFilter {
+	count: number;
+}
+
 interface IConvFiltersProps {
 	filter: TInboxFilter;
 	setFilter: (inboxFilter: TInboxFilter) => void;
 	className?: string;
 }
 const ConvFilters: React.SFC<IConvFiltersProps> = ({ filter, setFilter, className }) => {
-	const emptyInboxFilters = [
+	const emptyInboxFilters: IEmptyFilter[] = [
 		{ name: 'UNREAD', l18nID: 'chat.menu.inbox' },
 		{ name: 'ALL', l18nID: 'chat.menu.allMessages' },
 		{ name: 'DRAFT', l18nID: 'chat.menu.draft' }
@@ -37,7 +45,7 @@ const ConvFilters: React.SFC<IConvFiltersProps> = ({ filter, setFilter, classNam
 						}
 					} = data!;
 
-					const inboxFilters = [
+					const inboxFilters: IFilter[] = [
 						{ name: 'UNREAD', l18nID: 'chat.menu.inbox', count: unreadCount },
 						{ name: 'ALL', l18nID: 'chat.menu.allMessages', count: conversationCount },
 						{ name: 'DRAFT', l18nID: 'chat.menu.draft', count: draftCount },
@@ -49,7 +57,7 @@ const ConvFilters: React.SFC<IConvFiltersProps> = ({ filter, setFilter, classNam
 							l18nID={f.l18nID}
 							active={filter === f.name}
 							count={f.count}
-							setInboxFilter={() => setFilter(f.name as any)}
+							setInboxFilter={() => setFilter(f.name)}
 						/>
 					);
 				}}
