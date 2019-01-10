@@ -112,6 +112,10 @@ class Login extends React.PureComponent<WithApolloClient<ILoginProps>, ILoginSta
 		}
 	}
 
+	private handleMouseDown = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+		event.preventDefault();
+	}
+
 	public render() {
 		const {
 			username,
@@ -167,7 +171,7 @@ class Login extends React.PureComponent<WithApolloClient<ILoginProps>, ILoginSta
 										<InputAdornment position='end'>
 											<IconButton
 												onClick={this.handleShowPassswordClick}
-												onMouseDown={e => e.preventDefault()}
+												onMouseDown={this.handleMouseDown}
 											>
 												{showPassword ? <VisibilityOff /> : <Visibility />}
 											</IconButton>
