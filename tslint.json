@@ -1,6 +1,6 @@
 {
 	"defaultSeverity": "warning",
-	"extends": ["tslint:recommended"],
+	"extends": ["tslint:recommended", "tslint-react"],
 	"linterOptions": {
 		"exclude": ["*.json", "**/*.json"]
 	},
@@ -22,7 +22,12 @@
 		"no-trailing-whitespace": [true, "ignore-blank-lines"],
 		"no-unused-expression": [true, "allow-new"],
 		"quotemark": [true, "single"],
-		"object-literal-key-quotes": [true, "as-needed"]
+		"object-literal-key-quotes": [true, "as-needed"],
+		//react
+		"jsx-boolean-value": false,
+		"jsx-no-multiline-js": false,
+		"jsx-curly-spacing": false,
+		"jsx-no-lambda": false
 	},
 	"jsRules": {
 		"arrow-parens": [true, "ban-single-arg-parens"],
