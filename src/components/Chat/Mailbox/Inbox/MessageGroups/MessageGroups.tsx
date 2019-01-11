@@ -26,13 +26,15 @@ const MessageGroups = ({ messages, handleMenuClick }: IMessageGroups) => {
 	});
 	msgGroups.push(currentGroup);
 
-	const clusters = msgGroups.map(grp => <Cluster
-		key={'G-' + grp[0].time} //TODO: fix key
-		group={grp}
-		handleMenuClick={handleMenuClick}
-	/>);
-
-	return <>{clusters}</>;
+	return (
+		<div>
+			{msgGroups.map(grp => <Cluster
+				key={'G-' + grp[0].time} //TODO: fix key
+				group={grp}
+				handleMenuClick={handleMenuClick}
+			/>)}
+		</div>
+	);
 };
 
 export default React.memo(MessageGroups);
