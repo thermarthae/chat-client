@@ -111,49 +111,49 @@ class Mailbox extends React.Component<WithApolloClient<IMailboxProps>, IMailboxS
 
 		return (
 			<Query query={GET_CONVERSATION} variables={variables} errorPolicy='all'>
-			{({ loading, error, data, fetchMore }) => {
-				if (loading) return <Empty classes={classes} i18nID='chat.mailbox.loading' />;
-				if (!data) return <Empty classes={classes} i18nID='chat.mailbox.nothingSelected' />;
+				{({ loading, error, data, fetchMore }) => {
+					if (loading) return <Empty classes={classes} i18nID='chat.mailbox.loading' />;
+					if (!data) return <Empty classes={classes} i18nID='chat.mailbox.nothingSelected' />;
 
-				const { getConversation }: IGetConversationResponse = data;
-				if (error) {
-					if (getConversation === null) return <Redirect to='/' push />;
-					return <Empty classes={classes} i18nID='error.UnknownError' />;
-				}
-				const { name, messages, draft, seen } = getConversation;
+					const { getConversation }: IGetConversationResponse = data;
+					if (error) {
+						if (getConversation === null) return <Redirect to='/' push />;
+						return <Empty classes={classes} i18nID='error.UnknownError' />;
+					}
+					const { name, messages, draft, seen } = getConversation;
 
-				return <div className={classes.root}>
-					<Header conversationName={name} />
-					<div className={classes.content}>
-						<div className={classes.main}>
-							<Inbox
-								messages={messages}
-								seen={seen}
-								mgsToFetch={mgsToFetch}
-								markConvAsRead={this.markConvAsRead}
-								onLoadMore={() => fetchMore({
-									variables: { skip: messages.length },
-									updateQuery: (prev: IGetConversationResponse, { fetchMoreResult }) => {
-										if (!fetchMoreResult || !fetchMoreResult.getConversation.messages)
-											return prev;
+					const loadMore = () => fetchMore({
+						variables: { skip: messages.length },
+						updateQuery: (prev: IGetConversationResponse, { fetchMoreResult }) => {
+							if (!fetchMoreResult || !fetchMoreResult.getConversation.messages) return prev;
+							return {
+								getConversation: Object.assign({}, prev.getConversation, {
+									messages: [
+										...fetchMoreResult.getConversation.messages,
+										...prev.getConversation.messages,
+									]
+								})
+							};
+						}
+					});
 
-										return {
-											getConversation: Object.assign({}, prev.getConversation, {
-												messages: [
-													...fetchMoreResult.getConversation.messages,
-													...prev.getConversation.messages,
-												]
-											})
-										};
-									}
-								})}
-							/>
-							<MessageInput draft={draft} />
+					return <div className={classes.root}>
+						<Header conversationName={name} />
+						<div className={classes.content}>
+							<div className={classes.main}>
+								<Inbox
+									messages={messages}
+									seen={seen}
+									mgsToFetch={mgsToFetch}
+									markConvAsRead={this.markConvAsRead}
+									onLoadMore={loadMore}
+								/>
+								<MessageInput draft={draft} />
+							</div>
+							<Aside />
 						</div>
-						<Aside />
-					</div>
-				</div>;
-			}}
+					</div>;
+				}}
 			</Query>
 		);
 	}
