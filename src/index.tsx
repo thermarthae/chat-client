@@ -6,7 +6,7 @@ import { ApolloProvider } from 'react-apollo';
 import { ThemeProvider } from '@material-ui/styles';
 
 import { client } from './providers/apolloClient';
-import theme from './theme';
+import theme from './providers/materialTheme';
 
 import App from './components/App';
 
