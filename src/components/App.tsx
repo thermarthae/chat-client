@@ -4,6 +4,7 @@ import { Switch } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
 import cookie from 'cookie';
 import messages from '../locales';
+import 'normalize.css';
 
 import Query from 'react-apollo/Query';
 import withApollo, { WithApolloClient } from 'react-apollo/withApollo';
