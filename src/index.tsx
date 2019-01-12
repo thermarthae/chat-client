@@ -15,7 +15,6 @@ import { ThemeProvider } from '@material-ui/styles';
 
 import defaults from './state/defaults';
 import mutations from './state/mutations';
-// import queries from './apollo/state/resolvers/queries';
 
 import 'normalize.css';
 import theme from './theme';
@@ -29,16 +28,8 @@ const stateLink = withClientState({
 	cache,
 	defaults,
 	resolvers: {
-		// Query: { ...queries },
 		Mutation: { ...mutations },
-	},
-	typeDefs: `
-		enum conversationFilter {
-			ALL
-			UNREAD
-			DRAFT
-		}
-	`,
+	}
 });
 
 const client = new ApolloClient({
