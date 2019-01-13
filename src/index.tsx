@@ -1,7 +1,7 @@
 import './bootstrap';
 import React from 'react';
 import { render } from 'react-dom';
-import { hot } from 'react-hot-loader';
+import { hot } from 'react-hot-loader/root';
 import { ApolloProvider } from 'react-apollo';
 import { ThemeProvider } from '@material-ui/styles';
 
@@ -18,6 +18,6 @@ const WrappedApp = () => (
 	</ApolloProvider>
 );
 
-const Hot = hot(module)(WrappedApp);
+const Hot = hot(WrappedApp);
 
 render(<Hot />, document.getElementById('root'));
