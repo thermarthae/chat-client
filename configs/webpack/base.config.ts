@@ -12,7 +12,10 @@ const tsconfigPath = path.resolve(rootPath, 'tsconfig.json');
 const tslintPath = path.resolve(rootPath, 'tslint.json');
 
 const baseConfig: webpack.Configuration = {
-	entry: './index.tsx',
+	entry: {
+		tslib: 'tslib',
+		main: './index.tsx',
+	},
 	context: srcPath,
 	resolve: {
 		extensions: ['.mjs', '.js', '.jsx', '.ts', '.tsx', '.json'],

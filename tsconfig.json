@@ -19,6 +19,7 @@
 		"sourceMap": true,
 		"skipLibCheck": true,
 		"resolveJsonModule": true,
+		"importHelpers": true,
 		"baseUrl": "./src",
 		"paths": {
 			"@src/*": ["*"]

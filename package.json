@@ -86,6 +86,7 @@
 		"react-router-dom": "^4.3.1",
 		"subscriptions-transport-ws": "^0.9.15",
 		"ts-transform-graphql-tag": "^0.2.1",
+		"tslib": "^1.9.3",
 		"twemoji": "^11.2.0"
 	}
 }
