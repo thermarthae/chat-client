@@ -79,7 +79,8 @@ const baseConfig: webpack.Configuration = {
 			checkSyntacticErrors: true,
 			async: false,
 			tsconfig: tsconfigPath,
-			tslint: tslintPath
+			tslint: tslintPath,
+			useTypescriptIncrementalApi: true
 		}),
 	]
 };
