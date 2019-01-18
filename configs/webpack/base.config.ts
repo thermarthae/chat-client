@@ -71,8 +71,8 @@ const baseConfig: webpack.Configuration = {
 	plugins: [
 		new HtmlWebpackPlugin({
 			title: packageJson.name,
-			template: 'index.html.ejs',
-			favicon: 'favicon.png',
+			template: 'public/index.html.ejs',
+			favicon: 'public/favicon.png',
 			meta: {
 				viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no',
 				description: 'React App',
