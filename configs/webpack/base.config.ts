@@ -73,7 +73,11 @@ const baseConfig: webpack.Configuration = {
 			title: packageJson.name,
 			template: 'index.html.ejs',
 			favicon: 'favicon.png',
-
+			meta: {
+				viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no',
+				description: 'React App',
+				'theme-color': '#1c1d2c',
+			}
 		}),
 		new ForkTsCheckerWebpackPlugin({
 			checkSyntacticErrors: true,
