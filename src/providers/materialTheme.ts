@@ -28,7 +28,7 @@ export default createMuiTheme({
 	typography: {
 		useNextVariants: true,
 		fontSize: 14,
-		htmlFontSize: 14,
+		htmlFontSize: 16,
 		fontFamily: 'Roboto, sans-serif',
 		emToPx: (em: number, base = 14) => Math.round(base * em) + 'px'
 	},
