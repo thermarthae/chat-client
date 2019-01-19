@@ -37,7 +37,7 @@ class Navigator extends React.Component<INavigatorProps> {
 						<nav className={classes.root}>
 							<div className={classes.navLink}>
 								<IconButton className={classes.btn} onClick={() => this.handleLogout(client)}>
-									<PowerSettingsNew style={{ fontSize: 'inherit' }} />
+									<PowerSettingsNew fontSize='inherit' />
 								</IconButton>
 							</div>
 							<NavLink
@@ -47,7 +47,7 @@ class Navigator extends React.Component<INavigatorProps> {
 								to='/chat'
 							>
 								<IconButton className={classes.btn}>
-									<Chat style={{ fontSize: 'inherit' }} />
+									<Chat fontSize='inherit' />
 								</IconButton>
 							</NavLink>
 							<NavLink
@@ -56,7 +56,7 @@ class Navigator extends React.Component<INavigatorProps> {
 								to='/login'
 							>
 								<IconButton className={classes.btn}>
-									<AccountCircle style={{ fontSize: 'inherit' }} />
+									<AccountCircle fontSize='inherit' />
 								</IconButton>
 							</NavLink>
 						</nav>
