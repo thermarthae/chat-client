@@ -9,10 +9,6 @@ const appStyles = ({ palette }: Theme) => createStyles({
 		display: 'flex',
 		height: '100vh',
 		color: palette.textLight.primary,
-		background: palette.primary.main,
-		fontFamily: 'Roboto, sans-serif',
-		fontSize: 14,
-		lineHeight: 1.25,
 	},
 });
 export default appStyles;

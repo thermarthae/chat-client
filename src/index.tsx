@@ -8,6 +8,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import { client } from './providers/apolloClient';
 import theme from './providers/materialTheme';
 
+import './index.css';
 import App from './components/App';
 
 const WrappedApp = () => (
