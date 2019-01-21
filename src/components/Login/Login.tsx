@@ -7,19 +7,15 @@ import { LOG_IN, ILogInResponse, SET_LOGIN_STATUS } from './Login.apollo';
 
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import IconButton from '@material-ui/core/IconButton';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { withStyles } from '@material-ui/styles';
+import Logo from '@src/components/Logo/Logo';
 
 import loginStyles, { TLoginStyles } from './Login.style';
 
@@ -112,10 +108,6 @@ class Login extends React.PureComponent<WithApolloClient<ILoginProps>, ILoginSta
 		}
 	}
 
-	private handleMouseDown = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-		event.preventDefault();
-	}
-
 	public render() {
 		const {
 			username,
@@ -131,16 +123,17 @@ class Login extends React.PureComponent<WithApolloClient<ILoginProps>, ILoginSta
 		const errorMsg = errorName ? formatMessage({ id: 'error.' + errorName }) : undefined;
 
 		return (
-			<form action='' className={classes.root} onSubmit={this.handleSubmit}>
-				<Card className={classes.container}>
-					<CardContent>
-						<div className={classes.title}>
+			<div className={classes.root}>
+				<form action='' className={classes.form} onSubmit={this.handleSubmit}>
+					<Card className={classes.container} raised>
+						<Logo size={3} className={classes.logo} />
+						<Typography variant='h5' align='center' gutterBottom>
 							{formatMessage({ id: 'login.title' })}
-						</div>
-						<div className={classes.subtitle}>
+						</Typography>
+						<Typography variant='body2' align='center' color='textSecondary'>
 							{formatMessage({ id: 'login.subtitle' })}
-						</div>
-						<div className={classes.form}>
+						</Typography>
+						<div className={classes.textFields}>
 							<TextField
 								required
 								fullWidth
@@ -152,63 +145,53 @@ class Login extends React.PureComponent<WithApolloClient<ILoginProps>, ILoginSta
 								error={usernameError}
 								label={formatMessage({ id: 'login.username' })}
 								helperText={usernameError ? errorMsg : ''}
+								variant='outlined'
+								margin='normal'
 							/>
-							<FormControl
-								fullWidth
+							<TextField
 								required
+								style={{ width: '100%' }} // TODO: wait for fullWidth fix
+								type={showPassword ? 'text' : 'password'}
+								name='password'
+								autoComplete='password'
+								value={password}
+								onChange={this.handleChange}
 								error={passwordError}
-							>
-								<InputLabel>
-									{formatMessage({ id: 'login.password' })}
-								</InputLabel>
-								<Input
-									name='password'
-									autoComplete='password'
-									type={showPassword ? 'text' : 'password'}
-									value={password}
-									onChange={this.handleChange}
-									endAdornment={
+								label={formatMessage({ id: 'login.password' })}
+								helperText={passwordError ? errorMsg : ''}
+								variant='outlined'
+								margin='normal'
+								InputProps={{
+									endAdornment: (
 										<InputAdornment position='end'>
-											<IconButton
-												onClick={this.handleShowPassswordClick}
-												onMouseDown={this.handleMouseDown}
-											>
+											<IconButton onClick={this.handleShowPassswordClick}>
 												{showPassword ? <VisibilityOff /> : <Visibility />}
 											</IconButton>
 										</InputAdornment>
-									}
-								/>
-								{passwordError && <FormHelperText>{errorMsg}</FormHelperText>}
-							</FormControl>
+									)
+								}}
+							/>
 						</div>
-					</CardContent>
-					<CardActions className={classes.actions}>
-						<Button
-							variant='text'
-							color='primary'
-							className='btn'
-							size='small'
-						>
-							{formatMessage({ id: 'login.forgotPasswordButton' })}
-						</Button>
-						<div className={classes.btnWrapper}>
-							<Button
-								color='primary'
-								variant='contained'
-								className='btn'
-								size='small'
-								type='submit'
-								disabled={waitingForServer === true}
-							>
-								{formatMessage({ id: 'login.loginButton' })}
+						<div className={classes.actions}>
+							<Button variant='text' color='primary'>
+								{formatMessage({ id: 'login.forgotPasswordButton' })}
 							</Button>
-							{waitingForServer ? <CircularProgress size='1.5em' className={classes.progress} /> : ''}
+							<div className={classes.btnWrapper}>
+								<Button
+									color='primary'
+									variant='contained'
+									type='submit'
+									disabled={waitingForServer === true}
+								>
+									{formatMessage({ id: 'login.loginButton' })}
+								</Button>
+								{waitingForServer ? <CircularProgress size='1.5em' className={classes.progress} /> : ''}
+							</div>
 						</div>
-					</CardActions>
-				</Card>
-			</form>
+					</Card>
+				</form>
+			</div>
 		);
-
 	}
 }
 export default withStyles(loginStyles, { name: 'Login' })(injectIntl(withApollo(Login)));
