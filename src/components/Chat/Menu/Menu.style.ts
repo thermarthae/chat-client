@@ -3,6 +3,7 @@ import { Theme } from '@material-ui/core';
 
 const menuStyles = makeStyles(({ palette }: Theme) => ({
 	root: {
+		flex: '0.8 0 200px',
 		display: 'flex',
 		flexDirection: 'column',
 		backgroundColor: palette.primary.main
