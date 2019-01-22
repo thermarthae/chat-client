@@ -2,7 +2,8 @@ import { makeStyles } from '@material-ui/styles';
 
 const logoStyles = makeStyles({
 	root: {
-		imageRendering: 'pixelated'
+		imageRendering: 'pixelated',
+		fallbacks: { imageRendering: 'crisp-edges' }
 	}
 }, { name: 'Logo' });
 
