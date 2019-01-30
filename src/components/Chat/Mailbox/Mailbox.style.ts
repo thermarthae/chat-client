@@ -6,7 +6,7 @@ export type TMailboxStyles = WithStyles<typeof mailboxStyles>;
 
 const mailboxStyles = ({ palette }: Theme) => createStyles({
 	root: {
-		flex: '12 0 auto',
+		flex: '12 0',
 		display: 'flex',
 		flexDirection: 'column',
 		color: palette.text.primary,
