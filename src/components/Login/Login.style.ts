@@ -6,6 +6,7 @@ const loginStyles = ({ palette }: Theme) => createStyles({
 	root: {
 		backgroundColor: palette.primary.main,
 		width: '100%',
+		height: '100%',
 		display: 'flex',
 		overflow: 'scroll'
 	},
