@@ -11,6 +11,12 @@ declare module '@material-ui/core/styles/createPalette' {
 	}
 	interface Palette extends IPalette { }
 	interface PaletteOptions extends IPalette { }
+
+	interface IPaletteColor {
+		lighter?: string;
+	}
+	interface SimplePaletteColorOptions extends IPaletteColor { }
+	interface PaletteColor extends IPaletteColor { }
 }
 
 declare module '@material-ui/core/styles/createTypography' {
@@ -32,9 +38,10 @@ export default createMuiTheme({
 	palette: {
 		background: {
 			paper: '#fff',
-			default: '#fafafa'
+			default: '#f9f9fb'
 		},
 		primary: {
+			lighter: 'hsl(234, 22%, 95%)',
 			light: 'hsl(234, 22%, 25%)',
 			main: 'hsl(234, 22%, 17%)',
 			dark: 'hsl(234, 22%, 14%)'
