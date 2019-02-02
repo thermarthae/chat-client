@@ -1,27 +1,24 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 
+// tslint:disable:interface-name
 declare module '@material-ui/core/styles/createPalette' {
-	interface IMinorColors {
-		online: string;
-		unseen: string;
-	}
-	interface Palette { // tslint:disable-line:interface-name
+	interface IPalette {
 		textLight: TypeText;
-		minorColors: IMinorColors;
+		minorColors: {
+			online: string;
+			unseen: string;
+		};
 	}
-	interface PaletteOptions { // tslint:disable-line:interface-name
-		textLight: TypeText;
-		minorColors: IMinorColors;
-	}
+	interface Palette extends IPalette { }
+	interface PaletteOptions extends IPalette { }
 }
 
 declare module '@material-ui/core/styles/createTypography' {
-	interface Typography { // tslint:disable-line:interface-name
+	interface ITypography {
 		emToPx: (em: number, base?: number) => string;
 	}
-	interface TypographyOptions { // tslint:disable-line:interface-name
-		emToPx: (em: number, base?: number) => string;
-	}
+	interface Typography extends ITypography { }
+	interface TypographyOptions extends ITypography { }
 }
 
 export default createMuiTheme({
