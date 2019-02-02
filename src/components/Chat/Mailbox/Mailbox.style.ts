@@ -1,6 +1,5 @@
 import { createStyles, WithStyles } from '@material-ui/styles';
 import { Theme } from '@material-ui/core';
-import { setLightness } from 'polished';
 
 export type TMailboxStyles = WithStyles<typeof mailboxStyles>;
 
@@ -10,7 +9,7 @@ const mailboxStyles = ({ palette }: Theme) => createStyles({
 		display: 'flex',
 		flexDirection: 'column',
 		color: palette.text.primary,
-		backgroundColor: setLightness(0.95, palette.primary.light),
+		backgroundColor: palette.primary.lighter,
 		minWidth: '20em',
 	},
 	content: {
