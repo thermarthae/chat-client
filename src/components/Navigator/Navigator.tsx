@@ -1,69 +1,61 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-
 import ApolloClient from 'apollo-client';
 import Query from 'react-apollo/Query';
 import { GET_LOGIN_STATUS, LOGOUT } from './Navigator.apollo';
+import withApollo from 'react-apollo/withApollo';
 
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
+import Badge from '@material-ui/core/Badge';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import Chat from '@material-ui/icons/Chat';
+import MailIcon from '@material-ui/icons/Mail';
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew';
-import { withStyles } from '@material-ui/styles';
-import navigatorStyles, { TNavigatorStyles } from './Navigator.style';
 
-interface INavigatorProps extends TNavigatorStyles {
+import navigatorStyles from './Navigator.style';
+import LinkButton from './LinkButton';
+import Logo from '../Logo/Logo';
+
+const handleLogout = async (client: ApolloClient<any>) => {
+	await client.query({ query: LOGOUT, fetchPolicy: 'no-cache', errorPolicy: 'all' });
+	client.resetStore();
+};
+
+interface INavigatorProps {
 	locationHref: string;
 }
+const MenuAppBar = React.memo<INavigatorProps>(() => {
+	const classes = navigatorStyles();
 
-class Navigator extends React.Component<INavigatorProps> {
-	public shouldComponentUpdate(nextProps: INavigatorProps) {
-		if (nextProps.locationHref.split('/')[3] !== this.props.locationHref.split('/')[3]) return true;
-		return false;
-	}
+	return (
+		<Query query={GET_LOGIN_STATUS}>{
+			({ client, data: { app: { isLoggedIn } } }) => {
+				if (!isLoggedIn) return null;
+				return <AppBar position='relative' className={classes.root}>
+					<Toolbar className={classes.toolbar}>
+						<Logo />
+						<Typography variant='h6' color='inherit' className={classes.grow} />
+						<div>
+							<LinkButton exact={false} to='/chat'>
+								<Badge color='error' badgeContent={'?'} >
+									<MailIcon titleAccess='Chat' />
+								</Badge>
+							</LinkButton>
+							<LinkButton to='/login'>
+								<AccountCircle titleAccess='Login' />
+							</LinkButton>
+							<IconButton color='inherit' onClick={() => handleLogout(client)}>
+								<PowerSettingsNew titleAccess='Logout' />
+							</IconButton>
+						</div>
+					</Toolbar>
+				</AppBar>;
+			}}
+		</Query>
+	);
+},
+	(prev, next) => (prev.locationHref.split('/')[3] === next.locationHref.split('/')[3])
+);
 
-	private handleLogout = async (client: ApolloClient<any>) => {
-		await client.query({ query: LOGOUT, fetchPolicy: 'no-cache', errorPolicy: 'all' });
-		client.resetStore();
-	}
-
-	public render() {
-		const { classes } = this.props;
-		return (
-			<Query query={GET_LOGIN_STATUS}>{
-				({ client, data: { app: { isLoggedIn } } }) => {
-					if (!isLoggedIn) return null;
-					return (
-						<nav className={classes.root}>
-							<div className={classes.navLink}>
-								<IconButton className={classes.btn} onClick={() => this.handleLogout(client)}>
-									<PowerSettingsNew fontSize='inherit' />
-								</IconButton>
-							</div>
-							<NavLink
-								exact={false}
-								className={classes.navLink}
-								activeClassName={classes.active}
-								to='/chat'
-							>
-								<IconButton className={classes.btn}>
-									<Chat fontSize='inherit' />
-								</IconButton>
-							</NavLink>
-							<NavLink
-								className={classes.navLink}
-								activeClassName={classes.active}
-								to='/login'
-							>
-								<IconButton className={classes.btn}>
-									<AccountCircle fontSize='inherit' />
-								</IconButton>
-							</NavLink>
-						</nav>
-					);
-				}
-			}</Query>
-		);
-	}
-}
-export default withStyles(navigatorStyles)(Navigator);
+export default withApollo(MenuAppBar);

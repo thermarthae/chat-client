@@ -6,6 +6,7 @@ export type TAppStyles = WithStyles<typeof appStyles>;
 
 const appStyles = ({ palette }: Theme) => createStyles({
 	root: {
+		flexDirection: 'column',
 		display: 'flex',
 		width: '100vw',
 		height: '100vh',
@@ -13,5 +14,3 @@ const appStyles = ({ palette }: Theme) => createStyles({
 	},
 });
 export default appStyles;
-
-
