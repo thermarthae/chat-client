@@ -1,6 +1,7 @@
 import { styled } from '@material-ui/styles';
+import { Theme } from '@material-ui/core';
 
-const EmptyItem = styled('div')({
+const EmptyItem = styled('div')(({ theme: { palette } }: { theme: Theme }) => ({
 	display: 'flex',
 	justifyContent: 'center',
 	alignItems: 'center',
@@ -8,9 +9,9 @@ const EmptyItem = styled('div')({
 	textAlign: 'center',
 	fontWeight: 600,
 	userSelect: 'none',
-	padding: '0px 10px',
-	color: 'rgba(255, 255, 255, 0.1)',
+	padding: '0px 16px',
+	color: palette.text.disabled,
 	fontSize: '2em',
-}, { name: 'EmptyItem' });
+}), { name: 'EmptyItem' });
 
 export default EmptyItem;
