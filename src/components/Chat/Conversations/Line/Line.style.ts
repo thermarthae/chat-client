@@ -4,25 +4,25 @@ import { lighten } from 'polished';
 
 const lineStyles = makeStyles(({ palette, typography }: Theme) => ({
 	root: {
-		padding: 20,
+		padding: 16,
 		alignItems: 'center',
 		display: 'flex',
 		cursor: 'pointer',
 		position: 'relative',
-		color: palette.textLight.disabled,
+		color: palette.text.disabled,
 		lineHeight: typography.emToPx(1.5),
 		transition: 'all 150ms cubic-bezier(0.4, 0, 0.2, 1)',
 		'&:hover': {
-			color: palette.textLight.primary,
-			backgroundColor: 'rgba(255, 255, 255, 0.05)',
+			color: palette.text.primary,
+			backgroundColor: 'rgba(255, 255, 255, 0.5)',
 		}
 	},
 	active: {
-		backgroundColor: palette.secondary.main,
-		boxShadow: '0 1px 6px rgba(0, 0, 0, 0.12)',
+		backgroundColor: palette.background.default,
+		boxShadow: 'inset 0 -1px hsla(0, 0%, 0%, 0.1), inset 0 1px hsla(0, 0%, 0%, 0.1)',
 		'&:hover': {
-			color: palette.textLight.secondary,
-			backgroundColor: lighten(0.05, palette.secondary.main)
+			color: palette.text.secondary,
+			backgroundColor: lighten(0.05, palette.background.paper)
 		}
 	},
 	online: {
@@ -49,7 +49,7 @@ const lineStyles = makeStyles(({ palette, typography }: Theme) => ({
 		whiteSpace: 'nowrap'
 	},
 	name: {
-		color: palette.textLight.primary,
+		color: palette.text.primary,
 		textOverflow: 'ellipsis',
 		overflow: 'hidden'
 	},

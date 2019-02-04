@@ -8,8 +8,7 @@ const convStyles = ({ palette }: Theme) => createStyles({
 		flex: '1 0 250px',
 		display: 'flex',
 		flexDirection: 'column',
-		backgroundColor: palette.primary.light,
-		zIndex: 1,
+		backgroundColor: palette.primary.lighter,
 	}
 });
 export default convStyles;

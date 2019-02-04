@@ -3,24 +3,20 @@ import { Theme } from '@material-ui/core';
 
 export type TSearchboxStyles = WithStyles<typeof searchboxStyles>;
 
-const searchboxStyles = ({ palette, typography }: Theme) => createStyles({
+const searchboxStyles = ({ palette, typography, shadows }: Theme) => createStyles({
 	root: {
 		display: 'flex',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		flexBasis: '70px',
-		flexShrink: 0,
+		flex: '0 0',
 		position: 'relative',
-		padding: '0 25px',
-		// borderBottom: '1px $divider__color--light solid'
-		borderBottom: '1px rgba(255, 255, 255, 0.12) solid'
+		padding: '16px',
 	},
 	searchbar: {
 		display: 'flex',
 		alignItems: 'center',
 		width: '100%',
-		// color: $text - disabled__color--light
-		color: palette.textLight.disabled,
+		color: palette.text.disabled,
 
 		'&.filled.short $input': {
 			boxShadow: 'inset 0 0 0px 1px #ff000080',
@@ -58,14 +54,15 @@ const searchboxStyles = ({ palette, typography }: Theme) => createStyles({
 	input: {
 		padding: '6px ' + typography.emToPx(1.85),
 		borderRadius: '1em',
-		backgroundColor: 'rgba(255, 255, 255, 0.1)',
+		backgroundColor: 'rgba(0, 0, 0, 0.07)',
 		transition: '0.2s',
 		'&:placeholder': {
 			color: 'rgba(255, 255, 255, 0.1)'
 		},
 		'&:focus': {
-			backgroundColor: 'rgba(255, 255, 255, 0.2)',
-			color: palette.textLight.primary
+			color: palette.text.primary,
+			backgroundColor: palette.background.default,
+			boxShadow: shadows[3],
 		}
 	},
 	progressBar: {

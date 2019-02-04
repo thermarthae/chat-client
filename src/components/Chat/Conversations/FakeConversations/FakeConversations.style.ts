@@ -3,7 +3,7 @@ import { Theme } from '@material-ui/core';
 
 const fakeConvStyles = makeStyles(({ palette }: Theme) => ({
 	root: {
-		padding: 20,
+		padding: 16,
 	},
 	content: {
 		position: 'relative',
@@ -31,13 +31,13 @@ const fakeConvStyles = makeStyles(({ palette }: Theme) => ({
 		margin: '0 -16px -16px 0',
 		top: -8,
 		left: -8,
-		border: `8px solid ${palette.primary.light}`,
+		border: `8px solid ${palette.primary.lighter}`,
 		borderRadius: '50%'
 	},
 	avatarClear: {
 		width: 10,
 		height: 40,
-		background: palette.primary.light
+		background: palette.primary.lighter
 	},
 	center: {
 		flexGrow: 1
@@ -47,14 +47,14 @@ const fakeConvStyles = makeStyles(({ palette }: Theme) => ({
 		flexGrow: 1,
 		position: 'relative',
 		marginBottom: 3,
-		boxShadow: `0 3px 0 0 ${palette.primary.light}`,
+		boxShadow: `0 3px 0 0 ${palette.primary.lighter}`,
 	},
 	topClear: {
 		width: '25%',
 		height: '100%',
 		position: 'absolute',
 		right: 0,
-		background: palette.primary.light
+		background: palette.primary.lighter
 	},
 	bottom: {
 		width: '100%',
@@ -66,7 +66,7 @@ const fakeConvStyles = makeStyles(({ palette }: Theme) => ({
 		height: '100%',
 		position: 'absolute',
 		right: 0,
-		background: palette.primary.light
+		background: palette.primary.lighter
 	}
 }), { name: 'FakeConversation' });
 export default fakeConvStyles;

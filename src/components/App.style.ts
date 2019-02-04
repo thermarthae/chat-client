@@ -10,7 +10,7 @@ const appStyles = ({ palette }: Theme) => createStyles({
 		display: 'flex',
 		width: '100vw',
 		height: '100vh',
-		color: palette.textLight.primary,
+		color: palette.text.primary,
 	},
 });
 export default appStyles;

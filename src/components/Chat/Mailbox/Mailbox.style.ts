@@ -5,12 +5,11 @@ export type TMailboxStyles = WithStyles<typeof mailboxStyles>;
 
 const mailboxStyles = ({ palette }: Theme) => createStyles({
 	root: {
-		flex: '12 0',
+		flex: '9 0 20em',
 		display: 'flex',
 		flexDirection: 'column',
 		color: palette.text.primary,
 		backgroundColor: palette.primary.lighter,
-		minWidth: '20em',
 	},
 	content: {
 		flexGrow: 1,

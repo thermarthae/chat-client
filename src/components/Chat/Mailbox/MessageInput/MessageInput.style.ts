@@ -9,7 +9,7 @@ const messageInputStyles = ({ palette, typography }: Theme) => createStyles({
 		alignItems: 'center',
 		backgroundColor: palette.background.default,
 		flex: '0 0 auto',
-		boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.1)',
+		borderTop: '1px solid hsla(0, 0%, 0%, 0.1)',
 		position: 'relative',
 
 		'&> *': { marginRight: 5 },

@@ -6,21 +6,19 @@ const headerStyles = makeStyles(({ palette, typography }: Theme) => ({
 		display: 'flex',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		flexBasis: 70,
-		flexShrink: 0,
+		flex: '0 0 48px',
 		fontSize: typography.emToPx(1.125),
 		backgroundColor: palette.background.default,
-		boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.1)',
-		zIndex: 1,
+		borderBottom: '1px solid hsla(0, 0%, 0%, 0.1)',
 	},
 	id: {
 		flexGrow: 1,
-		padding: '0 25px',
+		padding: '0 16px',
 		fontWeight: 500,
 	},
 	btn: {
-		height: 70,
-		width: 70,
+		height: 48,
+		width: 48,
 		fontSize: typography.emToPx(1.75),
 
 		'&:hover': {
