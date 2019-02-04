@@ -54,37 +54,39 @@ class Conversations extends React.Component<WithApolloClient<IConversationsProps
 			<Query query={GET_CHAT_FILTER}>
 				{({ data: { chat: { inboxFilter } } }) =>
 					<div className={this.props.classes.root}>
-						<Header />
-						<Searchbox inboxFilter={inboxFilter} />
-						<Query query={GET_CONV_ARR} >
-							{({ loading, error, data }) => {
-								if (error) return `Error! ${error.message}`;
-								if (loading) return <FakeConversations />;
+						<div className={this.props.classes.widthFix}>
+							<Header />
+							<Searchbox inboxFilter={inboxFilter} />
+							<Query query={GET_CONV_ARR} >
+								{({ loading, error, data }) => {
+									if (error) return `Error! ${error.message}`;
+									if (loading) return <FakeConversations />;
 
-								const { getUserConversations }: IGetConvArrResponse = data;
+									const { getUserConversations }: IGetConvArrResponse = data;
 
-								let filteredConv = [];
-								switch (inboxFilter as TInboxFilter) {
-									case 'SEARCH':
-										return null;
-									case 'DRAFT':
-										filteredConv = getUserConversations.filter(conv => conv.draft);
-										break;
-									case 'UNREAD':
-										filteredConv = getUserConversations.filter(conv => !conv.seen);
-										break;
-									default:
-										filteredConv = getUserConversations;
-										break;
-								}
+									let filteredConv = [];
+									switch (inboxFilter as TInboxFilter) {
+										case 'SEARCH':
+											return null;
+										case 'DRAFT':
+											filteredConv = getUserConversations.filter(conv => conv.draft);
+											break;
+										case 'UNREAD':
+											filteredConv = getUserConversations.filter(conv => !conv.seen);
+											break;
+										default:
+											filteredConv = getUserConversations;
+											break;
+									}
 
-								if (!filteredConv[0]) return <EmptyItem>
-									<FormattedMessage id='chat.conversations.nothingToShow' />
-								</EmptyItem>;
+									if (!filteredConv[0]) return <EmptyItem>
+										<FormattedMessage id='chat.conversations.nothingToShow' />
+									</EmptyItem>;
 
-								return <ConversationList conversationArr={filteredConv} />;
-							}}
-						</Query>
+									return <ConversationList conversationArr={filteredConv} />;
+								}}
+							</Query>
+						</div>
 					</div>}
 			</Query>
 		);

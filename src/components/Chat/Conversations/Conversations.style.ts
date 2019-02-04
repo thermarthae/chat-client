@@ -7,8 +7,13 @@ const convStyles = ({ palette }: Theme) => createStyles({
 	root: {
 		flex: '1 0 250px',
 		display: 'flex',
-		flexDirection: 'column',
 		backgroundColor: palette.primary.lighter,
+	},
+	widthFix: {
+		display: 'flex',
+		flex: 1,
+		borderRight: '1px solid hsla(0, 0%, 0%, 0.1)',
+		flexDirection: 'column'
 	}
 });
 export default convStyles;
