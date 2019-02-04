@@ -9,8 +9,7 @@ import { withStyles } from '@material-ui/styles';
 import Search from '@material-ui/icons/Search';
 import Cancel from '@material-ui/icons/Cancel';
 
-import { SET_INBOX_FILTER, FIND_CONV_AND_USR, IFindConvAndUsrRes } from './Searchbox.apollo';
-import { TInboxFilter } from '../Conversations.apollo';
+import { SET_SEARCH_STATUS, FIND_CONV_AND_USR, IFindConvAndUsrRes } from './Searchbox.apollo';
 
 import searchboxStyles, { TSearchboxStyles } from './Searchbox.style';
 import FakeConversations from '../FakeConversations/FakeConversations';
@@ -18,14 +17,13 @@ import SearchResult from './SearchResult';
 import EmptyItem from '../EmptyItem';
 
 interface ISearchboxProps extends TSearchboxStyles {
-	inboxFilter: TInboxFilter;
+	searchStatus: boolean;
 }
 
 interface ISearchboxState {
 	query: string;
 	result: IFindConvAndUsrRes;
 	waitingForRes: boolean;
-	prevInboxFilter: TInboxFilter;
 	queryOnFlight?: NodeJS.Timer;
 	isQueryShort: boolean;
 }
@@ -38,19 +36,12 @@ class Searchbox extends React.PureComponent<WithApolloClient<ISearchboxProps>, I
 			findUser: []
 		},
 		waitingForRes: false,
-		prevInboxFilter: 'ALL' as TInboxFilter,
 		queryOnFlight: undefined,
 		isQueryShort: true,
 	};
 
-	private handleFocus = () => {
-		const prevInboxFilter = this.props.inboxFilter;
-		if (prevInboxFilter !== 'SEARCH') this.setState({ prevInboxFilter });
-	}
-
 	private handleClearInput = async () => {
-		const { prevInboxFilter } = this.state;
-		await this.setInboxFilter(prevInboxFilter);
+		await this.setSearchResult(false);
 		this.setState({ query: '', waitingForRes: false });
 	}
 
@@ -58,8 +49,8 @@ class Searchbox extends React.PureComponent<WithApolloClient<ISearchboxProps>, I
 		const query = event.target.value;
 		this.setState({ query });
 
-		if (query.length < 1) return this.setInboxFilter(this.state.prevInboxFilter);
-		await this.setInboxFilter('SEARCH');
+		if (query.length < 1) return this.setSearchResult(false);
+		await this.setSearchResult();
 		if (query.length <= 3) return this.setState({ isQueryShort: true });
 
 		this.setState({ waitingForRes: true, isQueryShort: false });
@@ -69,10 +60,10 @@ class Searchbox extends React.PureComponent<WithApolloClient<ISearchboxProps>, I
 		});
 	}
 
-	private setInboxFilter = async (inboxFilter: TInboxFilter) => {
+	private setSearchResult = async (status = true) => {
 		return this.props.client.mutate({
-			mutation: SET_INBOX_FILTER,
-			variables: { inboxFilter }
+			mutation: SET_SEARCH_STATUS,
+			variables: { status }
 		});
 	}
 
@@ -88,9 +79,8 @@ class Searchbox extends React.PureComponent<WithApolloClient<ISearchboxProps>, I
 	}
 
 	public render() {
-		const { inboxFilter, classes } = this.props;
+		const { classes, searchStatus } = this.props;
 		const { query, isQueryShort, waitingForRes, result } = this.state;
-		const shouldDisplay = (inboxFilter === 'SEARCH') ? true : false;
 
 		return (
 			<>
@@ -107,7 +97,6 @@ class Searchbox extends React.PureComponent<WithApolloClient<ISearchboxProps>, I
 							disableUnderline
 							placeholder={placeholder as string}
 							startAdornment={<Search className={classes.glassIco} />}
-							onFocus={this.handleFocus}
 							endAdornment={
 								<IconButton className={classes.cancelBtn} onClick={this.handleClearInput}>
 									<Cancel className={classes.ico} />
@@ -117,7 +106,7 @@ class Searchbox extends React.PureComponent<WithApolloClient<ISearchboxProps>, I
 					}</FormattedMessage>
 					{waitingForRes && <LinearProgress className={classes.progressBar} variant='query' />}
 				</div>
-				{!shouldDisplay
+				{!searchStatus
 					? null
 					: isQueryShort
 						? <EmptyItem><FormattedMessage id={'chat.searchbox.isQueryShort'} /></EmptyItem>

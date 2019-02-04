@@ -21,11 +21,11 @@ export const toggleAside = (_: undefined, { }: any, { cache }: ApolloClient<any>
 	return null;
 };
 
-export const setInboxFilter = (_: undefined, { inboxFilter }: any, { cache }: ApolloClient<any>) => {
+export const setSearchStatus = (_: undefined, { status }: any, { cache }: ApolloClient<any>) => {
 	const data = {
 		chat: {
 			__typename: 'Chat',
-			inboxFilter
+			searchStatus: Boolean(status)
 		}
 	};
 	cache.writeData({ data });

@@ -1,9 +1,9 @@
 import gql from 'graphql-tag';
 import { ConvNavFragment, IConversation } from '../Conversations.apollo';
 
-export const SET_INBOX_FILTER = gql`
-	mutation ($inboxFilter: String!){
-		setInboxFilter(inboxFilter: $inboxFilter) @client
+export const SET_SEARCH_STATUS = gql`
+	mutation ($status: Boolean!){
+		setSearchStatus(status: $status) @client
 	}
 `;
 

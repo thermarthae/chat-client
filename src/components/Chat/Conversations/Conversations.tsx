@@ -4,7 +4,7 @@ import { Query, withApollo, WithApolloClient } from 'react-apollo';
 import { withStyles } from '@material-ui/styles';
 import convStyles, { TConvStyles } from './Conversations.style';
 import {
-	GET_CHAT_FILTER, TInboxFilter,
+	GET_SEARCH_STATUS,
 	GET_CONV_ARR, IGetConvArrResponse,
 	UPDATED_CONV_SUBSCRIPTION, IConversation,
 	GET_SUB_STATUS, IGetConvSubStatusRes, TOGGLE_CONV_SUB_STATUS
@@ -51,43 +51,28 @@ class Conversations extends React.Component<WithApolloClient<IConversationsProps
 
 	public render() {
 		return (
-			<Query query={GET_CHAT_FILTER}>
-				{({ data: { chat: { inboxFilter } } }) =>
+			<Query query={GET_SEARCH_STATUS}>
+				{({ data: { chat: { searchStatus } } }) =>
 					<div className={this.props.classes.root}>
 						<div className={this.props.classes.widthFix}>
 							<Header />
-							<Searchbox inboxFilter={inboxFilter} />
-							<Query query={GET_CONV_ARR} >
+							<Searchbox searchStatus={searchStatus} />
+							<Query<IGetConvArrResponse> query={GET_CONV_ARR}>
 								{({ loading, error, data }) => {
 									if (error) return `Error! ${error.message}`;
 									if (loading) return <FakeConversations />;
+									if (searchStatus) return null;
 
-									const { getUserConversations }: IGetConvArrResponse = data;
-
-									let filteredConv = [];
-									switch (inboxFilter as TInboxFilter) {
-										case 'SEARCH':
-											return null;
-										case 'DRAFT':
-											filteredConv = getUserConversations.filter(conv => conv.draft);
-											break;
-										case 'UNREAD':
-											filteredConv = getUserConversations.filter(conv => !conv.seen);
-											break;
-										default:
-											filteredConv = getUserConversations;
-											break;
-									}
-
-									if (!filteredConv[0]) return <EmptyItem>
+									const { getUserConversations } = data!;
+									if (!getUserConversations[0]) return <EmptyItem>
 										<FormattedMessage id='chat.conversations.nothingToShow' />
 									</EmptyItem>;
-
-									return <ConversationList conversationArr={filteredConv} />;
+									return <ConversationList conversationArr={getUserConversations} />;
 								}}
 							</Query>
 						</div>
-					</div>}
+					</div>
+				}
 			</Query>
 		);
 	}

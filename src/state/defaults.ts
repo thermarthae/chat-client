@@ -7,7 +7,7 @@ export default {
 	chat: {
 		__typename: 'Chat',
 		isAsideOpen: false,
-		inboxFilter: 'ALL',
+		searchStatus: false,
 		oponentId: null,
 	},
 	subscriptions: {

@@ -1,16 +1,15 @@
 import gql from 'graphql-tag';
 
-export const GET_CHAT_FILTER = gql`
+export const GET_SEARCH_STATUS = gql`
 	query {
 		chat @client {
-			inboxFilter
+			searchStatus
 		}
 	}
 `;
-export type TInboxFilter = 'SEARCH' | 'UNREAD' | 'ALL' | 'DRAFT';
-export interface IGetChatFilterRes {
+export interface IGetSearchStatusRes {
 	chat: {
-		inboxFilter: TInboxFilter
+		searchStatus: boolean;
 	};
 }
 
@@ -54,6 +53,9 @@ export interface IConversation {
 }
 export interface IGetConvArrResponse {
 	getUserConversations: IConversation[];
+	chat: {
+		searchResult: boolean;
+	};
 }
 
 
