@@ -24,7 +24,7 @@ const searchboxStyles = ({ palette, typography, shadows }: Theme) => createStyle
 				boxShadow: 'inset 0 0 0px 1px red',
 			}
 		},
-		'&.filled$cancelBtn, &:focus-within $cancelBtn': {
+		'&.filled $cancelBtn, &:focus-within $cancelBtn': {
 			pointerEvents: 'all',
 			opacity: 1,
 		}
