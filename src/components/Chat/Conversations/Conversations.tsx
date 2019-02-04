@@ -10,6 +10,7 @@ import {
 	GET_SUB_STATUS, IGetConvSubStatusRes, TOGGLE_CONV_SUB_STATUS
 } from './Conversations.apollo';
 
+import Header from './Header/Header';
 import Searchbox from './Searchbox/Searchbox';
 import ConversationList from './ConversationList/ConversationList';
 import FakeConversations from './FakeConversations/FakeConversations';
@@ -53,6 +54,7 @@ class Conversations extends React.Component<WithApolloClient<IConversationsProps
 			<Query query={GET_CHAT_FILTER}>
 				{({ data: { chat: { inboxFilter } } }) =>
 					<div className={this.props.classes.root}>
+						<Header />
 						<Searchbox inboxFilter={inboxFilter} />
 						<Query query={GET_CONV_ARR} >
 							{({ loading, error, data }) => {
