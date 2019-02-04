@@ -4,7 +4,6 @@ import { withStyles } from '@material-ui/styles';
 
 import chatStyles, { TChatStyles } from './Chat.style';
 
-import Menu from './Menu/Menu';
 import Conversations from './Conversations/Conversations';
 import Mailbox from './Mailbox/Mailbox';
 import { Mutation } from 'react-apollo';
@@ -28,7 +27,6 @@ class Chat extends React.Component<IChatProps> {
 					setOponentId({ variables: { id: oponentId } });
 					return (
 						<div className={classes.root}>
-							<Menu />
 							<Conversations />
 							<Mailbox oponentId={oponentId} />
 						</div>
