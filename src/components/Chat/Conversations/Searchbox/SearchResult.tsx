@@ -8,13 +8,11 @@ import { styled } from '@material-ui/styles';
 
 import ConversationList from '../ConversationList/ConversationList';
 import UserList from '../UserList/UserList';
-
 import EmptyItem from '../EmptyItem';
 import List from '../List';
 
-const StyledListSubheader = styled(ListSubheader)(({ palette }: Theme) => ({
-	backgroundColor: palette.primary.main,
-	color: palette.textLight.secondary,
+const StyledListSubheader = styled(ListSubheader)(({ theme: { palette } }: { theme: Theme }) => ({
+	backgroundColor: palette.primary.lighter
 }));
 
 interface ISearchResultProps {
