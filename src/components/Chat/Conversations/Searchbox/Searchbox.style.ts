@@ -71,7 +71,7 @@ const searchboxStyles = ({ palette, typography, shadows }: Theme) => createStyle
 		width: '100%',
 		left: 0,
 		bottom: -2,
-		backgroundColor: palette.primary.main
+		backgroundColor: 'rgba(0, 0, 0, 0.07)',
 	}
 });
 export default searchboxStyles;
