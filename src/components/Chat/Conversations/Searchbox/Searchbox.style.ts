@@ -18,12 +18,6 @@ const searchboxStyles = ({ palette, typography, shadows }: Theme) => createStyle
 		width: '100%',
 		color: palette.text.disabled,
 
-		'&.filled.short $input': {
-			boxShadow: 'inset 0 0 0px 1px #ff000080',
-			'&:focus': {
-				boxShadow: 'inset 0 0 0px 1px red',
-			}
-		},
 		'&.filled $cancelBtn, &:focus-within $cancelBtn': {
 			pointerEvents: 'all',
 			opacity: 1,

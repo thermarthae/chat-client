@@ -93,7 +93,7 @@ class Searchbox extends React.PureComponent<WithApolloClient<ISearchboxProps>, I
 								root: classes.searchbar,
 								input: classes.input
 							}}
-							className={(query ? 'filled ' : '') + (isQueryShort ? 'short' : '')}
+							className={query ? 'filled ' : ''}
 							disableUnderline
 							placeholder={placeholder as string}
 							startAdornment={<Search className={classes.glassIco} />}
