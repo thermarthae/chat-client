@@ -3,6 +3,7 @@ import React from 'react';
 import Mutation from 'react-apollo/Mutation';
 import { TOGGLE_ASIDE } from './Header.apollo';
 
+import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import SettingsSharp from '@material-ui/icons/SettingsSharp';
 
@@ -18,7 +19,7 @@ const Header = React.memo(({ conversationName }: IHeaderProps) => {
 		<Mutation mutation={TOGGLE_ASIDE}>
 			{toggleAside =>
 				<div className={classes.root}>
-					<span className={classes.id}>{conversationName}</span>
+					<Typography className={classes.id} variant='subtitle2'>{conversationName}</Typography>
 					<ButtonBase
 						focusRipple
 						className={classes.btn}

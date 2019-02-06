@@ -12,9 +12,10 @@ const headerStyles = makeStyles(({ palette, typography }: Theme) => ({
 		borderBottom: '1px solid hsla(0, 0%, 0%, 0.1)',
 	},
 	id: {
-		flexGrow: 1,
-		padding: '0 16px',
-		fontWeight: 500,
+		margin: '8px 16px',
+		overflow: 'hidden',
+		textOverflow: 'ellipsis',
+		whiteSpace: 'nowrap'
 	},
 	btn: {
 		height: 48,
