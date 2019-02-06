@@ -1,6 +1,10 @@
 {
 	"defaultSeverity": "warning",
-	"extends": ["tslint:recommended", "tslint-react"],
+	"extends": [
+		"tslint:recommended",
+		"tslint-react",
+		"tslint-react-hooks"
+	],
 	"linterOptions": {
 		"exclude": ["*.json", "**/*.json"]
 	},
