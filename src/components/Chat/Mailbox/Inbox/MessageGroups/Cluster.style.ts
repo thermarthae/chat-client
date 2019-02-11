@@ -1,14 +1,6 @@
 import { makeStyles } from '@material-ui/styles';
-import { Theme } from '@material-ui/core';
 
-const clusterStyles = makeStyles(({ palette }: Theme) => ({
-	time: {
-		textAlign: 'center',
-		color: palette.text.secondary,
-		lineHeight: 2,
-		fontWeight: 500,
-		userSelect: 'none',
-	},
+const clusterStyles = makeStyles({
 	container: {
 		display: 'flex',
 		alignItems: 'flex-end',
@@ -25,5 +17,5 @@ const clusterStyles = makeStyles(({ palette }: Theme) => ({
 	me: {
 		'& $container': { flexDirection: 'row-reverse' },
 	}
-}), { name: 'Cluster' });
+}, { name: 'Cluster' });
 export default clusterStyles;

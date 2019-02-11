@@ -1,11 +1,10 @@
 import React from 'react';
-import { FormattedDate } from 'react-intl';
-
 import Avatar from '@material-ui/core/Avatar';
 import clusterStyles from './Cluster.style';
 
 import { IMessage } from '../../Mailbox.apollo';
 import Message from './Message';
+import Time from '@src/components/Time/Time';
 
 interface IClusterProps {
 	group: IMessage[];
@@ -18,17 +17,7 @@ const Cluster = React.memo(({ group, handleMenuClick }: IClusterProps) => {
 
 	return (
 		<div className={me ? classes.me : ''} >
-			<div className={classes.time}>
-				<FormattedDate
-					value={new Date(time)}
-					year='numeric'
-					weekday='long'
-					month='long'
-					day='numeric'
-					hour='numeric'
-					minute='numeric'
-				/>
-			</div>
+			<Time time={time} color='textSecondary' variant='subtitle2' align='center' />
 			<div className={classes.container}>
 				{!me && <div className={classes.author}>
 					<Avatar>{author.name[0]}</Avatar>
