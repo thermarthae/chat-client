@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { IFindConvAndUsrRes } from './Searchbox.apollo';
@@ -18,38 +18,34 @@ const StyledListSubheader = styled(ListSubheader)(({ theme: { palette } }: { the
 interface ISearchResultProps {
 	result: IFindConvAndUsrRes;
 }
+const SearchResult = memo(({ result }: ISearchResultProps) => {
+	const { findConversation, findUser } = result as IFindConvAndUsrRes;
 
-class SearchResult extends React.PureComponent<ISearchResultProps> {
-	public render() {
-		const { result } = this.props;
-		const { findConversation, findUser } = result as IFindConvAndUsrRes;
+	const isConvArr = !!findConversation[0];
+	const isUserArr = !!findUser[0];
 
-		const isConvArr = !!findConversation[0];
-		const isUserArr = !!findUser[0];
+	if (!isUserArr && !isConvArr) return (
+		<EmptyItem>
+			<FormattedMessage id={'chat.searchbox.noResults'} />
+		</EmptyItem>
+	);
 
-		if (!isUserArr && !isConvArr) return (
-			<EmptyItem>
-				<FormattedMessage id={'chat.searchbox.noResults'} />
-			</EmptyItem>
-		);
-
-		return (
-			<List>
-				{isUserArr && <>
-					<StyledListSubheader>
-						<FormattedMessage id={'chat.searchbox.users'} />
-					</StyledListSubheader>
-					<UserList userArr={findUser} />
-				</>}
-				{isConvArr && <>
-					<StyledListSubheader>
-						<FormattedMessage id={'chat.searchbox.conversations'} />
-					</StyledListSubheader>
-					<ConversationList conversationArr={findConversation} />
-				</>}
-			</List>
-		);
-	}
-}
+	return (
+		<List>
+			{isUserArr && <>
+				<StyledListSubheader>
+					<FormattedMessage id={'chat.searchbox.users'} />
+				</StyledListSubheader>
+				<UserList userArr={findUser} />
+			</>}
+			{isConvArr && <>
+				<StyledListSubheader>
+					<FormattedMessage id={'chat.searchbox.conversations'} />
+				</StyledListSubheader>
+				<ConversationList conversationArr={findConversation} />
+			</>}
+		</List>
+	);
+});
 
 export default SearchResult;
