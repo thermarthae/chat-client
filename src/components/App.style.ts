@@ -11,6 +11,7 @@ const appStyles = ({ palette }: Theme) => createStyles({
 		width: '100vw',
 		height: '100vh',
 		color: palette.text.primary,
+		backgroundColor: palette.primary.lighter
 	},
 });
 export default appStyles;

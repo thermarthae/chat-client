@@ -7,7 +7,6 @@ const convStyles = ({ palette }: Theme) => createStyles({
 	root: {
 		flex: '1 0 250px',
 		display: 'flex',
-		backgroundColor: palette.primary.lighter,
 		minWidth: 0
 	},
 	widthFix: {

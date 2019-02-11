@@ -9,7 +9,6 @@ const mailboxStyles = ({ palette }: Theme) => createStyles({
 		display: 'flex',
 		flexDirection: 'column',
 		color: palette.text.primary,
-		backgroundColor: palette.primary.lighter,
 	},
 	content: {
 		flexGrow: 1,
