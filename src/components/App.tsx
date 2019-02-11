@@ -1,9 +1,7 @@
 import React, { Suspense } from 'react';
 import { Route, Redirect } from 'react-router';
 import { Switch } from 'react-router-dom';
-import { IntlProvider } from 'react-intl';
 import cookie from 'cookie';
-import messages from '../locales';
 import 'normalize.css';
 
 import Query from 'react-apollo/Query';
@@ -41,20 +39,18 @@ class App extends React.PureComponent<IAppPropsType> {
 
 		return (
 			<Suspense fallback={<span>Loading...</span>}>
-				<Query query={GET_APP_DATA}>{({ data: { app: { language, isLoggedIn } } }) => (
-					<IntlProvider locale={language} messages={messages[language]}>
-						<CustomRouter isLoggedIn={isLoggedIn}>{locationHref =>
-							<div className={classes.root}>
-								<Navigator locationHref={locationHref} />
-								<Switch>
-									<Redirect exact from='/' to='/chat' />
-									<PrivateRoute auth={isLoggedIn} path='/chat/:oponentId?' component={Chat} />
-									<PrivateRoute auth={isLoggedIn} path='/login' component={Login} whenUnlogged />
-									<Route component={Error} />
-								</Switch>
-							</div>
-						}</CustomRouter>
-					</IntlProvider>
+				<Query query={GET_APP_DATA}>{({ data: { app: { isLoggedIn } } }) => (
+					<CustomRouter isLoggedIn={isLoggedIn}>{locationHref =>
+						<div className={classes.root}>
+							<Navigator locationHref={locationHref} />
+							<Switch>
+								<Redirect exact from='/' to='/chat' />
+								<PrivateRoute auth={isLoggedIn} path='/chat/:oponentId?' component={Chat} />
+								<PrivateRoute auth={isLoggedIn} path='/login' component={Login} whenUnlogged />
+								<Route component={Error} />
+							</Switch>
+						</div>
+					}</CustomRouter>
 				)}</Query>
 			</Suspense>
 		);
