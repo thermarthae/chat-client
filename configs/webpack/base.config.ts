@@ -3,6 +3,7 @@ import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import { getTransformer } from 'ts-transform-graphql-tag';
+import copyWebpackPlugin from 'copy-webpack-plugin';
 
 import packageJson from '../../package.json';
 
@@ -86,6 +87,7 @@ const baseConfig: webpack.Configuration = {
 			tslint: tslintPath,
 			useTypescriptIncrementalApi: true
 		}),
+		new copyWebpackPlugin([{ from: 'public/locales', to: 'locales' }]),
 	]
 };
 export default baseConfig;
