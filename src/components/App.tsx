@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Route, Redirect } from 'react-router';
 import { Switch } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
@@ -19,6 +19,7 @@ import Navigator from './Navigator/Navigator';
 import Chat from './Chat/Chat';
 import Login from './Login/Login';
 
+import './i18n';
 
 interface IAppProps extends TAppStyles { }
 type IAppPropsType = WithApolloClient<IAppProps>;
@@ -39,21 +40,23 @@ class App extends React.PureComponent<IAppPropsType> {
 		const { classes } = this.props;
 
 		return (
-			<Query query={GET_APP_DATA}>{({ data: { app: { language, isLoggedIn } } }) => (
-				<IntlProvider locale={language} messages={messages[language]}>
-					<CustomRouter isLoggedIn={isLoggedIn}>{locationHref =>
-						<div className={classes.root}>
-							<Navigator locationHref={locationHref} />
-							<Switch>
-								<Redirect exact from='/' to='/chat' />
-								<PrivateRoute auth={isLoggedIn} path='/chat/:oponentId?' component={Chat} />
-								<PrivateRoute auth={isLoggedIn} path='/login' component={Login} whenUnlogged />
-								<Route component={Error} />
-							</Switch>
-						</div>
-					}</CustomRouter>
-				</IntlProvider>
-			)}</Query>
+			<Suspense fallback={<span>Loading...</span>}>
+				<Query query={GET_APP_DATA}>{({ data: { app: { language, isLoggedIn } } }) => (
+					<IntlProvider locale={language} messages={messages[language]}>
+						<CustomRouter isLoggedIn={isLoggedIn}>{locationHref =>
+							<div className={classes.root}>
+								<Navigator locationHref={locationHref} />
+								<Switch>
+									<Redirect exact from='/' to='/chat' />
+									<PrivateRoute auth={isLoggedIn} path='/chat/:oponentId?' component={Chat} />
+									<PrivateRoute auth={isLoggedIn} path='/login' component={Login} whenUnlogged />
+									<Route component={Error} />
+								</Switch>
+							</div>
+						}</CustomRouter>
+					</IntlProvider>
+				)}</Query>
+			</Suspense>
 		);
 	}
 }
