@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { Translation } from 'react-i18next';
 import { Query } from 'react-apollo';
 import { Link } from 'react-router-dom';
 
@@ -62,7 +62,9 @@ export default class ConversationList extends React.PureComponent<IConversationL
 								anchorEl={menuAnchorEl}
 							>
 								<OptionList onClick={this.handleMenuClose}>
-									<FormattedMessage id='optionList.delete' />
+									<Translation>{t =>
+										<span>{t('optionList.delete')}</span>
+									}</Translation>
 								</OptionList>
 							</Menu>
 						</List>

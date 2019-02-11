@@ -1,5 +1,5 @@
 import React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { withTranslation, WithTranslation } from 'react-i18next';
 
 import IconButton from '@material-ui/core/IconButton';
 import Slide from '@material-ui/core/Slide';
@@ -24,26 +24,26 @@ interface IMessageInputState {
 	emojiPickerIsOpen: boolean;
 }
 
-type TProps = IMessageInputProps & InjectedIntlProps & TMessageInputStyles;
+type TProps = IMessageInputProps & WithTranslation & TMessageInputStyles;
 class MessageInput extends React.PureComponent<TProps, IMessageInputState>{
 	constructor(props: TProps) {
 		super(props);
-		const { intl: { formatMessage } } = this.props;
+		const { t } = this.props;
 		this.emojiSelectI18N = {
-			search: formatMessage({ id: 'emojiPicker.search' }),
-			notfound: formatMessage({ id: 'emojiPicker.notfound' }),
+			search: t('emojiPicker.search'),
+			notfound: t('emojiPicker.notfound'),
 			categories: {
-				search: formatMessage({ id: 'emojiPicker.categories.search' }),
-				recent: formatMessage({ id: 'emojiPicker.categories.recent' }),
-				people: formatMessage({ id: 'emojiPicker.categories.people' }),
-				nature: formatMessage({ id: 'emojiPicker.categories.nature' }),
-				foods: formatMessage({ id: 'emojiPicker.categories.foods' }),
-				activity: formatMessage({ id: 'emojiPicker.categories.activity' }),
-				places: formatMessage({ id: 'emojiPicker.categories.places' }),
-				objects: formatMessage({ id: 'emojiPicker.categories.objects' }),
-				symbols: formatMessage({ id: 'emojiPicker.categories.symbols' }),
-				flags: formatMessage({ id: 'emojiPicker.categories.flags' }),
-				custom: formatMessage({ id: 'emojiPicker.categories.custom' }),
+				search: t('emojiPicker.categories.search'),
+				recent: t('emojiPicker.categories.recent'),
+				people: t('emojiPicker.categories.people'),
+				nature: t('emojiPicker.categories.nature'),
+				foods: t('emojiPicker.categories.foods'),
+				activity: t('emojiPicker.categories.activity'),
+				places: t('emojiPicker.categories.places'),
+				objects: t('emojiPicker.categories.objects'),
+				symbols: t('emojiPicker.categories.symbols'),
+				flags: t('emojiPicker.categories.flags'),
+				custom: t('emojiPicker.categories.custom'),
 			}
 		};
 	}
@@ -66,7 +66,7 @@ class MessageInput extends React.PureComponent<TProps, IMessageInputState>{
 	}
 
 	public render() {
-		const { draft, classes, intl: { formatMessage } } = this.props;
+		const { draft, classes, t } = this.props;
 		const { emojiPickerIsOpen } = this.state;
 
 		return (
@@ -77,7 +77,7 @@ class MessageInput extends React.PureComponent<TProps, IMessageInputState>{
 						ref={this.messageEditor}
 						plugins={plugins}
 						draft={draft}
-						placeholder={formatMessage({ id: 'chat.mailbox.typeYourMessage' })}
+						placeholder={t('chat.mailbox.typeYourMessage')}
 					/>
 					<Slide direction='up' in={emojiPickerIsOpen} mountOnEnter unmountOnExit>
 						<EmojiSelect
@@ -99,4 +99,4 @@ class MessageInput extends React.PureComponent<TProps, IMessageInputState>{
 	}
 }
 
-export default withStyles(messageInputStyles, { name: 'MessageInput' })(injectIntl(MessageInput));
+export default withStyles(messageInputStyles, { name: 'MessageInput' })(withTranslation()(MessageInput));

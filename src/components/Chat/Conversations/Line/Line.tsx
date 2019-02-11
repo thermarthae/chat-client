@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useTranslation } from 'react-i18next';
 import { parseEmoji } from '@src/utils/emoji.utils';
 
 import ListItem from '@material-ui/core/ListItem';
@@ -22,6 +22,8 @@ interface ILineProps {
 const Line = ({ avatar, name, message, isActive, isUnseen, isOnline, handleMenuClick }: ILineProps) => {
 	const classes = lineStyles({});
 	const parsedMsg = message ? parseEmoji(message) : '';
+	const [t] = useTranslation();
+
 	return (
 		<ListItem
 			component='div'
@@ -38,9 +40,7 @@ const Line = ({ avatar, name, message, isActive, isUnseen, isOnline, handleMenuC
 				</div>
 			</div>
 			<div className={classes.center}>
-				<FormattedMessage id='chat.conversations.conversationName' >{
-					defaultName => <span className={classes.name}>{name || defaultName}</span>
-				}</FormattedMessage>
+				<span className={classes.name}>{name || t('chat.conversations.conversationName')}</span>
 				{message && <span className={classes.message} dangerouslySetInnerHTML={{ __html: parsedMsg }} />}
 			</div>
 			<IconButton className={classes.btn} onClick={handleMenuClick}>
@@ -49,4 +49,6 @@ const Line = ({ avatar, name, message, isActive, isUnseen, isOnline, handleMenuC
 		</ListItem>
 	);
 };
+
 export default Line;
+

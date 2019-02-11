@@ -1,14 +1,14 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useTranslation } from 'react-i18next';
 
 import headerStyles from './Header.style';
 
 const Header = () => {
 	const classes = headerStyles({});
+	const [t] = useTranslation();
+
 	return (
-		<div className={classes.root}>
-			<FormattedMessage id='chat.menu.title' />
-		</div>
+		<div className={classes.root}>{t('chat.menu.title')}</div>
 	);
 };
 export default Header;

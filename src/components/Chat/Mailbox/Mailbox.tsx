@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { Translation } from 'react-i18next';
 import { Redirect } from 'react-router';
 import { withStyles } from '@material-ui/styles';
 
@@ -25,7 +25,7 @@ const Empty = ({ i18nID, classes }: { i18nID: string; } & TMailboxStyles) => {
 	return (
 		<div className={classes.root}>
 			<div className={classes.empty}>
-				<FormattedMessage id={i18nID} />
+				<Translation>{t => <span>{t(i18nID)}</span>}</Translation>
 			</div>
 		</div>
 	);

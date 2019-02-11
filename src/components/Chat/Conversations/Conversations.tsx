@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { Translation } from 'react-i18next';
 import { Query, withApollo, WithApolloClient } from 'react-apollo';
 import { withStyles } from '@material-ui/styles';
 import convStyles, { TConvStyles } from './Conversations.style';
@@ -64,9 +64,13 @@ class Conversations extends React.Component<WithApolloClient<IConversationsProps
 									if (searchStatus) return null;
 
 									const { getUserConversations } = data!;
-									if (!getUserConversations[0]) return <EmptyItem>
-										<FormattedMessage id='chat.conversations.nothingToShow' />
-									</EmptyItem>;
+									if (!getUserConversations[0]) return (
+										<EmptyItem>
+											<Translation>{t =>
+												<span>{t('chat.conversations.nothingToShow')}</span>
+											}</Translation>
+										</EmptyItem>
+									);
 									return <ConversationList conversationArr={getUserConversations} />;
 								}}
 							</Query>

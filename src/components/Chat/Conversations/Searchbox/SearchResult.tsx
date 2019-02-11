@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useTranslation } from 'react-i18next';
 
 import { IFindConvAndUsrRes } from './Searchbox.apollo';
 import ListSubheader from '@material-ui/core/ListSubheader';
@@ -20,28 +20,20 @@ interface ISearchResultProps {
 }
 const SearchResult = memo(({ result }: ISearchResultProps) => {
 	const { findConversation, findUser } = result as IFindConvAndUsrRes;
+	const [t] = useTranslation();
 
 	const isConvArr = !!findConversation[0];
 	const isUserArr = !!findUser[0];
-
-	if (!isUserArr && !isConvArr) return (
-		<EmptyItem>
-			<FormattedMessage id={'chat.searchbox.noResults'} />
-		</EmptyItem>
-	);
+	if (!isUserArr && !isConvArr) return <EmptyItem children={t('chat.searchbox.noResults')} />;
 
 	return (
 		<List>
 			{isUserArr && <>
-				<StyledListSubheader>
-					<FormattedMessage id={'chat.searchbox.users'} />
-				</StyledListSubheader>
+				<StyledListSubheader children={t('chat.searchbox.users')} />
 				<UserList userArr={findUser} />
 			</>}
 			{isConvArr && <>
-				<StyledListSubheader>
-					<FormattedMessage id={'chat.searchbox.conversations'} />
-				</StyledListSubheader>
+				<StyledListSubheader children={t('chat.searchbox.conversations')} />
 				<ConversationList conversationArr={findConversation} />
 			</>}
 		</List>

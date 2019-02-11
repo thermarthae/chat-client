@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { Translation } from 'react-i18next';
 
 import MenuList from '@material-ui/core/MenuList';
 import OptionList from '@src/components/OptionList/OptionList';
@@ -138,7 +138,9 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 								<ClickAwayListener onClickAway={this.handleMenuClick as any}>
 									<MenuList>
 										<OptionList onClick={this.handleMenuClick}>
-											<FormattedMessage id='optionList.delete' />
+											<Translation>
+												{t => <span>{t('optionList.delete')}</span>}
+											</Translation>
 										</OptionList>
 									</MenuList>
 								</ClickAwayListener>

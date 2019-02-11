@@ -1,5 +1,5 @@
 import React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { withTranslation, WithTranslation } from 'react-i18next';
 import { RouterProps } from 'react-router';
 
 import withApollo, { WithApolloClient } from 'react-apollo/withApollo';
@@ -19,7 +19,7 @@ import Logo from '@src/components/Logo/Logo';
 
 import loginStyles, { TLoginStyles } from './Login.style';
 
-interface ILoginProps extends InjectedIntlProps, RouterProps, TLoginStyles { }
+interface ILoginProps extends WithTranslation, RouterProps, TLoginStyles { }
 
 interface ILoginStates {
 	username: string;
@@ -118,21 +118,27 @@ class Login extends React.PureComponent<WithApolloClient<ILoginProps>, ILoginSta
 			waitingForServer,
 			errorName
 		} = this.state;
-		const { classes, intl: { formatMessage } } = this.props;
+		const { classes, t } = this.props;
 
-		const errorMsg = errorName ? formatMessage({ id: 'error.' + errorName }) : undefined;
+		const errorMsg = errorName ? t('error.' + errorName) : undefined;
 
 		return (
 			<div className={classes.root}>
 				<form action='' className={classes.form} onSubmit={this.handleSubmit}>
 					<Card className={classes.container} raised>
 						<Logo size={3} className={classes.logo} />
-						<Typography variant='h5' align='center' gutterBottom>
-							{formatMessage({ id: 'login.title' })}
-						</Typography>
-						<Typography variant='body2' align='center' color='textSecondary'>
-							{formatMessage({ id: 'login.subtitle' })}
-						</Typography>
+						<Typography
+							variant='h5'
+							align='center'
+							gutterBottom
+							children={t('login.title')}
+						/>
+						<Typography
+							variant='body2'
+							align='center'
+							color='textSecondary'
+							children={t('login.subtitle')}
+						/>
 						<div className={classes.textFields}>
 							<TextField
 								required
@@ -143,7 +149,7 @@ class Login extends React.PureComponent<WithApolloClient<ILoginProps>, ILoginSta
 								value={username}
 								onChange={this.handleChange}
 								error={usernameError}
-								label={formatMessage({ id: 'login.username' })}
+								label={t('login.username')}
 								helperText={usernameError ? errorMsg : ''}
 								variant='outlined'
 								margin='normal'
@@ -157,7 +163,7 @@ class Login extends React.PureComponent<WithApolloClient<ILoginProps>, ILoginSta
 								value={password}
 								onChange={this.handleChange}
 								error={passwordError}
-								label={formatMessage({ id: 'login.password' })}
+								label={t('login.password')}
 								helperText={passwordError ? errorMsg : ''}
 								variant='outlined'
 								margin='normal'
@@ -173,18 +179,19 @@ class Login extends React.PureComponent<WithApolloClient<ILoginProps>, ILoginSta
 							/>
 						</div>
 						<div className={classes.actions}>
-							<Button variant='text' color='primary'>
-								{formatMessage({ id: 'login.forgotPasswordButton' })}
-							</Button>
+							<Button
+								variant='text'
+								color='primary'
+								children={t('login.forgotPasswordButton')}
+							/>
 							<div className={classes.btnWrapper}>
 								<Button
 									color='primary'
 									variant='contained'
 									type='submit'
 									disabled={waitingForServer === true}
-								>
-									{formatMessage({ id: 'login.loginButton' })}
-								</Button>
+									children={t('login.loginButton')}
+								/>
 								{waitingForServer ? <CircularProgress size='1.5em' className={classes.progress} /> : ''}
 							</div>
 						</div>
@@ -194,4 +201,4 @@ class Login extends React.PureComponent<WithApolloClient<ILoginProps>, ILoginSta
 		);
 	}
 }
-export default withStyles(loginStyles, { name: 'Login' })(injectIntl(withApollo(Login)));
+export default withStyles(loginStyles, { name: 'Login' })(withTranslation()(withApollo(Login)));

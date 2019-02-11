@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { withTranslation, WithTranslation } from 'react-i18next';
 import { withApollo, WithApolloClient } from 'react-apollo';
 
 import Input from '@material-ui/core/Input';
@@ -16,7 +16,7 @@ import FakeConversations from '../FakeConversations/FakeConversations';
 import SearchResult from './SearchResult';
 import EmptyItem from '../EmptyItem';
 
-interface ISearchboxProps extends TSearchboxStyles {
+interface ISearchboxProps extends WithTranslation, TSearchboxStyles {
 	searchStatus: boolean;
 }
 
@@ -79,37 +79,35 @@ class Searchbox extends React.PureComponent<WithApolloClient<ISearchboxProps>, I
 	}
 
 	public render() {
-		const { classes, searchStatus } = this.props;
+		const { classes, searchStatus, t } = this.props;
 		const { query, isQueryShort, waitingForRes, result } = this.state;
 
 		return (
 			<>
 				<div className={classes.root} >
-					<FormattedMessage id='chat.conversations.search'>{
-						placeholder => <Input
-							value={query}
-							onChange={this.handleChange}
-							classes={{
-								root: classes.searchbar,
-								input: classes.input
-							}}
-							className={query ? 'filled ' : ''}
-							disableUnderline
-							placeholder={placeholder as string}
-							startAdornment={<Search className={classes.glassIco} />}
-							endAdornment={
-								<IconButton className={classes.cancelBtn} onClick={this.handleClearInput}>
-									<Cancel className={classes.ico} />
-								</IconButton>
-							}
-						/>
-					}</FormattedMessage>
+					<Input
+						value={query}
+						onChange={this.handleChange}
+						classes={{
+							root: classes.searchbar,
+							input: classes.input
+						}}
+						className={query ? 'filled ' : ''}
+						disableUnderline
+						placeholder={t('chat.conversations.search')}
+						startAdornment={<Search className={classes.glassIco} />}
+						endAdornment={
+							<IconButton className={classes.cancelBtn} onClick={this.handleClearInput}>
+								<Cancel className={classes.ico} />
+							</IconButton>
+						}
+					/>
 					{waitingForRes && <LinearProgress className={classes.progressBar} variant='query' />}
 				</div>
 				{!searchStatus
 					? null
 					: isQueryShort
-						? <EmptyItem><FormattedMessage id={'chat.searchbox.isQueryShort'} /></EmptyItem>
+						? <EmptyItem>{t('chat.searchbox.isQueryShort')}</EmptyItem>
 						: waitingForRes
 							? <FakeConversations />
 							: <SearchResult result={result} />
@@ -119,4 +117,4 @@ class Searchbox extends React.PureComponent<WithApolloClient<ISearchboxProps>, I
 	}
 }
 
-export default withStyles(searchboxStyles, { name: 'Searchbox' })(withApollo(Searchbox));
+export default withStyles(searchboxStyles, { name: 'Searchbox' })(withTranslation()(withApollo(Searchbox)));

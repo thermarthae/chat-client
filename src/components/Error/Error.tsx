@@ -1,14 +1,14 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useTranslation } from 'react-i18next';
 
 import errorStyles from './Error.style';
 
 const Error = () => {
 	const classes = errorStyles({});
+	const [t] = useTranslation();
+
 	return (
-		<div className={classes.root}>
-			<FormattedMessage id='error.404' />
-		</div>
+		<div className={classes.root}>{t('error.404') + ' - ' + location.pathname}</div>
 	);
 };
 export default Error;

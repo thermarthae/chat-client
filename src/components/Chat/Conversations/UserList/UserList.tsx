@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { Translation } from 'react-i18next';
 
 import Menu from '@material-ui/core/Menu';
 import OptionList from '@src/components/OptionList/OptionList';
@@ -51,7 +51,7 @@ class UserList extends React.PureComponent<IUserListProps, IUserListStates> {
 					anchorEl={menuAnchorEl}
 				>
 					<OptionList onClick={this.handleMenuClose}>
-						<FormattedMessage id='optionList.delete' />
+						<Translation>{t => <span>{t('optionList.delete')}</span>}</Translation>
 					</OptionList>
 				</Menu>
 			</List>
