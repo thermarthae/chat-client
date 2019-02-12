@@ -1,6 +1,7 @@
 import React from 'react';
-import { Translation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router';
+import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/styles';
 
 import { withApollo, WithApolloClient } from 'react-apollo';
@@ -22,11 +23,10 @@ import MessageInput from './MessageInput/MessageInput';
 import Aside from './Aside/Aside';
 
 const Empty = ({ i18nID, classes }: { i18nID: string; } & TMailboxStyles) => {
+	const [t] = useTranslation();
 	return (
 		<div className={classes.root}>
-			<div className={classes.empty}>
-				<Translation>{t => <span>{t(i18nID)}</span>}</Translation>
-			</div>
+			<Typography className={classes.empty} variant='h3' align='center' children={t(i18nID)} />
 		</div>
 	);
 };

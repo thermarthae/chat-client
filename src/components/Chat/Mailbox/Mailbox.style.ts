@@ -21,16 +21,10 @@ const mailboxStyles = ({ palette }: Theme) => createStyles({
 		zIndex: 0,
 	},
 	empty: {
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
-		flexGrow: 1,
-		textAlign: 'center',
-		fontWeight: 600,
-		userSelect: 'none',
-		padding: '0 10px',
-		color: 'rgba(0, 0, 0, 0.1)',
-		fontSize: '3em',
+		color: palette.action.selected,
+		margin: 'auto',
+		padding: 16,
+		userSelect: 'none'
 	},
 });
 export default mailboxStyles;
