@@ -14,7 +14,7 @@ import Header from './Header/Header';
 import Searchbox from './Searchbox/Searchbox';
 import ConversationList from './ConversationList/ConversationList';
 import FakeConversations from './FakeConversations/FakeConversations';
-import EmptyItem from './EmptyItem';
+import EmptyItem from '../EmptyItem/EmptyItem';
 
 interface IConversationsProps extends TConvStyles { }
 class Conversations extends React.Component<WithApolloClient<IConversationsProps>> {
@@ -65,11 +65,9 @@ class Conversations extends React.Component<WithApolloClient<IConversationsProps
 
 									const { getUserConversations } = data!;
 									if (!getUserConversations[0]) return (
-										<EmptyItem>
-											<Translation>{t =>
-												<span>{t('chat.conversations.nothingToShow')}</span>
-											}</Translation>
-										</EmptyItem>
+										<Translation>
+											{t => <EmptyItem msg={t('chat.conversations.nothingToShow')} />}
+										</Translation>
 									);
 									return <ConversationList conversationArr={getUserConversations} />;
 								}}

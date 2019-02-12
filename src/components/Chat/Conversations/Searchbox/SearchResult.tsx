@@ -8,7 +8,7 @@ import { styled } from '@material-ui/styles';
 
 import ConversationList from '../ConversationList/ConversationList';
 import UserList from '../UserList/UserList';
-import EmptyItem from '../EmptyItem';
+import EmptyItem from '../../EmptyItem/EmptyItem';
 import List from '../List';
 
 const StyledListSubheader = styled(ListSubheader)(({ theme: { palette } }: { theme: Theme }) => ({
@@ -24,7 +24,7 @@ const SearchResult = memo(({ result }: ISearchResultProps) => {
 
 	const isConvArr = !!findConversation[0];
 	const isUserArr = !!findUser[0];
-	if (!isUserArr && !isConvArr) return <EmptyItem children={t('chat.searchbox.noResults')} />;
+	if (!isUserArr && !isConvArr) return <EmptyItem msg={t('chat.searchbox.noResults')} />;
 
 	return (
 		<List>

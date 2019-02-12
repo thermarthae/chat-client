@@ -14,7 +14,7 @@ import { SET_SEARCH_STATUS, FIND_CONV_AND_USR, IFindConvAndUsrRes } from './Sear
 import searchboxStyles, { TSearchboxStyles } from './Searchbox.style';
 import FakeConversations from '../FakeConversations/FakeConversations';
 import SearchResult from './SearchResult';
-import EmptyItem from '../EmptyItem';
+import EmptyItem from '../../EmptyItem/EmptyItem';
 
 interface ISearchboxProps extends WithTranslation, TSearchboxStyles {
 	searchStatus: boolean;
@@ -107,7 +107,7 @@ class Searchbox extends React.PureComponent<WithApolloClient<ISearchboxProps>, I
 				{!searchStatus
 					? null
 					: isQueryShort
-						? <EmptyItem>{t('chat.searchbox.isQueryShort')}</EmptyItem>
+						? <EmptyItem msg={t('chat.searchbox.isQueryShort')} />
 						: waitingForRes
 							? <FakeConversations />
 							: <SearchResult result={result} />
