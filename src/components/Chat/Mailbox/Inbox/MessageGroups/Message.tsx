@@ -1,10 +1,9 @@
 import React from 'react';
-import { parseEmoji } from '@src/utils/emoji.utils';
-
 import IconButton from '@material-ui/core/IconButton';
 import MoreVert from '@material-ui/icons/MoreVert';
 
 import { IMessage } from '../../Mailbox.apollo';
+import TweTypography from '@src/components/TweTypography/TweTypography';
 import messageStyles from './Message.style';
 
 interface IMessageProps {
@@ -14,14 +13,13 @@ interface IMessageProps {
 }
 
 const Message = React.memo(({ message, me, handleMenuClick }: IMessageProps) => {
-	const parsedMsg = parseEmoji(message.content);
 	const classes = messageStyles({});
 
 	return (
 		<div className={classes.root + (me ? ' ' + classes.me : '')}>
 			<div className={classes.wrapper}>
 				<div className={classes.content}>
-					<span dangerouslySetInnerHTML={{ __html: parsedMsg }} />
+					<TweTypography text={message.content} color='inherit' />
 				</div>
 			</div>
 			<div className={classes.options}>

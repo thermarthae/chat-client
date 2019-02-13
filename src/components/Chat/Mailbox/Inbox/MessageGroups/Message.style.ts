@@ -26,8 +26,6 @@ const messageStyles = makeStyles(({ palette, typography }: Theme) => ({
 		borderRadius: '0 2em 2em 0',
 		padding: typography.emToPx(0.6) + ' ' + typography.emToPx(0.85),
 		wordBreak: 'break-word',
-		whiteSpace: 'pre-wrap',
-		fontWeight: 300,
 		boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.2)'
 	},
 	options: {
@@ -37,7 +35,6 @@ const messageStyles = makeStyles(({ palette, typography }: Theme) => ({
 		opacity: 0,
 		transition: 'opacity 0.1s',
 		willChange: 'opacity'
-
 	},
 	btn: {
 		padding: typography.emToPx(0.15),
