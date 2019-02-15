@@ -1,12 +1,13 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { parseEmoji } from '@src/utils/emoji.utils';
 
 import ListItem from '@material-ui/core/ListItem';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
 import MoreHoriz from '@material-ui/icons/MoreHoriz';
 
+import TweTypography from '@src/components/TweTypography/TweTypography';
 import lineStyles from './Line.style';
 
 interface ILineProps {
@@ -21,7 +22,6 @@ interface ILineProps {
 
 const Line = ({ avatar, name, message, isActive, isUnseen, isOnline, handleMenuClick }: ILineProps) => {
 	const classes = lineStyles({});
-	const parsedMsg = message ? parseEmoji(message) : '';
 	const [t] = useTranslation();
 
 	return (
@@ -40,8 +40,8 @@ const Line = ({ avatar, name, message, isActive, isUnseen, isOnline, handleMenuC
 				</div>
 			</div>
 			<div className={classes.center}>
-				<span className={classes.name}>{name || t('chat.conversations.conversationName')}</span>
-				{message && <span className={classes.message} dangerouslySetInnerHTML={{ __html: parsedMsg }} />}
+				<Typography variant='subtitle2' children={name || t('chat.conversations.conversationName')} />
+				<TweTypography text={message} variant='caption' />
 			</div>
 			<IconButton className={classes.btn} onClick={handleMenuClick}>
 				<MoreHoriz className={classes.btnIcon} />

@@ -46,17 +46,12 @@ const lineStyles = makeStyles(({ palette, typography }: Theme) => ({
 		flexDirection: 'column',
 		margin: '0 10px',
 		overflow: 'hidden',
-		whiteSpace: 'nowrap'
-	},
-	name: {
-		color: palette.text.primary,
-		textOverflow: 'ellipsis',
-		overflow: 'hidden'
-	},
-	message: {
-		fontSize: typography.emToPx(0.9),
-		textOverflow: 'ellipsis',
-		overflow: 'hidden'
+		whiteSpace: 'nowrap',
+
+		'& > *': {
+			textOverflow: 'ellipsis',
+			overflow: 'hidden'
+		}
 	},
 	btn: {
 		fontSize: typography.emToPx(1.5),
