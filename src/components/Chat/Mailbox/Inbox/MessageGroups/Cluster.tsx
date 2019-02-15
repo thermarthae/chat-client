@@ -13,7 +13,7 @@ interface IClusterProps {
 
 const Cluster = React.memo(({ group, handleMenuClick }: IClusterProps) => {
 	const { me, time, author } = group[0]; //first message
-	const classes = clusterStyles({});
+	const classes = clusterStyles();
 
 	return (
 		<div className={me ? classes.me : ''} >

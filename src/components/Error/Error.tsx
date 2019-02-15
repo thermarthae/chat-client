@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import errorStyles from './Error.style';
 
 const Error = () => {
-	const classes = errorStyles({});
+	const classes = errorStyles();
 	const [t] = useTranslation();
 
 	return (

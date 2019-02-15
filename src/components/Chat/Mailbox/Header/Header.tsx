@@ -14,7 +14,7 @@ interface IHeaderProps {
 }
 
 const Header = React.memo(({ conversationName }: IHeaderProps) => {
-	const classes = headerStyles({});
+	const classes = headerStyles();
 	return (
 		<Mutation mutation={TOGGLE_ASIDE}>
 			{toggleAside =>
@@ -23,7 +23,7 @@ const Header = React.memo(({ conversationName }: IHeaderProps) => {
 					<ButtonBase
 						focusRipple
 						className={classes.btn}
-						onClick={() => toggleAside({})}
+						onClick={() => toggleAside()}
 					>
 						<SettingsSharp className={classes.ico} />
 					</ButtonBase>

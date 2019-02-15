@@ -10,7 +10,7 @@ interface IEmoji {
 const Emoji = ({ decoratedText, ...props }: IEmoji) => {
 	const parsedHtml = twemoji.parse(decoratedText, { folder: 'svg', ext: '.svg' });
 	const emojiUrl = parsedHtml.match(/https:\/\/twemoji(.*)\.svg/g)![0];
-	const classes = emojiStyles({});
+	const classes = emojiStyles();
 
 	return (
 		<span

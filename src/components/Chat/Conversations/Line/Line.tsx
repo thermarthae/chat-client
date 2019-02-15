@@ -21,7 +21,7 @@ interface ILineProps {
 }
 
 const Line = ({ avatar, name, message, isActive, isUnseen, isOnline, handleMenuClick }: ILineProps) => {
-	const classes = lineStyles({});
+	const classes = lineStyles();
 	const [t] = useTranslation();
 
 	return (

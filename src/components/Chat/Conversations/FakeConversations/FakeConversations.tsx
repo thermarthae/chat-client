@@ -3,7 +3,7 @@ import List from '../List';
 import fakeConvStyles from './FakeConversations.style';
 
 const FakeConversation = () => {
-	const classes = fakeConvStyles({});
+	const classes = fakeConvStyles();
 	return (
 		<div className={classes.root}>
 			<div className={classes.content}>

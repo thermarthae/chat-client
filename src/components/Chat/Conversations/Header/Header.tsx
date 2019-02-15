@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import headerStyles from './Header.style';
 
 const Header = () => {
-	const classes = headerStyles({});
+	const classes = headerStyles();
 	const [t] = useTranslation();
 
 	return (

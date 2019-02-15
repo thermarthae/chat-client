@@ -6,7 +6,7 @@ import asideStyles from './Aside.style';
 import { GET_ASIDE_STATUS } from './Aside.apollo';
 
 const Aside = () => {
-	const classes = asideStyles({});
+	const classes = asideStyles();
 	return (
 		<Query query={GET_ASIDE_STATUS}>
 			{({ data: { chat: { isAsideOpen } } }) =>

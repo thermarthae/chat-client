@@ -8,7 +8,7 @@ interface IScrollDownInfo {
 	onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
 const ScrollDownInfo = ({ open, onClick }: IScrollDownInfo) => {
-	const classes = scrollDownInfoStyles({});
+	const classes = scrollDownInfoStyles();
 	const [t] = useTranslation();
 
 	return (

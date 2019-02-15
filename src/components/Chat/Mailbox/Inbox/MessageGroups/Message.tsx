@@ -13,7 +13,7 @@ interface IMessageProps {
 }
 
 const Message = React.memo(({ message, me, handleMenuClick }: IMessageProps) => {
-	const classes = messageStyles({});
+	const classes = messageStyles();
 
 	return (
 		<div className={classes.root + (me ? ' ' + classes.me : '')}>
