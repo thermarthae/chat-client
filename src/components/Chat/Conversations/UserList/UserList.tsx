@@ -2,6 +2,7 @@ import React from 'react';
 import { Translation } from 'react-i18next';
 
 import Menu from '@material-ui/core/Menu';
+import Typography from '@material-ui/core/Typography';
 import OptionList from '@src/components/OptionList/OptionList';
 
 import Line from '../Line/Line';
@@ -51,7 +52,9 @@ class UserList extends React.PureComponent<IUserListProps, IUserListStates> {
 					anchorEl={menuAnchorEl}
 				>
 					<OptionList onClick={this.handleMenuClose}>
-						<Translation>{t => <span>{t('optionList.delete')}</span>}</Translation>
+						<Translation>
+							{t => <Typography children={t('optionList.delete')} />}
+						</Translation>
 					</OptionList>
 				</Menu>
 			</List>

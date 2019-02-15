@@ -4,6 +4,7 @@ import { Query } from 'react-apollo';
 import { Link } from 'react-router-dom';
 
 import Menu from '@material-ui/core/Menu';
+import Typography from '@material-ui/core/Typography';
 import OptionList from '@src/components/OptionList/OptionList';
 import List from './../List';
 import Line from '../Line/Line';
@@ -62,9 +63,9 @@ export default class ConversationList extends React.PureComponent<IConversationL
 								anchorEl={menuAnchorEl}
 							>
 								<OptionList onClick={this.handleMenuClose}>
-									<Translation>{t =>
-										<span>{t('optionList.delete')}</span>
-									}</Translation>
+									<Translation>
+										{t => <Typography children={t('optionList.delete')} />}
+									</Translation>
 								</OptionList>
 							</Menu>
 						</List>

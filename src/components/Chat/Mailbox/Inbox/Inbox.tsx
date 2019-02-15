@@ -2,6 +2,7 @@ import React from 'react';
 import { Translation } from 'react-i18next';
 
 import MenuList from '@material-ui/core/MenuList';
+import Typography from '@material-ui/core/Typography';
 import OptionList from '@src/components/OptionList/OptionList';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
@@ -151,7 +152,7 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 									<MenuList>
 										<OptionList onClick={this.handleMenuClick}>
 											<Translation>
-												{t => <span>{t('optionList.delete')}</span>}
+												{t => <Typography children={t('optionList.delete')} />}
 											</Translation>
 										</OptionList>
 									</MenuList>
