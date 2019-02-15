@@ -1,9 +1,8 @@
 import { createStyles, WithStyles } from '@material-ui/styles';
-import { Theme } from '@material-ui/core';
 
 export type TInboxStyles = WithStyles<typeof inboxStyles>;
 
-const inboxStyles = ({ }: Theme) => createStyles({
+const inboxStyles = createStyles({
 	root: {
 		display: 'flex',
 		justifyContent: 'flex-end',
@@ -15,14 +14,15 @@ const inboxStyles = ({ }: Theme) => createStyles({
 	},
 	overflow: { overflow: 'auto' },
 	groups: {
-		padding: '10px 0',
+		margin: '16px 0',
+		padding: '0 16px',
 	},
 	fetching: {
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
 		flexGrow: 1,
-		padding: '10px 0'
+		margin: 16
 	}
 });
 export default inboxStyles;
