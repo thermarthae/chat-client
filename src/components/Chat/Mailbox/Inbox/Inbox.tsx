@@ -31,7 +31,7 @@ interface IInboxState {
 }
 
 class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
-	private groupsRef = React.createRef<HTMLDivElement>();
+	private bottomHelper = React.createRef<HTMLDivElement>();
 	private contentRef = React.createRef<HTMLDivElement>();
 	private isMarkingAsRead = false;
 
@@ -48,30 +48,38 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 		await this.markConvAsRead();
 	}
 
-	public getSnapshotBeforeUpdate(prevProps: IInboxProps) {
-		if (this.props.messages.length > prevProps.messages.length) {
+	public getSnapshotBeforeUpdate(prevProps: IInboxProps, prevState: IInboxState) {
+		const prevMsgCount = prevProps.messages.length;
+		const nowMsgCount = this.props.messages.length;
+
+		if (prevMsgCount !== nowMsgCount || prevState.isFetching !== this.state.isFetching) {
 			const inbox = this.contentRef.current!;
-			return inbox.scrollHeight - inbox.scrollTop;
+			return inbox.scrollHeight - inbox.scrollTop; //return distance from bottom
 		}
 		return null;
 	}
 
-	public async componentDidUpdate(prevProps: IInboxProps, prevState: IInboxState, snapshot: number | null) {
-		if (snapshot !== null) {
+	public async componentDidUpdate(prevProps: IInboxProps, prevState: IInboxState, snapshot: number) {
+		if (snapshot) {
 			const inbox = this.contentRef.current!;
-			if (prevState.isFetching) inbox.scrollTop = inbox.scrollHeight - snapshot;
-			else if (snapshot === inbox.clientHeight) this.scrollToBottom('smooth');
-		}
-		if (prevProps.seen && !this.props.seen) {
-			const inbox = this.contentRef.current!;
-			const distanceFromBottom = inbox.scrollHeight - inbox.scrollTop - inbox.clientHeight;
-			if (distanceFromBottom > 150) this.setState({ scrollDownInfo: true });
-			else await this.markConvAsRead();
+			const prevLastMsg = prevProps.messages[prevProps.messages.length - 1];
+			const nowLastMsg = this.props.messages[this.props.messages.length - 1];
+
+			if (prevLastMsg._id !== nowLastMsg._id) { //when new msg on bottom
+				const distanceFromBottom = inbox.scrollHeight - inbox.scrollTop - inbox.clientHeight;
+				if (distanceFromBottom < 150) {
+					await this.markConvAsRead();
+					if (snapshot === inbox.clientHeight) this.scrollToBottom('smooth'); //when was scrolled bottom
+				}
+				else //150 < distanceFromBottom
+					if (!nowLastMsg.me) this.setState({ scrollDownInfo: true }); //when didnt saw last message
+			}
+			else inbox.scrollTop = inbox.scrollHeight - snapshot; //when fetched more messages => restore old scroll
 		}
 	}
 
 	private markConvAsRead = async () => {
-		if (this.props.seen || this.isMarkingAsRead) return;
+		if (this.isMarkingAsRead) return;
 		this.isMarkingAsRead = true;
 		this.setState({ scrollDownInfo: false });
 		await this.props.markConvAsRead();
@@ -79,7 +87,7 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 	}
 
 	private scrollToBottom = (behavior: 'smooth' | 'auto') => {
-		this.groupsRef.current!.scrollIntoView({ behavior, block: 'end', inline: 'end' });
+		this.bottomHelper.current!.scrollIntoView({ behavior, block: 'end', inline: 'end' });
 	}
 
 	private fetchMoreMsgs = async () => {
@@ -95,10 +103,12 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 	}
 
 	private handleScroll = async ({ currentTarget }: React.UIEvent<HTMLDivElement>) => {
-		if (currentTarget.scrollTop < 300) await this.fetchMoreMsgs();
-
-		const distanceFromBottom = currentTarget.scrollHeight - currentTarget.scrollTop - currentTarget.clientHeight;
-		if (distanceFromBottom < 150) await this.markConvAsRead();
+		const { scrollHeight, scrollTop, clientHeight } = currentTarget;
+		if (scrollTop < 300) await this.fetchMoreMsgs();
+		else {
+			const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
+			if (distanceFromBottom < 150 && !this.props.seen) await this.markConvAsRead();
+		}
 	}
 
 	private handleScrollInfoClick = () => {
@@ -122,13 +132,15 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 		return (
 			<div className={classes.root}>
 				<div className={classes.overflow} ref={this.contentRef} onScroll={this.handleScroll}>
-					<div className={classes.groups} ref={this.groupsRef}>
-						{isFetching && <div className={classes.fetching}>
-							<CircularProgress size='1.5em' color='inherit' />
-						</div>}
+					<div className={classes.groups}>
+						{isFetching && (
+							<div className={classes.fetching}>
+								<CircularProgress size='1.5em' color='inherit' />
+							</div>
+						)}
 						<MessageGroups messages={messages} handleMenuClick={this.handleMenuClick} />
-						<div className={classes.clear} />
 					</div>
+					<div ref={this.bottomHelper} />
 				</div>
 				<ScrollDownInfo open={scrollDownInfo} onClick={this.handleScrollInfoClick} />
 				<Popper open={!!menuAnchorEl} anchorEl={menuAnchorEl} transition disablePortal>

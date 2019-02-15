@@ -23,10 +23,6 @@ const inboxStyles = ({ }: Theme) => createStyles({
 		alignItems: 'center',
 		flexGrow: 1,
 		padding: '10px 0'
-	},
-	clear: {
-		height: 1,
-		marginTop: -1,
-	},
+	}
 });
 export default inboxStyles;
