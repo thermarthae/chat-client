@@ -7,7 +7,7 @@ const inboxStyles = createStyles({
 		display: 'flex',
 		justifyContent: 'flex-end',
 		flexDirection: 'column',
-		overflow: 'auto',
+		overflow: 'hidden',
 		flex: '1 0 1px',
 		zIndex: -1,
 		position: 'relative',
