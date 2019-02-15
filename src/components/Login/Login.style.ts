@@ -8,7 +8,7 @@ const loginStyles = ({ palette }: Theme) => createStyles({
 		width: '100%',
 		height: '100%',
 		display: 'flex',
-		overflow: 'scroll'
+		overflowY: 'auto'
 	},
 	form: {
 		margin: '0 auto',
