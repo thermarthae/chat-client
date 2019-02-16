@@ -5,8 +5,11 @@ import Typography, { TypographyProps } from '@material-ui/core/Typography';
 
 const parseDate = (date: DateTime, interval = 1 * 60 * 1000) => {
 	const parse = () => {
+		if (date.hasSame(DateTime.local(), 'day')) return date.toLocaleString(DateTime.TIME_SIMPLE);
+
 		if (date.diffNow('day').days > -2)
 			return date.toRelativeCalendar() + ', ' + date.toLocaleString(DateTime.TIME_SIMPLE);
+
 		return date.toLocaleString(DateTime.DATETIME_MED);
 	};
 	const [parsedDate, setParsedDate] = useState(parse());
