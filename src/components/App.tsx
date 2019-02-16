@@ -17,7 +17,7 @@ import Navigator from './Navigator/Navigator';
 import Chat from './Chat/Chat';
 import Login from './Login/Login';
 
-import './i18n';
+import '../providers/i18nInit';
 
 interface IAppProps extends TAppStyles { }
 type IAppPropsType = WithApolloClient<IAppProps>;
