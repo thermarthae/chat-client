@@ -1,4 +1,5 @@
 import React, { memo, useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DateTime } from 'luxon';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 
@@ -27,7 +28,8 @@ interface ITimeProps extends TypographyProps {
 	interval?: number;
 }
 const Time = memo(({ time, interval, ...props }: ITimeProps) => {
-	const date = DateTime.fromISO(time);
+	const { i18n } = useTranslation();
+	const date = DateTime.fromISO(time).setLocale(i18n.language);
 	const parsedDate = parseDate(date, interval);
 
 	return (
