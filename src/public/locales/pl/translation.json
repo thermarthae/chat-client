@@ -73,5 +73,11 @@
 			"flags": "Flagi",
 			"custom": "Niestandarodwe"
 		}
+	},
+	"mainPage": {
+		"title": "Twój najlepszy przyjaciel.",
+		"subtitle": "Prosty i niezawodny sposób na planowanie i przesyłanie wiadomości tekstowych. Świetny sposób na utrzymywanie kontaktu ze wszystkimi znajomymi. Twój na zawsze.",
+		"registerBtn": "Utwórz konto",
+		"signInBtn": "Zaloguj się"
 	}
 }

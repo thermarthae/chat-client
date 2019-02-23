@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import mainPageStyles from './MainPage.style';
 import Logo from '../Logo/Logo';
@@ -26,20 +27,9 @@ const SelectInput = withStyles(({ typography }: Theme) => ({
 	},
 }), { name: 'Input' })(InputBase);
 
-const fakeI18n = {
-	title: 'Twój najlepszy przyjaciel.',
-	subtitle: `
-		Prosty i niezawodny sposób na planowanie i przesyłanie wiadomości
-		tekstowych oraz organizowanie rozmów wideo. Komunikator na którym
-		możesz polegać. Twój na zawsze.
-	`,
-	login: 'Zaloguj się',
-	signIn: 'Utwórz konto',
-	footer: 'Chat - All rights reserved ©',
-};
-
 const MainPage = () => {
 	const classes = mainPageStyles();
+	const [t] = useTranslation();
 
 	return (
 		<div className={classes.root}>
@@ -58,17 +48,21 @@ const MainPage = () => {
 							gutterBottom
 							color='primary'
 							className={classes.title}
-							children={fakeI18n.title}
+							children={t('mainPage.title')}
 						/>
 						<Typography
 							variant='subtitle1'
 							color='primary'
-							children={fakeI18n.subtitle}
+							children={t('mainPage.subtitle')}
 							className={classes.subtitle}
 						/>
 						<div className={classes.btns}>
-							<Button color='primary' children={fakeI18n.signIn} />
-							<Button variant='contained' color='primary' children={fakeI18n.login} />
+							<Button color='primary' children={t('mainPage.registerBtn')} />
+							<Button
+								variant='contained'
+								color='primary'
+								children={t('mainPage.signInBtn')}
+							/>
 						</div>
 					</div>
 				</div>

@@ -73,5 +73,11 @@
 			"flags": "Flags",
 			"custom": "Custom"
 		}
+	},
+	"mainPage": {
+		"title": "Your best friend.",
+		"subtitle": "A simple and reliable way to text and plan things all in one place completely for free. Amazing way to connect with all your friends. Yours forever.",
+		"registerBtn": "Create account",
+		"signInBtn": "Sign in"
 	}
 }
