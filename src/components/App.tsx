@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Route, Redirect } from 'react-router';
+import { Route } from 'react-router';
 import { Switch } from 'react-router-dom';
 import cookie from 'cookie';
 import 'normalize.css';
@@ -16,6 +16,7 @@ import Error from './Error/Error';
 import Navigator from './Navigator/Navigator';
 import Chat from './Chat/Chat';
 import Login from './Login/Login';
+import MainPage from './MainPage/MainPage';
 
 import '../providers/i18nInit';
 
@@ -44,7 +45,7 @@ class App extends React.PureComponent<IAppPropsType> {
 						<div className={classes.root}>
 							<Navigator locationHref={locationHref} />
 							<Switch>
-								<Redirect exact from='/' to='/chat' />
+								<Route exact from='/' component={MainPage} />
 								<PrivateRoute auth={isLoggedIn} path='/chat/:oponentId?' component={Chat} />
 								<PrivateRoute auth={isLoggedIn} path='/login' component={Login} whenUnlogged />
 								<Route component={Error} />
