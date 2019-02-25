@@ -1,13 +1,12 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import mainPageStyles from './MainPage.style';
-import Logo from '../Logo/Logo';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-
-import LanguageSelect from './LanguageSelect';
+import Logo from '../Logo/Logo';
+import mainPageStyles from './MainPage.style';
 import mockup from './mockup.png';
+import LanguageSelect from './LanguageSelect';
+import LinkButton from '../LinkButtons/LinkButton';
 
 const MainPage = () => {
 	const classes = mainPageStyles();
@@ -36,12 +35,8 @@ const MainPage = () => {
 							className={classes.subtitle}
 						/>
 						<div className={classes.btns}>
-							<Button color='primary' children={t('mainPage.registerBtn')} />
-							<Button
-								variant='contained'
-								color='primary'
-								children={t('mainPage.signInBtn')}
-							/>
+							<LinkButton to='register' children={t('mainPage.registerBtn')} />
+							<LinkButton to='login' variant='contained' children={t('mainPage.signInBtn')} />
 						</div>
 					</div>
 				</div>
