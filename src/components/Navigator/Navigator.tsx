@@ -14,7 +14,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew';
 
 import navigatorStyles from './Navigator.style';
-import LinkButton from './LinkButton';
+import LinkIconButton from '../LinkButtons/LinkIconButton';
 import Logo from '../Logo/Logo';
 
 const handleLogout = async (client: ApolloClient<any>) => {
@@ -37,14 +37,14 @@ const MenuAppBar = React.memo<INavigatorProps>(() => {
 						<Logo />
 						<Typography variant='h6' color='inherit' className={classes.grow} />
 						<div>
-							<LinkButton exact={false} to='/chat'>
+							<LinkIconButton exact={false} to='/chat'>
 								<Badge color='error' badgeContent={'?'} >
 									<MailIcon titleAccess='Chat' />
 								</Badge>
-							</LinkButton>
-							<LinkButton to='/login'>
+							</LinkIconButton>
+							<LinkIconButton to='/login'>
 								<AccountCircle titleAccess='Login' />
-							</LinkButton>
+							</LinkIconButton>
 							<IconButton color='inherit' onClick={() => handleLogout(client)}>
 								<PowerSettingsNew titleAccess='Logout' />
 							</IconButton>
