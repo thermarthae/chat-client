@@ -5,27 +5,9 @@ import mainPageStyles from './MainPage.style';
 import Logo from '../Logo/Logo';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import InputBase from '@material-ui/core/InputBase';
-import mockup from './mockup.png';
-import { withStyles, Theme } from '@material-ui/core';
 
-const SelectInput = withStyles(({ typography }: Theme) => ({
-	root: {
-		...typography.button,
-		color: 'inherit',
-		'& svg': {
-			color: 'inherit',
-		}
-	},
-	input: {
-		paddingLeft: 8,
-		'&:focus': {
-			borderRadius: 4,
-		},
-	},
-}), { name: 'Input' })(InputBase);
+import LanguageSelect from './LanguageSelect';
+import mockup from './mockup.png';
 
 const MainPage = () => {
 	const classes = mainPageStyles();
@@ -35,10 +17,7 @@ const MainPage = () => {
 		<div className={classes.root}>
 			<div className={classes.header}>
 				<Logo size={4} />
-				<Select value={'pl'} input={<SelectInput />}>
-					<MenuItem value={'pl'}>Polski</MenuItem>
-					<MenuItem value={'en'}>English</MenuItem>
-				</Select>
+				<LanguageSelect />
 			</div>
 			<div className={classes.center}>
 				<div className={classes.main}>
