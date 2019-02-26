@@ -7,3 +7,8 @@ export const GET_LOGIN_STATUS = gql`
 		}
 	}
 `;
+export interface IGetLoginStatusRes {
+	app: {
+		isLoggedIn: boolean;
+	};
+}
