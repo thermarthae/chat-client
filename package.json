@@ -13,6 +13,7 @@
 		"start": "webpack-dev-server --config=configs/webpack/start.js"
 	},
 	"devDependencies": {
+		"@hot-loader/react-dom": "^16.8.2",
 		"@types/classnames": "^2.2.7",
 		"@types/clean-webpack-plugin": "^0.1.2",
 		"@types/cookie": "^0.3.2",
