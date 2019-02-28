@@ -3,7 +3,9 @@ import { ConvNavFragment, IConversation } from '../Conversations.apollo';
 
 export const SET_SEARCH_STATUS = gql`
 	mutation setSearchStatus($status: Boolean!) {
-		setSearchStatus(status: $status) @client
+		setSearchStatus(status: $status) @client {
+			searchStatus
+		}
 	}
 `;
 

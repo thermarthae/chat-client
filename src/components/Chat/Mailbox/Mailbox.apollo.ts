@@ -70,7 +70,9 @@ export interface IGetMxSubStatusRes {
 
 export const TOGGLE_MX_SUB_STATUS = gql`
 	mutation toggleMailboxSubscribeStatus {
-		toggleSubsciptionStatus(subName: "mailbox") @client
+		toggleSubsciptionStatus(subName: "mailbox") @client {
+			mailbox
+		}
 	}
 `;
 

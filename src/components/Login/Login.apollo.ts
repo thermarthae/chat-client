@@ -15,6 +15,8 @@ export interface ILogInResponse {
 
 export const SET_LOGIN_STATUS = gql`
 	mutation setLoginStatus {
-		setLoginStatus(loginStatus: true) @client
+		setLoginStatus(loginStatus: true) @client {
+			isLoggedIn
+		}
 	}
 `;
