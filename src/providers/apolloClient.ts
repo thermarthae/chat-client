@@ -6,8 +6,7 @@ import { withClientState } from 'apollo-link-state';
 import { BatchHttpLink } from 'apollo-link-batch-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getOperationAST } from 'graphql/utilities/getOperationAST';
-import defaults from '../state/defaults';
-import mutations from '../state/mutations';
+import clientState from '../state';
 
 const cache = new InMemoryCache({
 	dataIdFromObject: (object: any) => object._id,
@@ -15,10 +14,7 @@ const cache = new InMemoryCache({
 
 const stateLink = withClientState({
 	cache,
-	defaults,
-	resolvers: {
-		Mutation: { ...mutations },
-	}
+	...clientState
 });
 
 export const client = new ApolloClient({
