@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 export const MARK_CONV_AS_READ = gql`
-	mutation ($id: ID!){
+	mutation markConvAsRead($id: ID!) {
 		markConversationAsRead(conversationId: $id)
 	}
 `;
@@ -14,7 +14,7 @@ export interface IMarkConvAsReadRes {
 
 
 export const GET_CONVERSATION = gql`
-	query($id: ID!, $skip: Int!, $limit: Int!) {
+	query getConv($id: ID!, $skip: Int!, $limit: Int!) {
 		getConversation(id: $id){
 			_id
 			name
@@ -56,7 +56,7 @@ export interface IGetConversationResponse {
 
 
 export const GET_MX_SUB_STATUS = gql`
-	query {
+	query getMailboxSubscribeStatus {
 		subscriptions @client {
 			mailbox
 		}
@@ -69,13 +69,13 @@ export interface IGetMxSubStatusRes {
 }
 
 export const TOGGLE_MX_SUB_STATUS = gql`
-	mutation {
+	mutation toggleMailboxSubscribeStatus {
 		toggleSubsciptionStatus(subName: "mailbox") @client
 	}
 `;
 
 export const NEW_MESSAGES_SUBSCRIPTION = gql`
-	subscription {
+	subscription newMessageAdded {
 		newMessageAdded {
 			_id
 			author {

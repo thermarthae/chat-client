@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 export const GET_SEARCH_STATUS = gql`
-	query {
+	query getSearchStatus {
 		chat @client {
 			searchStatus
 		}
@@ -60,7 +60,7 @@ export interface IGetConvArrResponse {
 
 
 export const GET_SUB_STATUS = gql`
-	query {
+	query getConvSubscribeStatus {
 		subscriptions @client {
 			conversations
 		}
@@ -73,13 +73,13 @@ export interface IGetConvSubStatusRes {
 }
 
 export const TOGGLE_CONV_SUB_STATUS = gql`
-	mutation {
+	mutation toggleConvSubscribeStatus {
 		toggleSubsciptionStatus(subName: "conversations") @client
 	}
 `;
 
 export const UPDATED_CONV_SUBSCRIPTION = gql`
-	subscription {
+	subscription updatedConversation {
 		updatedConversation {
 			...ConversationNav
 		}

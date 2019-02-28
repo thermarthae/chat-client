@@ -1,7 +1,8 @@
 import gql from 'graphql-tag';
 
+//TODO: fix name duplicate
 export const GET_OPONENT_ID = gql`
-	query {
+	query getOponentID {
 		chat @client {
 			oponentId
 		}
@@ -14,7 +15,7 @@ export interface IGetOponentIdResponse {
 }
 
 export const SEND_MESSAGE = gql`
-	mutation ($conversationId: ID!, $message: String!) {
+	mutation sendMessage($conversationId: ID!, $message: String!) {
 		sendMessage(conversationId: $conversationId, message: $message){
 			_id
 			me
@@ -29,7 +30,7 @@ export const SEND_MESSAGE = gql`
 `;
 
 export const GET_MESSAGES = gql`
-	query ($id: ID!){
+	query getMessages($id: ID!) {
 		getConversation(id: $id){
 			_id
 			messages(limit: 10, skip: 0) {

@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 export const LOG_IN = gql`
-	query Login ($username: String!, $password: String!){
+	query login ($username: String!, $password: String!) {
 		login(username: $username, password: $password) {
 			_id
 		}
@@ -14,7 +14,7 @@ export interface ILogInResponse {
 }
 
 export const SET_LOGIN_STATUS = gql`
-	mutation SetLoginStatus {
+	mutation setLoginStatus {
 		setLoginStatus(loginStatus: true) @client
 	}
 `;
