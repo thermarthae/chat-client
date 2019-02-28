@@ -1,7 +1,8 @@
 import React from 'react';
 import ApolloClient from 'apollo-client';
 import Query from 'react-apollo/Query';
-import { GET_LOGIN_STATUS, LOGOUT } from './Navigator.apollo';
+import { GET_LOGIN_STATUS } from '../App.apollo';
+import { LOGOUT } from './Navigator.apollo';
 import withApollo from 'react-apollo/withApollo';
 
 import AppBar from '@material-ui/core/AppBar';

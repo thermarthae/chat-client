@@ -6,7 +6,7 @@ import 'normalize.css';
 
 import Query from 'react-apollo/Query';
 import withApollo, { WithApolloClient } from 'react-apollo/withApollo';
-import { GET_APP_DATA } from './App.apollo';
+import { GET_LOGIN_STATUS } from './App.apollo';
 import { withStyles } from '@material-ui/styles';
 import appStyles, { TAppStyles } from './App.style';
 
@@ -40,7 +40,7 @@ class App extends React.PureComponent<IAppPropsType> {
 
 		return (
 			<Suspense fallback={<span>Loading...</span>}>
-				<Query query={GET_APP_DATA}>{({ data: { app: { isLoggedIn } } }) => (
+				<Query query={GET_LOGIN_STATUS}>{({ data: { app: { isLoggedIn } } }) => (
 					<CustomRouter isLoggedIn={isLoggedIn}>{locationHref =>
 						<div className={classes.root}>
 							<Navigator locationHref={locationHref} />
