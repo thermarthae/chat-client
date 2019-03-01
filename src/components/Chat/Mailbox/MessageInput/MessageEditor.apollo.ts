@@ -1,8 +1,7 @@
 import gql from 'graphql-tag';
 
-//TODO: fix name duplicate
 export const GET_OPONENT_ID = gql`
-	query getOponentID {
+	query getOponentID2 {
 		chat @client {
 			oponentId
 		}
