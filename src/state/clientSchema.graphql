@@ -1,0 +1,28 @@
+type App {
+	isLoggedIn: Boolean!
+}
+
+type Chat {
+	isAsideOpen: Boolean!
+	searchStatus: Boolean!
+	oponentId: String
+}
+
+type Subscriptions {
+	conversations: Boolean!
+	mailbox: Boolean!
+}
+
+type Query {
+	app: App!
+	chat: Chat!
+	subscriptions: Subscriptions!
+}
+
+type Mutation {
+	setLoginStatus(loginStatus: Boolean!): App!
+	toggleAside: Chat!
+	setSearchStatus(status: Boolean!): Chat!
+	setOponentId(oponentId: String): Chat!
+	toggleSubsciptionStatus(subName: String!): Subscriptions!
+}
