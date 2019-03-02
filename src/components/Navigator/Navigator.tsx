@@ -1,8 +1,6 @@
 import React from 'react';
 import ApolloClient from 'apollo-client';
-import Query from 'react-apollo/Query';
-import { GET_LOGIN_STATUS } from '../App.apollo';
-import { LOGOUT } from './Navigator.apollo';
+import { useQuery, useApolloClient } from 'react-apollo-hooks';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -17,6 +15,9 @@ import navigatorStyles from './Navigator.style';
 import LinkIconButton from '../LinkButtons/LinkIconButton';
 import Logo from '../Logo/Logo';
 
+import { LOGOUT } from './Navigator.apollo';
+import { GET_LOGIN_STATUS, IGetLoginStatusRes } from '../App.apollo';
+
 const handleLogout = async (client: ApolloClient<any>) => {
 	await client.query({ query: LOGOUT, fetchPolicy: 'no-cache', errorPolicy: 'all' });
 	client.resetStore();
@@ -27,32 +28,31 @@ interface INavigatorProps {
 }
 const MenuAppBar = React.memo<INavigatorProps>(() => {
 	const classes = navigatorStyles();
+	const client = useApolloClient();
+
+	const { app: { isLoggedIn } } = useQuery<IGetLoginStatusRes>(GET_LOGIN_STATUS).data!;
+	if (!isLoggedIn) return null;
 
 	return (
-		<Query query={GET_LOGIN_STATUS}>{
-			({ client, data: { app: { isLoggedIn } } }) => {
-				if (!isLoggedIn) return null;
-				return <AppBar position='relative' className={classes.root}>
-					<Toolbar className={classes.toolbar}>
-						<Logo />
-						<Typography variant='h6' color='inherit' className={classes.grow} />
-						<div>
-							<LinkIconButton exact={false} to='/chat'>
-								<Badge color='error' badgeContent={'?'} >
-									<MailIcon titleAccess='Chat' />
-								</Badge>
-							</LinkIconButton>
-							<LinkIconButton to='/login'>
-								<AccountCircle titleAccess='Login' />
-							</LinkIconButton>
-							<IconButton color='inherit' onClick={() => handleLogout(client)}>
-								<PowerSettingsNew titleAccess='Logout' />
-							</IconButton>
-						</div>
-					</Toolbar>
-				</AppBar>;
-			}}
-		</Query>
+		<AppBar position='relative' className={classes.root}>
+			<Toolbar className={classes.toolbar}>
+				<Logo />
+				<Typography variant='h6' color='inherit' className={classes.grow} />
+				<div>
+					<LinkIconButton exact={false} to='/chat'>
+						<Badge color='error' badgeContent={'?'} >
+							<MailIcon titleAccess='Chat' />
+						</Badge>
+					</LinkIconButton>
+					<LinkIconButton to='/login'>
+						<AccountCircle titleAccess='Login' />
+					</LinkIconButton>
+					<IconButton color='inherit' onClick={() => handleLogout(client)}>
+						<PowerSettingsNew titleAccess='Logout' />
+					</IconButton>
+				</div>
+			</Toolbar>
+		</AppBar>
 	);
 },
 	(prev, next) => (prev.locationHref.split('/')[3] === next.locationHref.split('/')[3])
