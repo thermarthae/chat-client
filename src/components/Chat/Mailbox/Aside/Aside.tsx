@@ -1,5 +1,6 @@
 import React from 'react';
 import { useQuery } from 'react-apollo-hooks';
+import classnames from 'classnames';
 
 import asideStyles from './Aside.style';
 
@@ -10,7 +11,7 @@ const Aside = () => {
 	const { chat: { isAsideOpen } } = useQuery<IGetAsideStatusRes>(GET_ASIDE_STATUS).data!;
 
 	return (
-		<div className={classes.root + (isAsideOpen ? (' ' + classes.active) : '')} />
+		<div className={classnames(classes.root, { [classes.active]: isAsideOpen })} />
 	);
 };
 
