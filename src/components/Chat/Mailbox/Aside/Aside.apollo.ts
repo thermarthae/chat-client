@@ -7,3 +7,8 @@ export const GET_ASIDE_STATUS = gql`
 		}
 	}
 `;
+export interface IGetAsideStatusRes {
+	chat: {
+		isAsideOpen: boolean;
+	};
+}
