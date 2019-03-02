@@ -3,7 +3,6 @@ import ApolloClient from 'apollo-client';
 import Query from 'react-apollo/Query';
 import { GET_LOGIN_STATUS } from '../App.apollo';
 import { LOGOUT } from './Navigator.apollo';
-import withApollo from 'react-apollo/withApollo';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -59,4 +58,4 @@ const MenuAppBar = React.memo<INavigatorProps>(() => {
 	(prev, next) => (prev.locationHref.split('/')[3] === next.locationHref.split('/')[3])
 );
 
-export default withApollo(MenuAppBar);
+export default MenuAppBar;
