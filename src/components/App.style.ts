@@ -1,10 +1,7 @@
-import { createStyles, WithStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles';
 import { Theme } from '@material-ui/core';
 
-
-export type TAppStyles = WithStyles<typeof appStyles>;
-
-const appStyles = ({ palette }: Theme) => createStyles({
+const appStyles = makeStyles(({ palette }: Theme) => ({
 	root: {
 		flexDirection: 'column',
 		display: 'flex',
@@ -12,6 +9,7 @@ const appStyles = ({ palette }: Theme) => createStyles({
 		height: '100vh',
 		color: palette.text.primary,
 		backgroundColor: palette.primary.lighter
-	},
-});
+	}
+}), { name: 'App' });
+
 export default appStyles;

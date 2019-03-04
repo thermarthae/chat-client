@@ -1,14 +1,10 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import { Route } from 'react-router';
 import { Switch } from 'react-router-dom';
+import { useApolloClient } from 'react-apollo-hooks';
 import cookie from 'cookie';
 import 'normalize.css';
-
-import Query from 'react-apollo/Query';
-import withApollo, { WithApolloClient } from 'react-apollo/withApollo';
-import { GET_LOGIN_STATUS } from './App.apollo';
-import { withStyles } from '@material-ui/styles';
-import appStyles, { TAppStyles } from './App.style';
+import '../providers/i18nInit';
 
 import CustomRouter from './RouterHelpers/CustomRouter';
 import PrivateRoute from './RouterHelpers/PrivateRoute';
@@ -18,43 +14,51 @@ import Chat from './Chat/Chat';
 import Login from './Login/Login';
 import MainPage from './MainPage/MainPage';
 
-import '../providers/i18nInit';
+import { GET_LOGIN_STATUS, IGetLoginStatusRes } from './App.apollo';
+import appStyles from './App.style';
 
-interface IAppProps extends TAppStyles { }
-type IAppPropsType = WithApolloClient<IAppProps>;
+const useLoginStatus = () => {
+	const client = useApolloClient();
 
-class App extends React.PureComponent<IAppPropsType> {
-	constructor(props: IAppPropsType) {
-		super(props);
-		this.checkAuthStatus();
-	}
-
-	private checkAuthStatus = () => {
+	const [status, setStatus] = useState(() => {
 		const { logged_in } = cookie.parse(document.cookie);
 		const isLoggedIn = logged_in === 'true' ? true : false;
-		this.props.client.writeData({ data: { app: { __typename: 'App', isLoggedIn } } });
-	}
+		client.writeData({ data: { app: { __typename: 'App', isLoggedIn } } });
+		return isLoggedIn;
+	});
 
-	public render() {
-		const { classes } = this.props;
+	useEffect(() => {
+		const watchQuery = client.watchQuery<IGetLoginStatusRes>({ query: GET_LOGIN_STATUS }).subscribe({
+			next({ data: { app: { isLoggedIn } } }) {
+				setStatus(isLoggedIn);
+			}
+		});
+		return () => watchQuery.unsubscribe();
+	});
+	return status;
+};
 
-		return (
-			<Suspense fallback={<span>Loading...</span>}>
-				<Query query={GET_LOGIN_STATUS}>{({ data: { app: { isLoggedIn } } }) => (
-					<CustomRouter isLoggedIn={isLoggedIn}>{locationHref =>
-						<div className={classes.root}>
-							<Navigator locationHref={locationHref} />
-							<Switch>
-								<Route exact from='/' component={MainPage} />
-								<PrivateRoute auth={isLoggedIn} path='/chat/:oponentId?' component={Chat} />
-								<PrivateRoute auth={isLoggedIn} path='/login' component={Login} whenUnlogged />
-								<Route component={Error} />
-							</Switch>
-						</div>
-					}</CustomRouter>
-				)}</Query>
-			</Suspense>
-		);
-	}
-}
-export default withStyles(appStyles, { name: 'App' })(withApollo(App));
+const App = () => {
+	const classes = appStyles();
+	const isLoggedIn = useLoginStatus();
+
+	return (
+		<CustomRouter isLoggedIn={isLoggedIn}>{locationHref =>
+			<div className={classes.root}>
+				<Navigator locationHref={locationHref} />
+				<Switch>
+					<Route exact from='/' component={MainPage} />
+					<PrivateRoute auth={isLoggedIn} path='/chat/:oponentId?' component={Chat} />
+					<PrivateRoute auth={isLoggedIn} path='/login' component={Login} whenUnlogged />
+					<Route component={Error} />
+				</Switch>
+			</div>
+		}</CustomRouter>
+	);
+};
+
+export default () => (
+	<Suspense fallback={<span>Loading...</span>}>
+		<App />
+	</Suspense>
+);
