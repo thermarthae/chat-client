@@ -1,5 +1,6 @@
 import React from 'react';
 import { Translation } from 'react-i18next';
+import { ApolloQueryResult } from 'apollo-client';
 
 import MenuList from '@material-ui/core/MenuList';
 import Typography from '@material-ui/core/Typography';
@@ -13,7 +14,7 @@ import { withStyles } from '@material-ui/styles';
 import inboxStyles, { TInboxStyles } from './Inbox.style';
 
 import MessageGroups from './MessageGroups/MessageGroups';
-import { IMessageMailboxFrag } from '../Mailbox.apollo';
+import { IMessageMailboxFrag, IGetConvRes } from '../Mailbox.apollo';
 import ScrollDownInfo from './ScrollDownInfo/ScrollDownInfo';
 
 interface IInboxProps extends TInboxStyles {
@@ -21,7 +22,7 @@ interface IInboxProps extends TInboxStyles {
 	mgsToFetch: number;
 	seen: boolean;
 	markConvAsRead: () => Promise<void>;
-	onLoadMore: () => Promise<any>;
+	onLoadMore: () => Promise<ApolloQueryResult<IGetConvRes>>;
 }
 
 interface IInboxState {
