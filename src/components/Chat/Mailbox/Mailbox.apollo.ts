@@ -6,9 +6,7 @@ export const MARK_CONV_AS_READ = gql`
 	}
 `;
 export interface IMarkConvAsReadRes {
-	data: {
-		markConversationAsRead: string | null
-	};
+	markConversationAsRead: string | null;
 }
 
 
