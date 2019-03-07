@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useApolloClient } from 'react-apollo-hooks';
 
 import { NEW_MSG_SUB, INewMsgsSubRes } from './ChatSubscriptions.apollo';
-import { GET_CONVERSATION, IGetConvRes, IMessage } from '../Mailbox/Mailbox.apollo';
+import { IConvMailboxFrag, ConvMailboxFragment } from '../Mailbox/Mailbox.apollo';
 
 //Fake component -> doesnt return anything, just subscribe data
 const ChatSubscriptions = () => {
@@ -10,24 +10,23 @@ const ChatSubscriptions = () => {
 
 	useEffect(() => {
 		const sub = client.subscribe<INewMsgsSubRes>({ query: NEW_MSG_SUB }).subscribe({
-			next(res) {
+			next({ data: { newMessageAdded } }) {
 				try {
-					const newMsg = res.data.newMessageAdded as IMessage;
-					const variables = { id: newMsg.conversation, skip: 0, limit: 10 };
-					const { getConversation } = client.readQuery<IGetConvRes>({
-						query: GET_CONVERSATION,
-						variables,
-					})!;
+					const options = {
+						id: newMessageAdded.conversation,
+						fragment: ConvMailboxFragment,
+					};
+					const { messages, ...rest } = client.readFragment<IConvMailboxFrag>(options)!;
 
-					const msgExists = getConversation.messages.find(msg => msg._id === newMsg._id);
-					if (!msgExists) client.writeQuery({
-						query: GET_CONVERSATION,
-						variables,
+					const msgExists = messages.find(msg => msg._id === newMessageAdded._id);
+					if (msgExists) return;
+
+					client.writeFragment({
+						...options,
 						data: {
-							getConversation: Object.assign({}, getConversation, {
-								messages: [...getConversation.messages, newMsg]
-							})
-						},
+							...rest,
+							messages: [...messages, newMessageAdded]
+						}
 					});
 				} catch (error) { } // tslint:disable-line
 			},
