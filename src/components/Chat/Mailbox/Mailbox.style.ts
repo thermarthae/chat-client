@@ -1,9 +1,7 @@
-import { createStyles, WithStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles';
 import { Theme } from '@material-ui/core';
 
-export type TMailboxStyles = WithStyles<typeof mailboxStyles>;
-
-const mailboxStyles = ({ palette }: Theme) => createStyles({
+const mailboxStyles = makeStyles(({ palette }: Theme) => ({
 	root: {
 		flex: '9 0 20em',
 		display: 'flex',
@@ -26,7 +24,6 @@ const mailboxStyles = ({ palette }: Theme) => createStyles({
 		padding: 16,
 		userSelect: 'none'
 	},
-});
+}), { name: 'Mailbox' });
+
 export default mailboxStyles;
-
-
