@@ -8,10 +8,7 @@ import { withApollo, WithApolloClient } from 'react-apollo';
 import Query from 'react-apollo/Query';
 import {
 	GET_CONVERSATION, IGetConversationResponse,
-	NEW_MESSAGES_SUBSCRIPTION, IMessage,
-	GET_MX_SUB_STATUS, IGetMxSubStatusRes, TOGGLE_MX_SUB_STATUS,
-	MARK_CONV_AS_READ,
-	IMarkConvAsReadRes
+	MARK_CONV_AS_READ, IMarkConvAsReadRes
 } from './Mailbox.apollo';
 import { ConvNavFragment } from '@src/components/Chat/Conversations/Conversations.apollo';
 
@@ -40,45 +37,6 @@ class Mailbox extends React.Component<WithApolloClient<IMailboxProps>, IMailboxS
 	public state = {
 		mgsToFetch: 10
 	};
-
-	public componentDidMount() {
-		this.subscribe();
-	}
-
-	private subscribe = () => {
-		const { client } = this.props;
-		const { mgsToFetch } = this.state;
-		const { subscriptions } = client.readQuery<IGetMxSubStatusRes>({ query: GET_MX_SUB_STATUS })!;
-		if (subscriptions.mailbox) return;
-
-		client.mutate({ mutation: TOGGLE_MX_SUB_STATUS });
-		client.subscribe({
-			query: NEW_MESSAGES_SUBSCRIPTION
-		}).subscribe({
-			next(res) {
-				try {
-					const newMsg = res.data.newMessageAdded as IMessage;
-					const variables = { id: newMsg.conversation, skip: 0, limit: mgsToFetch };
-					const { getConversation } = client.readQuery({
-						query: GET_CONVERSATION,
-						variables,
-					}) as IGetConversationResponse;
-
-					const msgExists = getConversation.messages.find(msg => msg._id === newMsg._id);
-					if (!msgExists) client.writeQuery({
-						query: GET_CONVERSATION,
-						variables,
-						data: {
-							getConversation: Object.assign({}, getConversation, {
-								messages: [...getConversation.messages, newMsg]
-							})
-						},
-					});
-				} catch (error) { } // tslint:disable-line
-			},
-			error(err) { console.error('Mailbox subscription error:', err); },
-		});
-	}
 
 	private markConvAsRead = async () => {
 		const { oponentId, client } = this.props;

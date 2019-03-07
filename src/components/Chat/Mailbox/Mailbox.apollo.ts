@@ -54,39 +54,3 @@ export interface IGetConversationResponse {
 	};
 }
 
-
-export const GET_MX_SUB_STATUS = gql`
-	query getMailboxSubscribeStatus {
-		subscriptions @client {
-			mailbox
-		}
-	}
-`;
-export interface IGetMxSubStatusRes {
-	subscriptions: {
-		mailbox: boolean;
-	};
-}
-
-export const TOGGLE_MX_SUB_STATUS = gql`
-	mutation toggleMailboxSubscribeStatus {
-		toggleSubsciptionStatus(subName: "mailbox") @client {
-			mailbox
-		}
-	}
-`;
-
-export const NEW_MESSAGES_SUBSCRIPTION = gql`
-	subscription newMessageAdded {
-		newMessageAdded {
-			_id
-			author {
-				name
-			}
-			time
-			me
-			content
-			conversation
-		}
-	}
-`;
