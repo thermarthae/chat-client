@@ -4,7 +4,7 @@ import Editor, { createEditorStateWithText } from 'draft-js-plugins-editor';
 
 import withApollo, { WithApolloClient } from 'react-apollo/withApollo';
 import {
-	SEND_MESSAGE,
+	SEND_MESSAGE, ISendMessageRes,
 	GET_OPONENT_ID, IGetOponentIdResponse,
 } from './MessageEditor.apollo';
 import { ConvMailboxFragment, IConvMailboxFrag } from '../Mailbox.apollo';
@@ -79,13 +79,14 @@ class MessageEditor extends React.PureComponent<TProps, IMessageEditorStates> {
 			const { data: { chat: { oponentId } } } = await client.query<IGetOponentIdResponse>({
 				query: GET_OPONENT_ID
 			});
-			await client.mutate({
+			await client.mutate<ISendMessageRes>({
 				mutation: SEND_MESSAGE,
 				variables: { conversationId: oponentId, message },
 				update: (proxy, { data }) => {
 					const options = {
 						id: oponentId,
-						fragment: ConvMailboxFragment
+						fragment: ConvMailboxFragment,
+						fragmentName: 'ConversationMailbox'
 					};
 					const { sendMessage } = data!;
 					const { messages, ...rest } = proxy.readFragment<IConvMailboxFrag>(options)!;

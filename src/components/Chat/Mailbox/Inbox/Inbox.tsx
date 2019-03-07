@@ -13,11 +13,11 @@ import { withStyles } from '@material-ui/styles';
 import inboxStyles, { TInboxStyles } from './Inbox.style';
 
 import MessageGroups from './MessageGroups/MessageGroups';
-import { IMessage } from '../Mailbox.apollo';
+import { IMessageMailboxFrag } from '../Mailbox.apollo';
 import ScrollDownInfo from './ScrollDownInfo/ScrollDownInfo';
 
 interface IInboxProps extends TInboxStyles {
-	messages: IMessage[];
+	messages: IMessageMailboxFrag[];
 	mgsToFetch: number;
 	seen: boolean;
 	markConvAsRead: () => Promise<void>;
