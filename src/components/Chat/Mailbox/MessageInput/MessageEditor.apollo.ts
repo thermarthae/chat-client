@@ -27,34 +27,3 @@ export const SEND_MESSAGE = gql`
 		}
 	}
 `;
-
-export const GET_MESSAGES = gql`
-	query getMessages($id: ID!) {
-		getConversation(id: $id){
-			_id
-			messages(limit: 10, skip: 0) {
-				_id
-				author {
-					name
-				}
-				time
-				me
-				content
-			}
-		}
-	}
-`;
-export interface IGetMessagesResponse {
-	getConversation: {
-		_id: string;
-		messages: [{
-			_id: string;
-			author: {
-				name: string;
-			};
-			time: string;
-			me: boolean;
-			content: string;
-		}];
-	};
-}
