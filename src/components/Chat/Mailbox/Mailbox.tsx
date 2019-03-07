@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router';
 import Typography from '@material-ui/core/Typography';
 
-import { useApolloClient } from 'react-apollo-hooks';
+import { useApolloClient, useMutation } from 'react-apollo-hooks';
 import Query from 'react-apollo/Query';
 import {
 	GET_CONVERSATION, IGetConversationResponse,
@@ -37,28 +37,22 @@ const Mailbox = ({ oponentId }: IMailboxProps) => {
 
 	const classes = mailboxStyles();
 	const client = useApolloClient();
+
+	const markAsReadMutation = useMutation<IMarkConvAsReadRes>(MARK_CONV_AS_READ, { variables: { id: oponentId } });
+	const markConvAsRead = async () => {
+		const res = await markAsReadMutation();
+		if (!res.data || !res.data.markConversationAsRead) return;
+
+		const options = { id: oponentId, fragment: ConvNavFragment };
+		const conversation = client.readFragment(options)!;
+		client.writeFragment({
+			...options,
+			data: Object.assign(conversation, { seen: true })
+		});
+	};
+
 	const mgsToFetch = 10; //TODO: Remove soon
 	const variables = { id: oponentId, skip: 0, limit: mgsToFetch };
-
-	const markConvAsRead = async () => {
-		const { data: { markConversationAsRead } } = await client.mutate({
-			mutation: MARK_CONV_AS_READ,
-			variables: { id: oponentId }
-		}) as IMarkConvAsReadRes;
-
-		if (!markConversationAsRead) return;
-		const getConversation = client.readFragment({
-			id: oponentId!,
-			fragment: ConvNavFragment,
-		})!;
-
-		client.writeFragment({
-			id: oponentId!,
-			fragment: ConvNavFragment,
-			data: Object.assign(getConversation, { seen: true })
-		});
-		client.queryManager!.broadcastQueries();
-	};
 
 	return (
 		<Query query={GET_CONVERSATION} variables={variables} errorPolicy='all'>
@@ -102,6 +96,7 @@ const Mailbox = ({ oponentId }: IMailboxProps) => {
 							<MessageInput draft={draft} />
 						</div>
 						<Aside />
+						<button onClick={() => markConvAsRead()}>DUPAAA</button>
 					</div>
 				</div>;
 			}}
