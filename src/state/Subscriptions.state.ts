@@ -1,29 +1,28 @@
 import ApolloClient from 'apollo-client';
 import gql from 'graphql-tag';
 
+//TODO: remove
 const Subscriptions = {
 	defaults: {
 		subscriptions: {
 			__typename: 'Subscriptions',
-			conversations: false,
-			mailbox: false
+			conversations: false
 		}
 	},
 	resolvers: {
 		Mutation: {
-			toggleSubsciptionStatus: ({ }, { subName }: any, { cache }: ApolloClient<any>) => {
+			toggleSubsciptionStatus: ({ }, { }, { cache }: ApolloClient<any>) => {
 				const query = gql`
 					query getSubscriptions {
 						subscriptions @client {
 							conversations
-							mailbox
 						}
 					}
 				`;
 				const { subscriptions }: any = cache.readQuery({ query });
 				const data = {
 					subscriptions: Object.assign({}, subscriptions, {
-						[subName]: !subscriptions[subName]
+						conversations: !subscriptions.conversations
 					})
 				};
 				cache.writeData({ data });

@@ -72,9 +72,10 @@ export interface IGetConvSubStatusRes {
 	};
 }
 
+//TODO: Remove soon
 export const TOGGLE_CONV_SUB_STATUS = gql`
 	mutation toggleConvSubscribeStatus {
-		toggleSubsciptionStatus(subName: "conversations") @client {
+		toggleSubsciptionStatus @client {
 			conversations
 		}
 	}
