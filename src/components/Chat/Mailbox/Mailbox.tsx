@@ -3,8 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router';
 import Typography from '@material-ui/core/Typography';
 
-import { useApolloClient, useMutation } from 'react-apollo-hooks';
-import Query from 'react-apollo/Query';
+import { useApolloClient, useMutation, useQuery } from 'react-apollo-hooks';
 import {
 	GET_CONVERSATION, IGetConversationResponse,
 	MARK_CONV_AS_READ, IMarkConvAsReadRes
@@ -52,55 +51,50 @@ const Mailbox = ({ oponentId }: IMailboxProps) => {
 	};
 
 	const mgsToFetch = 10; //TODO: Remove soon
-	const variables = { id: oponentId, skip: 0, limit: mgsToFetch };
+	const { loading, error, data, fetchMore } = useQuery<IGetConvRes>(GET_CONVERSATION, {
+		variables: { id: oponentId, skip: 0, limit: mgsToFetch },
+		errorPolicy: 'all'
+	});
+
+	if (loading) return <Empty i18nID='chat.mailbox.loading' />;
+	if (error || !data) {
+		if (data && data.getConversation === null) return <Redirect to='/' push />;
+		return <Empty i18nID='error.UnknownError' />;
+	}
+
+	const { name, messages, draft, seen } = data.getConversation;
+	const loadMore = () => fetchMore({
+		variables: { skip: messages.length },
+		updateQuery: (prev, { fetchMoreResult }) => {
+			if (!fetchMoreResult || !fetchMoreResult.getConversation.messages) return prev;
+			return {
+				getConversation: Object.assign({}, prev.getConversation, {
+					messages: [
+						...fetchMoreResult.getConversation.messages,
+						...prev.getConversation.messages,
+					]
+				})
+			};
+		}
+	});
 
 	return (
-		<Query query={GET_CONVERSATION} variables={variables} errorPolicy='all'>
-			{({ loading, error, data, fetchMore }) => {
-				if (loading) return <Empty i18nID='chat.mailbox.loading' />;
-				if (!data) return <Empty i18nID='chat.mailbox.nothingSelected' />;
-
-				const { getConversation }: IGetConversationResponse = data;
-				if (error) {
-					if (getConversation === null) return <Redirect to='/' push />;
-					return <Empty i18nID='error.UnknownError' />;
-				}
-				const { name, messages, draft, seen } = getConversation;
-
-				const loadMore = () => fetchMore({
-					variables: { skip: messages.length },
-					updateQuery: (prev: IGetConversationResponse, { fetchMoreResult }) => {
-						if (!fetchMoreResult || !fetchMoreResult.getConversation.messages) return prev;
-						return {
-							getConversation: Object.assign({}, prev.getConversation, {
-								messages: [
-									...fetchMoreResult.getConversation.messages,
-									...prev.getConversation.messages,
-								]
-							})
-						};
-					}
-				});
-
-				return <div className={classes.root}>
-					<Header conversationName={name} />
-					<div className={classes.content}>
-						<div className={classes.main}>
-							<Inbox
-								messages={messages}
-								seen={seen}
-								mgsToFetch={mgsToFetch}
-								markConvAsRead={markConvAsRead}
-								onLoadMore={loadMore}
-							/>
-							<MessageInput draft={draft} />
-						</div>
-						<Aside />
-						<button onClick={() => markConvAsRead()}>DUPAAA</button>
-					</div>
-				</div>;
-			}}
-		</Query>
+		<div className={classes.root}>
+			<Header conversationName={name} />
+			<div className={classes.content}>
+				<div className={classes.main}>
+					<Inbox
+						messages={messages}
+						seen={seen}
+						mgsToFetch={mgsToFetch}
+						markConvAsRead={markConvAsRead}
+						onLoadMore={loadMore}
+					/>
+					<MessageInput draft={draft} />
+				</div>
+				<Aside />
+			</div>
+		</div>
 	);
 };
 
