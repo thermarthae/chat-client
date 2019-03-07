@@ -50,9 +50,8 @@ const Mailbox = ({ oponentId }: IMailboxProps) => {
 		});
 	};
 
-	const mgsToFetch = 10; //TODO: Remove soon
 	const { loading, error, data, fetchMore } = useQuery<IGetConvRes>(GET_CONVERSATION, {
-		variables: { id: oponentId, skip: 0, limit: mgsToFetch },
+		variables: { id: oponentId },
 		errorPolicy: 'all'
 	});
 
@@ -86,7 +85,7 @@ const Mailbox = ({ oponentId }: IMailboxProps) => {
 					<Inbox
 						messages={messages}
 						seen={seen}
-						mgsToFetch={mgsToFetch}
+						mgsToFetch={10 /* TODO: Remove soon */}
 						markConvAsRead={markConvAsRead}
 						onLoadMore={loadMore}
 					/>
