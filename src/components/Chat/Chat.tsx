@@ -4,6 +4,7 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import Conversations from './Conversations/Conversations';
 import Mailbox from './Mailbox/Mailbox';
+import ChatSubscriptions from './ChatSubscriptions/ChatSubscriptions';
 
 import { SET_OPONENT_ID } from './Chat.apollo';
 import chatStyles from './Chat.style';
@@ -21,6 +22,7 @@ const Chat = ({ match }: IChatProps) => {
 		<div className={classes.root}>
 			<Conversations />
 			<Mailbox oponentId={oponentId} />
+			<ChatSubscriptions />
 		</div>
 	);
 };
