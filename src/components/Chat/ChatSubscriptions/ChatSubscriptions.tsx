@@ -15,6 +15,7 @@ const ChatSubscriptions = () => {
 					const options = {
 						id: newMessageAdded.conversation,
 						fragment: ConvMailboxFragment,
+						fragmentName: 'ConversationMailbox'
 					};
 					const { messages, ...rest } = client.readFragment<IConvMailboxFrag>(options)!;
 

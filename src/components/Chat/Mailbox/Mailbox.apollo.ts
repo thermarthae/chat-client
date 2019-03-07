@@ -11,25 +11,19 @@ export interface IMarkConvAsReadRes {
 
 
 
-export const ConvMailboxFragment = gql`
-	fragment ConversationMailbox on Conversation {
+export const MessageMailboxFragment = gql`
+	fragment MessageMailbox on Message {
 		_id
-		name
-		seen
-		draft
-		messages(skip: $skip, limit: $limit) {
-			_id
-			author {
-				name
-			}
-			time
-			me
-			content
-			conversation
+		author {
+			name
 		}
+		time
+		me
+		content
+		conversation
 	}
 `;
-export interface IMessage {
+export interface IMessageMailboxFrag {
 	_id: string;
 	author: {
 		name: string;
@@ -39,11 +33,26 @@ export interface IMessage {
 	content: string;
 	conversation: string;
 }
+
+
+
+export const ConvMailboxFragment = gql`
+	fragment ConversationMailbox on Conversation {
+		_id
+		name
+		seen
+		draft
+		messages(skip: $skip, limit: $limit) {
+			...MessageMailbox
+		}
+	}
+	${MessageMailboxFragment}
+`;
 export interface IConvMailboxFrag {
 	_id: string;
 	name: string;
 	seen: boolean;
-	messages: IMessage[];
+	messages: IMessageMailboxFrag[];
 	draft: string;
 }
 
