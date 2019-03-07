@@ -11,27 +11,24 @@ export interface IMarkConvAsReadRes {
 
 
 
-export const GET_CONVERSATION = gql`
-	query getConv($id: ID!, $skip: Int!, $limit: Int!) {
-		getConversation(id: $id){
+export const ConvMailboxFragment = gql`
+	fragment ConversationMailbox on Conversation {
+		_id
+		name
+		seen
+		draft
+		messages(skip: $skip, limit: $limit) {
 			_id
-			name
-			seen
-			messages(skip: $skip, limit: $limit) {
-				_id
-				author {
-					name
-				}
-				time
-				me
-				content
-				conversation
+			author {
+				name
 			}
-			draft
+			time
+			me
+			content
+			conversation
 		}
 	}
 `;
-
 export interface IMessage {
 	_id: string;
 	author: {
@@ -42,13 +39,24 @@ export interface IMessage {
 	content: string;
 	conversation: string;
 }
-export interface IGetConversationResponse {
-	getConversation: {
-		_id: string;
-		name: string;
-		seen: boolean;
-		messages: IMessage[];
-		draft: string;
-	};
+export interface IConvMailboxFrag {
+	_id: string;
+	name: string;
+	seen: boolean;
+	messages: IMessage[];
+	draft: string;
 }
 
+
+
+export const GET_CONVERSATION = gql`
+	query getConv($id: ID!, $skip: Int, $limit: Int) {
+		getConversation(id: $id) {
+			...ConversationMailbox
+		}
+	}
+	${ConvMailboxFragment}
+`;
+export interface IGetConvRes {
+	getConversation: IConvMailboxFrag;
+}
