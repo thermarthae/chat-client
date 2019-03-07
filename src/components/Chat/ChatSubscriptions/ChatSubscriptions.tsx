@@ -28,8 +28,10 @@ const ChatSubscriptions = () => {
 							messages: [...messages, newMessageAdded]
 						}
 					});
-				} catch (error) { } // tslint:disable-line
-			},
+				} catch (error) {
+					if (!error.message.includes('Can\'t find field messages({})')) console.error(error);
+				}
+			}
 		});
 
 		return () => sub.unsubscribe();
