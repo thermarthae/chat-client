@@ -5,11 +5,9 @@ import Editor, { createEditorStateWithText } from 'draft-js-plugins-editor';
 import withApollo, { WithApolloClient } from 'react-apollo/withApollo';
 import {
 	SEND_MESSAGE,
-	GET_MESSAGES,
-	IGetMessagesResponse,
-	GET_OPONENT_ID,
-	IGetOponentIdResponse,
+	GET_OPONENT_ID, IGetOponentIdResponse,
 } from './MessageEditor.apollo';
+import { ConvMailboxFragment, IConvMailboxFrag } from '../Mailbox.apollo';
 
 
 interface IMessageEditorProps {
@@ -84,14 +82,24 @@ class MessageEditor extends React.PureComponent<TProps, IMessageEditorStates> {
 			await client.mutate({
 				mutation: SEND_MESSAGE,
 				variables: { conversationId: oponentId, message },
-				update: (proxy, { data: { sendMessage } }: any) => {
-					const data = proxy.readQuery(
-						{ query: GET_MESSAGES, variables: { id: oponentId } }
-					) as IGetMessagesResponse;
-					const { messages } = data.getConversation;
+				update: (proxy, { data }) => {
+					const options = {
+						id: oponentId,
+						fragment: ConvMailboxFragment
+					};
+					const { sendMessage } = data!;
+					const { messages, ...rest } = proxy.readFragment<IConvMailboxFrag>(options)!;
 
-					if (!messages.find(msg => msg._id === sendMessage._id)) messages.push(sendMessage);
-					proxy.writeQuery({ query: GET_MESSAGES, data, variables: { id: oponentId } });
+					const msgExists = messages.find(msg => msg._id === sendMessage._id);
+					if (msgExists) return;
+
+					proxy.writeFragment({
+						...options,
+						data: {
+							...rest,
+							messages: [...messages, sendMessage]
+						}
+					});
 				},
 				optimisticResponse: {
 					__typename: 'Mutation',
