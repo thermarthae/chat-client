@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 
 import { useApolloClient, useMutation, useQuery } from 'react-apollo-hooks';
 import {
-	GET_CONVERSATION, IGetConversationResponse,
+	GET_CONVERSATION, IGetConvRes,
 	MARK_CONV_AS_READ, IMarkConvAsReadRes
 } from './Mailbox.apollo';
 import { ConvNavFragment } from '@src/components/Chat/Conversations/Conversations.apollo';
