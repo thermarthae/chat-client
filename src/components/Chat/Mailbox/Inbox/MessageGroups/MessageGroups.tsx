@@ -1,17 +1,17 @@
 import React from 'react';
-import { IMessage } from '../../Mailbox.apollo';
+import { IMessageMailboxFrag } from '../../Mailbox.apollo';
 
 import Cluster from './Cluster';
 
 interface IMessageGroups {
-	messages: IMessage[];
+	messages: IMessageMailboxFrag[];
 	handleMenuClick: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 const MessageGroups = ({ messages, handleMenuClick }: IMessageGroups) => {
 	let lastMsg = messages[0];
-	let currentGroup: IMessage[] = [];
-	const msgGroups: IMessage[][] = [];
+	let currentGroup: IMessageMailboxFrag[] = [];
+	const msgGroups: IMessageMailboxFrag[][] = [];
 
 	messages.forEach(msg => {
 		const msgTime = new Date(msg.time).getTime();

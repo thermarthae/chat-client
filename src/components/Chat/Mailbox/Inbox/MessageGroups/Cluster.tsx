@@ -2,12 +2,12 @@ import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import clusterStyles from './Cluster.style';
 
-import { IMessage } from '../../Mailbox.apollo';
+import { IMessageMailboxFrag } from '../../Mailbox.apollo';
 import Message from './Message';
 import Time from '@src/components/Time/Time';
 
 interface IClusterProps {
-	group: IMessage[];
+	group: IMessageMailboxFrag[];
 	handleMenuClick: (event: React.MouseEvent<HTMLElement>) => void;
 }
 

@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { MessageMailboxFragment, IMessageMailboxFrag } from '../Mailbox.apollo';
 
 export const GET_OPONENT_ID = gql`
 	query getOponentID2 {
@@ -16,14 +17,11 @@ export interface IGetOponentIdResponse {
 export const SEND_MESSAGE = gql`
 	mutation sendMessage($conversationId: ID!, $message: String!) {
 		sendMessage(conversationId: $conversationId, message: $message){
-			_id
-			me
-			author {
-				name
-			}
-			content
-			time
-			conversation
+			...MessageMailbox
 		}
 	}
+	${MessageMailboxFragment}
 `;
+export interface ISendMessageRes {
+	sendMessage: IMessageMailboxFrag;
+}
