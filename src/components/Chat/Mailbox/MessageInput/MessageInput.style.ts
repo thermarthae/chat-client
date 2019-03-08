@@ -1,9 +1,7 @@
-import { createStyles, WithStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles';
 import { Theme } from '@material-ui/core';
 
-export type TMessageInputStyles = WithStyles<typeof messageInputStyles>;
-
-const messageInputStyles = ({ palette, typography }: Theme) => createStyles({
+const messageInputStyles = makeStyles(({ palette, typography }: Theme) => ({
 	root: {
 		display: 'flex',
 		alignItems: 'center',
@@ -43,6 +41,6 @@ const messageInputStyles = ({ palette, typography }: Theme) => createStyles({
 		fontSize: typography.emToPx(1.55),
 		padding: typography.emToPx(0.715)
 	},
+}), { name: 'MessageInput' });
 
-});
 export default messageInputStyles;
