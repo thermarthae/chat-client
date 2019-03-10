@@ -35,7 +35,7 @@ const messageInputStyles = makeStyles(({ palette, typography }: Theme) => ({
 		boxSizing: 'border-box',
 		outline: 'none',
 		cursor: 'text',
-		overflowY: 'auto',
+		// overflowY: 'auto',
 	},
 	btn: {
 		fontSize: typography.emToPx(1.55),
