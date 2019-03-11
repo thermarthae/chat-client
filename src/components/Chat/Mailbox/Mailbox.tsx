@@ -89,7 +89,7 @@ const Mailbox = ({ oponentId }: IMailboxProps) => {
 						markConvAsRead={markConvAsRead}
 						onLoadMore={loadMore}
 					/>
-					<MessageInput draft={draft} />
+					<MessageInput draft={draft} oponentId={oponentId} />
 				</div>
 				<Aside />
 			</div>

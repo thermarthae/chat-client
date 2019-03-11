@@ -1,72 +1,128 @@
 import React, { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-
 import IconButton from '@material-ui/core/IconButton';
-import Slide from '@material-ui/core/Slide';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Send from '@material-ui/icons/Send';
 import InsertEmoticon from '@material-ui/icons/InsertEmoticon';
+
+import { useMutation } from 'react-apollo-hooks';
+import { SEND_MESSAGE, ISendMessageRes } from './MessageInput.apollo';
+import { ConvMailboxFragment, IConvMailboxFrag } from '../Mailbox.apollo';
+
+import { EditorState, Modifier, ContentState } from 'draft-js';
+import Editor, { createEditorStateWithText } from 'draft-js-plugins-editor';
+import createEmojiPlugin, { addEmoji } from '@src/components/EmojiPlugin';
+const draftPlugins = [createEmojiPlugin()];
+
 import messageInputStyles from './MessageInput.style';
+import EmojiPicker, { EmojiData } from './EmojiPicker';
 
-import MessageEditor from './MessageEditor';
-
-import createEmojiPlugin from '@src/components/EmojiPlugin';
-const emojiPlugin = createEmojiPlugin();
-const { EmojiSelect } = emojiPlugin;
-const plugins = [emojiPlugin];
 
 interface IMessageInputProps {
 	draft: string;
+	oponentId: string;
 }
-const MessageInput = ({ draft }: IMessageInputProps) => {
-	const [t] = useTranslation();
-	const [emojiSelectI18N] = useState(() => ({
-		search: t('emojiPicker.search'),
-		notfound: t('emojiPicker.notfound'),
-		categories: {
-			search: t('emojiPicker.categories.search'),
-			recent: t('emojiPicker.categories.recent'),
-			people: t('emojiPicker.categories.people'),
-			nature: t('emojiPicker.categories.nature'),
-			foods: t('emojiPicker.categories.foods'),
-			activity: t('emojiPicker.categories.activity'),
-			places: t('emojiPicker.categories.places'),
-			objects: t('emojiPicker.categories.objects'),
-			symbols: t('emojiPicker.categories.symbols'),
-			flags: t('emojiPicker.categories.flags'),
-			custom: t('emojiPicker.categories.custom'),
-		}
-	}));
-
-	const messageEditor = useRef<any | null>(null); //TODO: any
-	const handleSendMessage = () => {
-		messageEditor.current!.getWrappedInstance().sendMessage();
-	};
+const MessageInput = ({ draft, oponentId }: IMessageInputProps) => {
+	const messageEditor = useRef<Editor | null>(null);
 
 	const [emojiPickerIsOpen, setEmojiPickerIsOpen] = useState(false);
 	const handleEmojiPickerToggle = () => setEmojiPickerIsOpen(!emojiPickerIsOpen);
 	const handleEmojiPickerClose = () => setEmojiPickerIsOpen(false);
 
+	const [draftjsState, setDraftjsState] = useState(() => createEditorStateWithText(draft));
+	const onChange = (currentState: EditorState) => setDraftjsState(currentState);
+
+	const handleOnEmojiSelect = (emoji: EmojiData) => {
+		const newDraftjsState = addEmoji(draftjsState, emoji.native);
+		setDraftjsState(newDraftjsState);
+	};
+
+	const sendMsgMutation = useMutation<ISendMessageRes>(SEND_MESSAGE);
+	const handleSendMessage = async () => {
+		const message = draftjsState.getCurrentContent().getPlainText();
+		if (!message) return;
+
+		const stateBackup = draftjsState;
+		const clearedState = EditorState.push(draftjsState, ContentState.createFromText(''), 'remove-range');
+		setDraftjsState(clearedState);
+
+		sendMsgMutation({
+			variables: { conversationId: oponentId, message },
+			update: (proxy, { data }) => {
+				const options = {
+					id: oponentId,
+					fragment: ConvMailboxFragment,
+					fragmentName: 'ConversationMailbox'
+				};
+				const { sendMessage } = data!;
+				const { messages, ...rest } = proxy.readFragment<IConvMailboxFrag>(options)!;
+
+				const msgExists = messages.find(msg => msg._id === sendMessage._id);
+				if (msgExists) return;
+
+				proxy.writeFragment({
+					...options,
+					data: {
+						...rest,
+						messages: [...messages, sendMessage]
+					}
+				});
+			},
+			optimisticResponse: {
+				__typename: 'Mutation',
+				sendMessage: {
+					__typename: 'Message',
+					_id: Date.now(),
+					me: true,
+					author: {
+						__typename: 'User',
+						name: ''
+					},
+					content: message,
+					conversation: oponentId,
+					time: new Date().toISOString()
+				}
+			}
+		}).catch(() => setDraftjsState(stateBackup));
+	};
+
+	const focusEditor = () => (messageEditor.current! as any).focus();
+
+	const handleReturn = (event: React.KeyboardEvent) => {
+		if (!event.shiftKey) {
+			event.preventDefault();
+			handleSendMessage();
+			return 'handled';
+		}
+	};
+	const handlePastedText = (text: string, { }, state: EditorState) => {
+		const newState = Modifier.replaceText(
+			state.getCurrentContent(),
+			state.getSelection(),
+			text.trim()
+		);
+		setDraftjsState(EditorState.push(state, newState, 'insert-fragment'));
+		return 'handled';
+	};
+
 	const classes = messageInputStyles();
+	const [t] = useTranslation();
 
 	return (
 		<ClickAwayListener onClickAway={handleEmojiPickerClose}>
 			<div className={classes.root}>
-				<MessageEditor
-					className={classes.input}
-					ref={messageEditor}
-					plugins={plugins}
-					draft={draft}
-					placeholder={t('chat.mailbox.typeYourMessage')}
-				/>
-				<Slide direction='up' in={emojiPickerIsOpen} mountOnEnter unmountOnExit>
-					<EmojiSelect
-						custom={[]}
-						emojiTooltip
-						showPreview={false}
-						i18n={emojiSelectI18N}
+				<div className={classes.input} onClick={focusEditor}>
+					<Editor
+						editorState={draftjsState}
+						onChange={onChange}
+						plugins={draftPlugins}
+						ref={messageEditor}
+						placeholder={t('chat.mailbox.typeYourMessage')}
+						handleReturn={handleReturn}
+						handlePastedText={handlePastedText}
 					/>
-				</Slide>
+				</div>
+				<EmojiPicker isOpen={emojiPickerIsOpen} onSelect={handleOnEmojiSelect} />
 				<IconButton className={classes.btn} onClick={handleEmojiPickerToggle}>
 					<InsertEmoticon fontSize='inherit' />
 				</IconButton>
