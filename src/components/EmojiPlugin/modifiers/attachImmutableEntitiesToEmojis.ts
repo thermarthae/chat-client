@@ -28,14 +28,14 @@ export default function attachImmutableEntitiesToEmojis(editorState: EditorState
 
 			const selection = SelectionState.createEmpty(block.getKey())
 				.set('anchorOffset', start)
-				.set('focusOffset', end);
+				.set('focusOffset', end) as SelectionState;
 			const emojiText = plainText.substring(start, end);
 			const contentStateWithEntity = newContentState.createEntity('emoji', 'IMMUTABLE', { emojiUnicode: emojiText });
 			const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
 
 			newContentState = Modifier.replaceText(
 				newContentState,
-				selection as any,
+				selection,
 				emojiText,
 				undefined,
 				entityKey,

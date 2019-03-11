@@ -1,15 +1,6 @@
-import { Modifier, EditorState, SelectionState } from 'draft-js';
-import getSearchText from '../utils/getSearchText';
+import { Modifier, EditorState } from 'draft-js';
 
-// This modifier can inserted emoji to current cursor position (with replace selected fragment),
-// or replaced emoji shortname like ":thumbsup:". Behavior determined by `Mode` parameter.
-const Mode = {
-	INSERT: 'INSERT', // insert emoji to current cursor position
-	REPLACE: 'REPLACE', // replace emoji shortname
-};
-
-const addEmoji = (editorState: EditorState, emoji: any, mode = Mode.INSERT) => {
-
+const addEmoji = (editorState: EditorState, emoji: string) => {
 	const contentState = editorState.getCurrentContent();
 	const contentStateWithEntity = contentState.createEntity('emoji', 'IMMUTABLE', { emojiUnicode: emoji });
 	const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
@@ -19,68 +10,37 @@ const addEmoji = (editorState: EditorState, emoji: any, mode = Mode.INSERT) => {
 	let emojiEndPos = 0;
 	let blockSize = 0;
 
-	switch (mode) {
-		case Mode.INSERT: {
-			// in case text is selected it is removed and then the emoji is added
-			const afterRemovalContentState = Modifier.removeRange(
-				contentState,
-				currentSelectionState,
-				'backward'
-			);
+	// in case text is selected it is removed and then the emoji is added
+	const afterRemovalContentState = Modifier.removeRange(
+		contentState,
+		currentSelectionState,
+		'backward'
+	);
 
-			// deciding on the position to insert emoji
-			const targetSelection = afterRemovalContentState.getSelectionAfter();
+	// deciding on the position to insert emoji
+	const targetSelection = afterRemovalContentState.getSelectionAfter();
 
-			emojiAddedContent = Modifier.insertText(
-				afterRemovalContentState,
-				targetSelection,
-				emoji,
-				undefined,
-				entityKey,
-			);
+	emojiAddedContent = Modifier.insertText(
+		afterRemovalContentState,
+		targetSelection,
+		emoji,
+		undefined,
+		entityKey,
+	);
 
-			emojiEndPos = targetSelection.getAnchorOffset();
-			const blockKey = targetSelection.getAnchorKey();
-			blockSize = contentState.getBlockForKey(blockKey).getLength();
+	emojiEndPos = targetSelection.getAnchorOffset();
+	const blockKey = targetSelection.getAnchorKey();
+	blockSize = contentState.getBlockForKey(blockKey).getLength();
 
-			break;
-		}
-
-		case Mode.REPLACE: {
-			const { begin, end } = getSearchText(editorState, currentSelectionState);
-
-			// Get the selection of the :emoji: search text
-			const emojiTextSelection = currentSelectionState.merge({
-				anchorOffset: begin,
-				focusOffset: end,
-			}) as SelectionState;
-
-			emojiAddedContent = Modifier.replaceText(
-				contentState,
-				emojiTextSelection,
-				emoji,
-				undefined,
-				entityKey
-			);
-
-			emojiEndPos = end;
-			const blockKey = emojiTextSelection.getAnchorKey();
-			blockSize = contentState.getBlockForKey(blockKey).getLength();
-
-			break;
-		}
-
-		default: throw new Error('Unidentified value of "mode"');
-	}
 
 	// If the emoji is inserted at the end, a space is appended right after for
 	// a smooth writing experience.
-	if (emojiEndPos === blockSize) emojiAddedContent = Modifier.insertText(
-		emojiAddedContent,
-		emojiAddedContent.getSelectionAfter(),
-		' '
-	);
-
+	if (emojiEndPos === blockSize)
+		emojiAddedContent = Modifier.insertText(
+			emojiAddedContent,
+			emojiAddedContent.getSelectionAfter(),
+			' '
+		);
 
 	const newEditorState = EditorState.push(
 		editorState,
@@ -91,4 +51,3 @@ const addEmoji = (editorState: EditorState, emoji: any, mode = Mode.INSERT) => {
 };
 
 export default addEmoji;
-export { Mode };
