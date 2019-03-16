@@ -2,29 +2,35 @@
 // Project: https://github.com/twitter/twemoji
 // Definitions by: thermarthae <https://github.com/thermarthae>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-// TypeScript Version: 3.0.3
+// TypeScript Version: 3.3.3333
 
 
 declare module 'twemoji' {
 	type ParseCallbackFn = (
-		iconId?: string,
-		options?: {
-			// callback?: ParseCallbackFn; //TODO
-			base?: string;
-			ext?: string;
-			size?: string;
+		iconId: string,
+		options: {
+			base: string;
+			ext: string;
+			size: string;
 		},
-		variant?: string
+		variant: string
 	) => void;
 
 	interface ParseOptions {
-		callback?: ParseCallbackFn;					// default the common replacer
-		attributes?: (icon, variant) => object;		// default returns {}
-		base?: string;								// default MaxCDN
-		ext?: string;								// default ".png"
-		className?: string;							// default "emoji"
-		size?: string | number;						// default "36x36"
-		folder?: string;								// in case it's specified it replaces .size info, if any
+		/** default the common replacer */
+		callback?: ParseCallbackFn;
+		/** default returns {} */
+		attributes?: (icon, variant) => object;
+		/** default MaxCDN */
+		base?: string;
+		/** default ".png" */
+		ext?: string;
+		/** default "emoji" */
+		className?: string;
+		/** default "36x36" */
+		size?: string | number;
+		/** in case it's specified it replaces .size info, if any */
+		folder?: string;
 	}
 
 	export declare class twemoji {
@@ -187,7 +193,7 @@ declare module 'twemoji' {
 		 *
 		 */
 		parse(what: string | HTMLElement): string;
-		parse(what: string | HTMLElement, how?: ParseCallbackFn | ParseOptions): string;
+		parse(what: string | HTMLElement, how?: Partial<ParseCallbackFn> | ParseOptions): string;
 
 		/**
 		 * Given a string, invokes the callback argument
