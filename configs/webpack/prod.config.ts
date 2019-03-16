@@ -35,9 +35,7 @@ const prodConfig = merge(baseConfig, {
 		]
 	},
 	plugins: [
-		new CleanWebpackPlugin(['dist'], {
-			root: path.resolve(__dirname, '../../')
-		}),
+		new CleanWebpackPlugin(),
 		new MiniCssExtractPlugin({
 			filename: 'css/[name].css',
 			chunkFilename: 'css/[id].css'
