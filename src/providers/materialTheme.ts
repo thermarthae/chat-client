@@ -7,6 +7,7 @@ declare module '@material-ui/core/styles/createPalette' {
 		minorColors: {
 			online: string;
 			unseen: string;
+			paleSky: string;
 		};
 	}
 	interface Palette extends IPalette { }
@@ -69,7 +70,8 @@ export default createMuiTheme({
 		},
 		minorColors: {
 			online: '#2dd505',
-			unseen: '#0084ff'
+			unseen: '#0084ff',
+			paleSky: '#6E7783'
 		},
 	}
 });
