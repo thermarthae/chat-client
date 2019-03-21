@@ -57,27 +57,35 @@
 			"conversations": "Konwersacje"
 		}
 	},
-	"emojiPicker": {
-		"search": "Szukaj",
-		"notfound": "Nie znaleziono",
-		"categories": {
-			"search": "Wyniki wyszukiwania",
-			"recent": "Ostatnio używane",
-			"people": "Ludzie",
-			"nature": "Natura",
-			"foods": "Jedzenie",
-			"activity": "Sport",
-			"places": "Podróże",
-			"objects": "Objekty",
-			"symbols": "Symbole",
-			"flags": "Flagi",
-			"custom": "Niestandarodwe"
-		}
-	},
 	"mainPage": {
 		"title": "Twój najlepszy przyjaciel.",
 		"subtitle": "Prosty i niezawodny sposób na planowanie i przesyłanie wiadomości tekstowych. Świetny sposób na utrzymywanie kontaktu ze wszystkimi znajomymi. Twój na zawsze.",
 		"registerBtn": "Utwórz konto",
 		"signInBtn": "Zaloguj się"
+	},
+	"emojiPicker": {
+		"frequentlyUsed": "Często używane",
+		"recentlyUsed": "Ostatnio używane",
+		"smileysPeople": "Uśmieszki i ludzie",
+		"animalsNature": "Zwierzęta i przyroda",
+		"foodDrink": "Jedzenie i napoje",
+		"activities": "Aktywność",
+		"travelPlaces": "Podróże i miejsca",
+		"objects": "Przedmioty",
+		"symbols": "Symbole",
+		"flags": "Flagi",
+		"searchResults": "Wyniki wyszukiwania",
+		"none": "Wszystkie",
+		"skinNone": "Brak informacji o karnacji",
+		"skinLight": "Jasna karnacja",
+		"skinMediumLight": "Dosyć jasna karnacja",
+		"skinMedium": "Średnia karnacja",
+		"skinMediumDark": "Dosyć ciemna karnacja",
+		"skinDark": "Ciemna karnacja",
+		"search": "Szukaj emoji...",
+		"searchA11y": "Szukaj emoji za pomocą klawiatury",
+		"noPreview": "Brak podglądu",
+		"noResults": "Brak wyników",
+		"clearUsed": "Usuń ostatnio używane"
 	}
 }
