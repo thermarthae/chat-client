@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import IconButton from '@material-ui/core/IconButton';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import { Slide } from '@material-ui/core';
 import Send from '@material-ui/icons/Send';
 import InsertEmoticon from '@material-ui/icons/InsertEmoticon';
 
@@ -15,7 +16,7 @@ import createEmojiPlugin, { addEmoji } from '@src/components/EmojiPlugin';
 const draftPlugins = [createEmojiPlugin()];
 
 import messageInputStyles from './MessageInput.style';
-import EmojiPicker, { EmojiData } from './EmojiPicker';
+import EmojiPicker, { EmojiData } from '@src/components/EmojiPicker/EmojiPicker';
 
 
 interface IMessageInputProps {
@@ -33,7 +34,7 @@ const MessageInput = ({ draft, oponentId }: IMessageInputProps) => {
 	const onChange = (currentState: EditorState) => setDraftjsState(currentState);
 
 	const handleOnEmojiSelect = (emoji: EmojiData) => {
-		const newDraftjsState = addEmoji(draftjsState, emoji.native);
+		const newDraftjsState = addEmoji(draftjsState, emoji.unicode);
 		setDraftjsState(newDraftjsState);
 	};
 
@@ -122,7 +123,9 @@ const MessageInput = ({ draft, oponentId }: IMessageInputProps) => {
 						handlePastedText={handlePastedText}
 					/>
 				</div>
-				<EmojiPicker isOpen={emojiPickerIsOpen} onSelect={handleOnEmojiSelect} />
+				<Slide direction='up' in={emojiPickerIsOpen} mountOnEnter unmountOnExit>
+					<EmojiPicker className={classes.emojiPicker} onSelect={handleOnEmojiSelect} />
+				</Slide>
 				<IconButton className={classes.btn} onClick={handleEmojiPickerToggle}>
 					<InsertEmoticon fontSize='inherit' />
 				</IconButton>

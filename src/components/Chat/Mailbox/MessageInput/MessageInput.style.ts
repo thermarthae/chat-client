@@ -15,16 +15,6 @@ const messageInputStyles = makeStyles(({ palette, typography }: Theme) => ({
 			position: 'absolute',
 			color: palette.text.disabled,
 			pointerEvents: 'none',
-		},
-		'& .emoji-mart': {
-			position: 'absolute',
-			bottom: '100%',
-			right: 20,
-			zIndex: -1,
-			borderWidth: '1px 1px 0px',
-			borderRadius: '10px 10px 0px 0px',
-			borderStyle: 'solid',
-			borderColor: '#d9d9d9',
 		}
 	},
 	input: {
@@ -36,6 +26,13 @@ const messageInputStyles = makeStyles(({ palette, typography }: Theme) => ({
 		outline: 'none',
 		cursor: 'text',
 		overflowY: 'auto',
+	},
+	emojiPicker: {
+		position: 'absolute',
+		bottom: '100%',
+		right: typography.pxToRem(22 + 2 * 10 + 10), //icon width + 2 * icon padding + 2 margins
+		zIndex: -1,
+		margin: 0,
 	},
 	btn: {
 		fontSize: typography.emToPx(1.55),
