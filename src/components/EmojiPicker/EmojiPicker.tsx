@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import { useTheme } from '@material-ui/styles';
 import { Theme } from '@material-ui/core';
@@ -54,6 +55,7 @@ const EmojiPicker = ({ onSelect, className }: IEmojiPickerProps) => {
 	const emojiLargeSize = roundToEven(fontSize * 1.715);
 
 	const classes = emojiPickerStyles({ emojiSize, emojiLargeSize });
+	const [t, i18n] = useTranslation();
 
 	const groupIcons = makeGroupIcons(emojiLargeSize);
 
@@ -69,7 +71,8 @@ const EmojiPicker = ({ onSelect, className }: IEmojiPickerProps) => {
 					stickyGroupHeader
 					emojiPath={emojiCDN}
 					onSelectEmoji={onSelect}
-					locale='pl' //TODO: current language + add messages
+					locale={i18n.language}
+					messages={t('emojiPicker', { returnObjects: true })}
 					groupIcons={groupIcons}
 					commonMode='recently-used'
 					clearIcon={<Cancel fontSize='inherit' />}

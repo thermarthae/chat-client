@@ -57,27 +57,35 @@
 			"conversations": "Conversations"
 		}
 	},
-	"emojiPicker": {
-		"search": "Search",
-		"notfound": "No Emoji Found",
-		"categories": {
-			"search": "Search Results",
-			"recent": "Frequently Used",
-			"people": "Smileys & People",
-			"nature": "Animals & Nature",
-			"foods": "Food & Drink",
-			"activity": "Activity",
-			"places": "Travel & Places",
-			"objects": "Objects",
-			"symbols": "Symbols",
-			"flags": "Flags",
-			"custom": "Custom"
-		}
-	},
 	"mainPage": {
 		"title": "Your best friend.",
 		"subtitle": "A simple and reliable way to text and plan things all in one place completely for free. Amazing way to connect with all your friends. Yours forever.",
 		"registerBtn": "Create account",
 		"signInBtn": "Sign in"
+	},
+	"emojiPicker": {
+		"frequentlyUsed": "Frequently Used",
+		"recentlyUsed": "Recently Used",
+		"smileysPeople": "Smileys & People",
+		"animalsNature": "Animals & Nature",
+		"foodDrink": "Food & Drink",
+		"travelPlaces": "Travel & Places",
+		"activities": "Activities",
+		"objects": "Objects",
+		"symbols": "Symbols",
+		"flags": "Flags",
+		"searchResults": "Search result",
+		"none": "All Emojis",
+		"skinNone": "No skin tone",
+		"skinLight": "Light skin tone",
+		"skinMediumLight": "Medium-light skin tone",
+		"skinMedium": "Medium skin tone",
+		"skinMediumDark": "Medium-dark skin tone",
+		"skinDark": "Dark skin tone",
+		"search": "Search...",
+		"searchA11y": "Search for emojis by keyword",
+		"noPreview": "No preview",
+		"noResults": "No results",
+		"clearUsed": "Clear used"
 	}
 }
