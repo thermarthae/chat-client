@@ -1,8 +1,13 @@
 import React, { useEffect } from 'react';
 import { useApolloClient } from 'react-apollo-hooks';
 
-import { NEW_MSG_SUB, INewMsgsSubRes } from './ChatSubscriptions.apollo';
+import {
+	NEW_MSG_SUB, INewMsgsSubRes,
+	UPDATED_CONV_SUBSCRIPTION, IUpdatedConvSubRes
+} from './ChatSubscriptions.apollo';
+
 import { IConvMailboxFrag, ConvMailboxFragment } from '../Mailbox/Mailbox.apollo';
+import { GET_CONV_ARR, IGetConvArrResponse } from '../Conversations/Conversations.apollo';
 
 interface ISub<T> {
 	data: T;
@@ -35,6 +40,36 @@ const ChatSubscriptions = () => {
 					});
 				} catch (error) {
 					if (!error.message.includes('Can\'t find field messages({})')) console.error(error);
+				}
+			}
+		});
+
+		return () => sub.unsubscribe();
+	});
+
+
+
+	useEffect(() => {
+		const sub = client.subscribe<ISub<IUpdatedConvSubRes>>({ query: UPDATED_CONV_SUBSCRIPTION }).subscribe({
+			next({ data: { updatedConversation } }) {
+				try {
+					//TODO: handle conversation edit (change of name, etc.)
+					const query = GET_CONV_ARR;
+					const queryRes = client.readQuery<IGetConvArrResponse>({ query });
+					if (!queryRes) return;
+
+					const usrConvArr = queryRes.getUserConversations;
+					const convExists = usrConvArr.find(c => c._id === updatedConversation._id);
+					if (convExists) return;
+
+					client.writeQuery<IGetConvArrResponse>({
+						query,
+						data: Object.assign({}, queryRes, {
+							getUserConversations: [...usrConvArr, updatedConversation]
+						})
+					});
+				} catch (error) {
+					console.error(error);
 				}
 			}
 		});
