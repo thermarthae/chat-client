@@ -4,12 +4,16 @@ import { useApolloClient } from 'react-apollo-hooks';
 import { NEW_MSG_SUB, INewMsgsSubRes } from './ChatSubscriptions.apollo';
 import { IConvMailboxFrag, ConvMailboxFragment } from '../Mailbox/Mailbox.apollo';
 
+interface ISub<T> {
+	data: T;
+}
+
 //Fake component -> doesnt return anything, just subscribe data
 const ChatSubscriptions = () => {
 	const client = useApolloClient();
 
 	useEffect(() => {
-		const sub = client.subscribe<INewMsgsSubRes>({ query: NEW_MSG_SUB }).subscribe({
+		const sub = client.subscribe<ISub<INewMsgsSubRes>>({ query: NEW_MSG_SUB }).subscribe({
 			next({ data: { newMessageAdded } }) {
 				try {
 					const options = {
