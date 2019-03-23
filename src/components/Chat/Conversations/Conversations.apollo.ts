@@ -89,3 +89,7 @@ export const UPDATED_CONV_SUBSCRIPTION = gql`
 	}
 	${ConvNavFragment}
 `;
+
+export interface IUpdatedConvSubRes {
+	updatedConversation: IConversation;
+}
