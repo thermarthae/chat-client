@@ -1,9 +1,6 @@
-import { Theme } from '@material-ui/core';
-import { createStyles, WithStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles';
 
-export type TConvStyles = WithStyles<typeof convStyles>;
-
-const convStyles = ({ palette }: Theme) => createStyles({
+const convStyles = makeStyles({
 	root: {
 		flex: '1 0 250px',
 		display: 'flex',
@@ -16,5 +13,6 @@ const convStyles = ({ palette }: Theme) => createStyles({
 		borderRight: '1px solid hsla(0, 0%, 0%, 0.1)',
 		flexDirection: 'column'
 	}
-});
+}, { name: 'Conversations' });
+
 export default convStyles;

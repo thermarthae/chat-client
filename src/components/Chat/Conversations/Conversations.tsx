@@ -1,82 +1,60 @@
-import React from 'react';
-import { Translation } from 'react-i18next';
-import { Query, withApollo, WithApolloClient } from 'react-apollo';
-import { withStyles } from '@material-ui/styles';
-import convStyles, { TConvStyles } from './Conversations.style';
+import React, { useEffect } from 'react';
+import { useApolloClient, useQuery } from 'react-apollo-hooks';
+import convStyles from './Conversations.style';
 import {
-	GET_SEARCH_STATUS,
+	GET_SEARCH_STATUS, IGetSearchStatusRes,
 	GET_CONV_ARR, IGetConvArrResponse,
-	UPDATED_CONV_SUBSCRIPTION, IConversation,
+	UPDATED_CONV_SUBSCRIPTION, IUpdatedConvSubRes,
 	GET_SUB_STATUS, IGetConvSubStatusRes, TOGGLE_CONV_SUB_STATUS
 } from './Conversations.apollo';
 
 import Header from './Header/Header';
 import Searchbox from './Searchbox/Searchbox';
-import ConversationList from './ConversationList/ConversationList';
-import FakeConversations from './FakeConversations/FakeConversations';
-import EmptyItem from '../EmptyItem/EmptyItem';
+import UserConversations from './UserConversations/UserConversations';
 
-interface IConversationsProps extends TConvStyles { }
-class Conversations extends React.Component<WithApolloClient<IConversationsProps>> {
-	private subscribe = () => {
-		const { client } = this.props;
+const Conversations = () => {
+	const classes = convStyles();
+	const { chat: { searchStatus } } = useQuery<IGetSearchStatusRes>(GET_SEARCH_STATUS).data!;
+	const client = useApolloClient();
+
+	useEffect(() => {
 		const { subscriptions } = client.readQuery<IGetConvSubStatusRes>({ query: GET_SUB_STATUS })!;
 		if (subscriptions.conversations) return;
 
 		client.mutate({ mutation: TOGGLE_CONV_SUB_STATUS });
-		client.subscribe({
+		client.subscribe<{ data: IUpdatedConvSubRes }>({
 			query: UPDATED_CONV_SUBSCRIPTION,
 		}).subscribe({
 			next({ data }) {
 				try {
-					const updatedConv = data.updatedConversation as IConversation;
+					const updatedConv = data.updatedConversation;
 					const { getUserConversations } = client.readQuery<IGetConvArrResponse>({ query: GET_CONV_ARR })!;
-					const convExist = getUserConversations.find(cnv => cnv._id === updatedConv._id);
+					const convArr = getUserConversations;
 
-					if (!convExist) client.writeQuery({
+					const convExist = convArr.find(cnv => cnv._id === updatedConv._id);
+					if (convExist) return;
+
+					client.writeQuery({
 						query: GET_CONV_ARR,
 						data: {
-							getUserConversations: [...getUserConversations, updatedConv],
+							getUserConversations: [...convArr, updatedConv],
 						}
 					});
 				} catch (err) { } // tslint:disable-line
 			},
 			error(err) { console.error('Conversations subscription error:', err); },
 		});
-	}
+	}, []);
 
-	public componentDidMount() {
-		this.subscribe();
-	}
+	return (
+		<div className={classes.root}>
+			<div className={classes.widthFix}>
+				<Header />
+				<Searchbox searchStatus={searchStatus} />
+				{!searchStatus && <UserConversations />}
+			</div>
+		</div>
+	);
+};
 
-	public render() {
-		return (
-			<Query query={GET_SEARCH_STATUS}>
-				{({ data: { chat: { searchStatus } } }) =>
-					<div className={this.props.classes.root}>
-						<div className={this.props.classes.widthFix}>
-							<Header />
-							<Searchbox searchStatus={searchStatus} />
-							<Query<IGetConvArrResponse> query={GET_CONV_ARR}>
-								{({ loading, error, data }) => {
-									if (error) return `Error! ${error.message}`;
-									if (loading) return <FakeConversations />;
-									if (searchStatus) return null;
-
-									const { getUserConversations } = data!;
-									if (!getUserConversations[0]) return (
-										<Translation>
-											{t => <EmptyItem msg={t('chat.conversations.nothingToShow')} />}
-										</Translation>
-									);
-									return <ConversationList conversationArr={getUserConversations} />;
-								}}
-							</Query>
-						</div>
-					</div>
-				}
-			</Query>
-		);
-	}
-}
-export default withApollo(withStyles(convStyles)(Conversations));
+export default Conversations;
