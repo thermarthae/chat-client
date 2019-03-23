@@ -10,11 +10,11 @@ import List from './../List';
 import Line from '../Line/Line';
 
 import { GET_OPONENT_ID, IGetOponentIdResponse } from './ConversationList.apollo';
-import { IConversation } from '../Conversations.apollo';
+import { IConvNavFragment } from '../Conversations.apollo';
 
 
 interface IConversationListProps {
-	conversationArr: IConversation[];
+	conversationArr: IConvNavFragment[];
 }
 
 const ConversationList = ({ conversationArr }: IConversationListProps) => {
