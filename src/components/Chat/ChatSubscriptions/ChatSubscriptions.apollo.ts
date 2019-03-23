@@ -10,7 +10,5 @@ export const NEW_MSG_SUB = gql`
 	${MessageMailboxFragment}
 `;
 export interface INewMsgsSubRes {
-	data: {
 		newMessageAdded: IMessageMailboxFrag;
-	};
 }
