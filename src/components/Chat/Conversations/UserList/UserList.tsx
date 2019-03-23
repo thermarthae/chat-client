@@ -1,5 +1,5 @@
-import React from 'react';
-import { Translation } from 'react-i18next';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Menu from '@material-ui/core/Menu';
 import Typography from '@material-ui/core/Typography';
@@ -13,53 +13,33 @@ import List from '../List';
 interface IUserListProps {
 	userArr: IUser[];
 }
+const UserList = ({ userArr }: IUserListProps) => {
+	const [t] = useTranslation();
+	const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLElement | null>(null);
 
-interface IUserListStates {
-	menuAnchorEl: HTMLElement | undefined;
-}
-
-class UserList extends React.PureComponent<IUserListProps, IUserListStates> {
-	public state = {
-		menuAnchorEl: undefined
+	const handleMenuClose = () => setMenuAnchorEl(null);
+	const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+		event.preventDefault();
+		setMenuAnchorEl(event.currentTarget);
 	};
 
-	public handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
-		event.preventDefault();
-		this.setState({ menuAnchorEl: event.currentTarget });
-	}
+	return (
+		<List>
+			{userArr.map(
+				item => <Line
+					key={item._id}
+					avatar={item.name[0]}
+					name={item.name}
+					handleMenuClick={handleMenuClick}
+				/>
+			)}
+			<Menu open={!!menuAnchorEl} anchorEl={menuAnchorEl} onClose={handleMenuClose}>
+				<OptionList onClick={handleMenuClose}>
+					<Typography children={t('optionList.delete')} />
+				</OptionList>
+			</Menu>
+		</List>
+	);
+};
 
-	public handleMenuClose = () => {
-		this.setState({ menuAnchorEl: undefined });
-	}
-
-	public render() {
-		const { userArr } = this.props;
-		const { menuAnchorEl } = this.state;
-
-		return (
-			<List>
-				{userArr.map(item =>
-					<Line
-						key={item._id}
-						avatar={item.name[0]}
-						name={item.name}
-						handleMenuClick={this.handleMenuClick}
-					/>
-				)}
-				<Menu
-					open={Boolean(menuAnchorEl)}
-					onClose={this.handleMenuClose}
-					anchorEl={menuAnchorEl}
-				>
-					<OptionList onClick={this.handleMenuClose}>
-						<Translation>
-							{t => <Typography children={t('optionList.delete')} />}
-						</Translation>
-					</OptionList>
-				</Menu>
-			</List>
-		);
-	}
-}
-
-export default UserList;
+export default React.memo(UserList);
