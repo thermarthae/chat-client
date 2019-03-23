@@ -13,6 +13,8 @@ export interface IGetSearchStatusRes {
 	};
 }
 
+
+
 export const ConvNavFragment = gql`
 	fragment ConversationNav on Conversation {
 		_id
@@ -28,6 +30,23 @@ export const ConvNavFragment = gql`
 		}
 	}
 `;
+export interface IMessage {
+	_id: string;
+	content: string;
+	time: string;
+	me: boolean;
+	conversation: string;
+}
+export interface IConvNavFragment {
+	_id: string;
+	name: string;
+	seen: boolean;
+	draft: string;
+	messages: IMessage[];
+}
+
+
+
 export const GET_CONV_ARR = gql`
 	query getConvArr {
 		getUserConversations {
@@ -36,24 +55,10 @@ export const GET_CONV_ARR = gql`
 	}
 	${ConvNavFragment}
 `;
-
-export interface IMessage {
-	_id: string;
-	content: string;
-	time: string;
-	me: boolean;
-	conversation: string;
-}
-export interface IConversation {
-	_id: string;
-	name: string;
-	seen: boolean;
-	draft: string;
-	messages: IMessage[];
-}
 export interface IGetConvArrResponse {
-	getUserConversations: IConversation[];
+	getUserConversations: IConvNavFragment[];
 }
+
 
 
 export const GET_SUB_STATUS = gql`
@@ -69,6 +74,8 @@ export interface IGetConvSubStatusRes {
 	};
 }
 
+
+
 //TODO: Remove soon
 export const TOGGLE_CONV_SUB_STATUS = gql`
 	mutation toggleConvSubscribeStatus {
@@ -77,6 +84,8 @@ export const TOGGLE_CONV_SUB_STATUS = gql`
 		}
 	}
 `;
+
+
 
 export const UPDATED_CONV_SUBSCRIPTION = gql`
 	subscription updatedConversation {
@@ -88,5 +97,5 @@ export const UPDATED_CONV_SUBSCRIPTION = gql`
 `;
 
 export interface IUpdatedConvSubRes {
-	updatedConversation: IConversation;
+	updatedConversation: IConvNavFragment;
 }

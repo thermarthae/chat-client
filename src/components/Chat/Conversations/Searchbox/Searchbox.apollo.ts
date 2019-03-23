@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { ConvNavFragment, IConversation } from '../Conversations.apollo';
+import { ConvNavFragment, IConvNavFragment } from '../Conversations.apollo';
 
 export const SET_SEARCH_STATUS = gql`
 	mutation setSearchStatus($status: Boolean!) {
@@ -29,6 +29,6 @@ export interface IUser {
 	name: string;
 }
 export interface IFindConvAndUsrRes {
-	findConversation: IConversation[];
+	findConversation: IConvNavFragment[];
 	findUser: IUser[];
 }
