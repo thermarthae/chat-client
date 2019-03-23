@@ -8,15 +8,9 @@ type Chat {
 	oponentId: String
 }
 
-type Subscriptions {
-	conversations: Boolean!
-	mailbox: Boolean!
-}
-
 type Query {
 	app: App!
 	chat: Chat!
-	subscriptions: Subscriptions!
 }
 
 type Mutation {
@@ -24,5 +18,4 @@ type Mutation {
 	toggleAside: Chat!
 	setSearchStatus(status: Boolean!): Chat!
 	setOponentId(oponentId: String): Chat!
-	toggleSubsciptionStatus: Subscriptions!
 }
