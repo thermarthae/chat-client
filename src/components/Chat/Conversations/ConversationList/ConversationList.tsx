@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Translation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-apollo-hooks';
 import { Link } from 'react-router-dom';
 
@@ -18,6 +18,7 @@ interface IConversationListProps {
 }
 
 const ConversationList = ({ conversationArr }: IConversationListProps) => {
+	const [t] = useTranslation();
 	const { data } = useQuery<IGetOponentIdResponse>(GET_OPONENT_ID);
 	const { chat: { oponentId } } = data!;
 
@@ -48,9 +49,7 @@ const ConversationList = ({ conversationArr }: IConversationListProps) => {
 				anchorEl={menuAnchorEl}
 			>
 				<OptionList onClick={handleMenuClose}>
-					<Translation>
-						{t => <Typography children={t('optionList.delete')} />}
-					</Translation>
+					<Typography children={t('optionList.delete')} />
 				</OptionList>
 			</Menu>
 		</List>
