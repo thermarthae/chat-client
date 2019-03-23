@@ -53,9 +53,6 @@ export interface IConversation {
 }
 export interface IGetConvArrResponse {
 	getUserConversations: IConversation[];
-	chat: {
-		searchResult: boolean;
-	};
 }
 
 
