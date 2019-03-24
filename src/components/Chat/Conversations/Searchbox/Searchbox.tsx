@@ -9,7 +9,7 @@ import { withStyles } from '@material-ui/styles';
 import Search from '@material-ui/icons/Search';
 import Cancel from '@material-ui/icons/Cancel';
 
-import { SET_SEARCH_STATUS, FIND_CONV_AND_USR, IFindConvAndUsrRes } from './Searchbox.apollo';
+import { FIND_CONV_AND_USR, IFindConvAndUsrRes } from './Searchbox.apollo';
 
 import searchboxStyles, { TSearchboxStyles } from './Searchbox.style';
 import FakeConversations from '../FakeConversations/FakeConversations';
@@ -18,6 +18,7 @@ import EmptyItem from '../../EmptyItem/EmptyItem';
 
 interface ISearchboxProps extends WithTranslation, TSearchboxStyles {
 	searchStatus: boolean;
+	setSearchStatus: (status: boolean) => void;
 }
 
 interface ISearchboxState {
@@ -40,30 +41,23 @@ class Searchbox extends React.PureComponent<WithApolloClient<ISearchboxProps>, I
 		isQueryShort: true,
 	};
 
-	private handleClearInput = async () => {
-		await this.setSearchResult(false);
+	private handleClearInput = () => {
+		this.props.setSearchStatus(false);
 		this.setState({ query: '', waitingForRes: false });
 	}
 
-	private handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+	private handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const query = event.target.value;
 		this.setState({ query });
 
-		if (query.length < 1) return this.setSearchResult(false);
-		await this.setSearchResult();
+		if (query.length < 1) return this.props.setSearchStatus(false);
+		this.props.setSearchStatus(true);
 		if (query.length <= 3) return this.setState({ isQueryShort: true });
 
 		this.setState({ waitingForRes: true, isQueryShort: false });
 		this.setState(prevState => {
 			clearInterval(prevState.queryOnFlight!);
 			return { queryOnFlight: setTimeout(() => this.searchQuery(query), 400) };
-		});
-	}
-
-	private setSearchResult = async (status = true) => {
-		return this.props.client.mutate({
-			mutation: SET_SEARCH_STATUS,
-			variables: { status }
 		});
 	}
 

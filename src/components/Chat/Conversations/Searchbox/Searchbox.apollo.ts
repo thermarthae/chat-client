@@ -1,16 +1,6 @@
 import gql from 'graphql-tag';
 import { ConvNavFragment, IConvNavFragment } from '../Conversations.apollo';
 
-export const SET_SEARCH_STATUS = gql`
-	mutation setSearchStatus($status: Boolean!) {
-		setSearchStatus(status: $status) @client {
-			searchStatus
-		}
-	}
-`;
-
-
-
 export const FIND_CONV_AND_USR = gql`
 	query findConvsAndUsers($query: String!) {
 		findConversation(query: $query) {
