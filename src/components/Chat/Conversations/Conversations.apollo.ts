@@ -1,20 +1,5 @@
 import gql from 'graphql-tag';
 
-export const GET_SEARCH_STATUS = gql`
-	query getSearchStatus {
-		chat @client {
-			searchStatus
-		}
-	}
-`;
-export interface IGetSearchStatusRes {
-	chat: {
-		searchStatus: boolean;
-	};
-}
-
-
-
 export const ConvNavFragment = gql`
 	fragment ConversationNav on Conversation {
 		_id
