@@ -4,7 +4,6 @@ type App {
 
 type Chat {
 	isAsideOpen: Boolean!
-	searchStatus: Boolean!
 	oponentId: String
 }
 
@@ -16,6 +15,5 @@ type Query {
 type Mutation {
 	setLoginStatus(loginStatus: Boolean!): App!
 	toggleAside: Chat!
-	setSearchStatus(status: Boolean!): Chat!
 	setOponentId(oponentId: String): Chat!
 }

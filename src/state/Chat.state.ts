@@ -6,7 +6,6 @@ const Chat = {
 		chat: {
 			__typename: 'Chat',
 			isAsideOpen: false,
-			searchStatus: false,
 			oponentId: null,
 		}
 	},
@@ -28,16 +27,6 @@ const Chat = {
 					}
 				};
 
-				cache.writeData({ data });
-				return data.chat;
-			},
-			setSearchStatus: (_: undefined, { status }: any, { cache }: ApolloClient<any>) => {
-				const data = {
-					chat: {
-						__typename: 'Chat',
-						searchStatus: Boolean(status)
-					}
-				};
 				cache.writeData({ data });
 				return data.chat;
 			},
