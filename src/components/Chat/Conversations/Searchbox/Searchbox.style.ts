@@ -1,9 +1,7 @@
-import { createStyles, WithStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles';
 import { Theme } from '@material-ui/core';
 
-export type TSearchboxStyles = WithStyles<typeof searchboxStyles>;
-
-const searchboxStyles = ({ palette, typography, shadows }: Theme) => createStyles({
+const searchboxStyles = makeStyles(({ palette, typography, shadows }: Theme) => ({
 	root: {
 		display: 'flex',
 		justifyContent: 'space-between',
@@ -67,5 +65,6 @@ const searchboxStyles = ({ palette, typography, shadows }: Theme) => createStyle
 		bottom: -2,
 		backgroundColor: 'rgba(0, 0, 0, 0.07)',
 	}
-});
+}), { name: 'Searchbox' });
+
 export default searchboxStyles;
