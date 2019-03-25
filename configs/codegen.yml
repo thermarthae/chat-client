@@ -1,0 +1,17 @@
+overwrite: true
+schema:
+    - "http://localhost:3000/graphql"
+    - "src/state/clientSchema.graphql"
+documents: "src/components/**/*.apollo.ts"
+generates:
+    src/__generated/codegen.tsx:
+        config:
+            withComponent: false
+            withHooks: true
+            withHOC: false
+        plugins:
+            - add: "// tslint:disable"
+            - add: "// THIS IS A GENERATED FILE, DO NOT MODIFY"
+            - typescript
+            - typescript-operations
+            - typescript-react-apollo

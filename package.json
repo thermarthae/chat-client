@@ -9,10 +9,16 @@
 	},
 	"scripts": {
 		"build": "set NODE_ENV=production&& webpack -p  --progress --config=configs/webpack/start.js",
+		"codegen": "gql-gen --config configs/codegen.yml",
 		"serve": "serve -l 8080",
 		"start": "webpack-dev-server --config=configs/webpack/start.js"
 	},
 	"devDependencies": {
+		"@graphql-codegen/add": "^1.0.0",
+		"@graphql-codegen/cli": "^1.0.0",
+		"@graphql-codegen/typescript": "^1.0.0",
+		"@graphql-codegen/typescript-operations": "^1.0.0",
+		"@graphql-codegen/typescript-react-apollo": "^1.0.0",
 		"@hot-loader/react-dom": "^16.8.2",
 		"@types/classnames": "^2.2.7",
 		"@types/cookie": "^0.3.2",
