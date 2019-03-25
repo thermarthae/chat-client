@@ -1,6 +1,5 @@
 import React from 'react';
 import { Redirect } from 'react-router';
-import { useQuery } from 'react-apollo-hooks';
 import { useTranslation } from 'react-i18next';
 
 import Typography from '@material-ui/core/Typography';
@@ -10,13 +9,12 @@ import mockup from './mockup.png';
 import LanguageSelect from './LanguageSelect';
 import LinkButton from '../LinkButtons/LinkButton';
 
-import { GET_LOGIN_STATUS, IGetLoginStatusRes } from '../App.apollo'; //remove
+import { useGetLoginStatusQuery } from '@codegen';
 
 const MainPage = () => {
 	const classes = mainPageStyles();
 	const [t] = useTranslation();
-	const { app: { isLoggedIn } } = useQuery<IGetLoginStatusRes>(GET_LOGIN_STATUS).data!;
-
+	const { app: { isLoggedIn } } = useGetLoginStatusQuery().data!;
 	if (isLoggedIn) return <Redirect to={'/chat'} />;
 
 	return (

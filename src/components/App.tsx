@@ -14,7 +14,7 @@ import Chat from './Chat/Chat';
 import Login from './Login/Login';
 import MainPage from './MainPage/MainPage';
 
-import { GET_LOGIN_STATUS, IGetLoginStatusRes } from './App.apollo';
+import { GetLoginStatusDocument, GetLoginStatusQuery } from '@codegen';
 import appStyles from './App.style';
 
 const useLoginStatus = () => {
@@ -28,7 +28,7 @@ const useLoginStatus = () => {
 	});
 
 	useEffect(() => {
-		const watchQuery = client.watchQuery<IGetLoginStatusRes>({ query: GET_LOGIN_STATUS }).subscribe({
+		const watchQuery = client.watchQuery<GetLoginStatusQuery>({ query: GetLoginStatusDocument }).subscribe({
 			next({ data: { app: { isLoggedIn } } }) {
 				setStatus(isLoggedIn);
 			}

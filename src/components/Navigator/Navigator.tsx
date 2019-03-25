@@ -1,6 +1,6 @@
 import React from 'react';
 import ApolloClient from 'apollo-client';
-import { useQuery, useApolloClient } from 'react-apollo-hooks';
+import { useApolloClient } from 'react-apollo-hooks';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -16,7 +16,7 @@ import LinkIconButton from '../LinkButtons/LinkIconButton';
 import Logo from '../Logo/Logo';
 
 import { LOGOUT } from './Navigator.apollo';
-import { GET_LOGIN_STATUS, IGetLoginStatusRes } from '../App.apollo';
+import { useGetLoginStatusQuery } from '@codegen';
 
 const handleLogout = async (client: ApolloClient<any>) => {
 	await client.query({ query: LOGOUT, fetchPolicy: 'no-cache', errorPolicy: 'all' });
@@ -30,7 +30,7 @@ const MenuAppBar = React.memo<INavigatorProps>(() => {
 	const classes = navigatorStyles();
 	const client = useApolloClient();
 
-	const { app: { isLoggedIn } } = useQuery<IGetLoginStatusRes>(GET_LOGIN_STATUS).data!;
+	const { app: { isLoggedIn } } = useGetLoginStatusQuery().data!;
 	if (!isLoggedIn) return null;
 
 	return (
