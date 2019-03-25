@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { MessageMailboxFragment, IMessageMailboxFrag } from '../Mailbox.apollo';
+import { MessageMailboxFragment, MessageMailboxFragmentDoc } from '@codegen';
 
 export const SEND_MESSAGE = gql`
 	mutation sendMessage($conversationId: ID!, $message: String!) {
@@ -7,8 +7,8 @@ export const SEND_MESSAGE = gql`
 			...MessageMailbox
 		}
 	}
-	${MessageMailboxFragment}
+	${MessageMailboxFragmentDoc}
 `;
 export interface ISendMessageRes {
-	sendMessage: IMessageMailboxFrag;
+	sendMessage: MessageMailboxFragment;
 }

@@ -2,12 +2,12 @@ import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVert from '@material-ui/icons/MoreVert';
 
-import { IMessageMailboxFrag } from '../../Mailbox.apollo';
+import { MessageMailboxFragment } from '@codegen';
 import TweTypography from '@src/components/TweTypography/TweTypography';
 import messageStyles from './Message.style';
 
 interface IMessageProps {
-	message: IMessageMailboxFrag;
+	message: MessageMailboxFragment;
 	me: boolean;
 	handleMenuClick: (event: React.MouseEvent<HTMLElement>) => void;
 }

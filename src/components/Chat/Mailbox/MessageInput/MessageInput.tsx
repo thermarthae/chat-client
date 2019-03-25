@@ -8,7 +8,7 @@ import InsertEmoticon from '@material-ui/icons/InsertEmoticon';
 
 import { useMutation } from 'react-apollo-hooks';
 import { SEND_MESSAGE, ISendMessageRes } from './MessageInput.apollo';
-import { ConvMailboxFragment, IConvMailboxFrag } from '../Mailbox.apollo';
+import { ConversationMailboxFragment, ConversationMailboxFragmentDoc } from '@codegen';
 
 import { EditorState, Modifier, ContentState } from 'draft-js';
 import Editor, { createEditorStateWithText } from 'draft-js-plugins-editor';
@@ -52,11 +52,11 @@ const MessageInput = ({ draft, oponentId }: IMessageInputProps) => {
 			update: (proxy, { data }) => {
 				const options = {
 					id: oponentId,
-					fragment: ConvMailboxFragment,
+					fragment: ConversationMailboxFragmentDoc,
 					fragmentName: 'ConversationMailbox'
 				};
 				const { sendMessage } = data!;
-				const { messages, ...rest } = proxy.readFragment<IConvMailboxFrag>(options)!;
+				const { messages, ...rest } = proxy.readFragment<ConversationMailboxFragment>(options)!;
 
 				const msgExists = messages.find(msg => msg._id === sendMessage._id);
 				if (msgExists) return;

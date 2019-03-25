@@ -14,15 +14,15 @@ import { withStyles } from '@material-ui/styles';
 import inboxStyles, { TInboxStyles } from './Inbox.style';
 
 import MessageGroups from './MessageGroups/MessageGroups';
-import { IMessageMailboxFrag, IGetConvRes } from '../Mailbox.apollo';
+import { MessageMailboxFragment, GetConvQuery } from '@codegen';
 import ScrollDownInfo from './ScrollDownInfo/ScrollDownInfo';
 
 interface IInboxProps extends TInboxStyles {
-	messages: IMessageMailboxFrag[];
+	messages: MessageMailboxFragment[];
 	mgsToFetch: number;
 	seen: boolean;
 	markConvAsRead: () => Promise<void>;
-	onLoadMore: () => Promise<ApolloQueryResult<IGetConvRes>>;
+	onLoadMore: () => Promise<ApolloQueryResult<GetConvQuery>>;
 }
 
 interface IInboxState {

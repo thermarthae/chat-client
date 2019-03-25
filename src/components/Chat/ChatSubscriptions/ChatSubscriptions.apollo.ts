@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { MessageMailboxFragment, IMessageMailboxFrag } from '../Mailbox/Mailbox.apollo';
+import { MessageMailboxFragment, MessageMailboxFragmentDoc } from '@codegen';
 import { ConvNavFragment, IConvNavFragment } from '../Conversations/Conversations.apollo';
 
 export const NEW_MSG_SUB = gql`
@@ -8,10 +8,10 @@ export const NEW_MSG_SUB = gql`
 			...MessageMailbox
 		}
 	}
-	${MessageMailboxFragment}
+	${MessageMailboxFragmentDoc}
 `;
 export interface INewMsgsSubRes {
-	newMessageAdded: IMessageMailboxFrag;
+	newMessageAdded: MessageMailboxFragment;
 }
 
 

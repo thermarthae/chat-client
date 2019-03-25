@@ -5,10 +5,6 @@ export const MARK_CONV_AS_READ = gql`
 		markConversationAsRead(conversationId: $id)
 	}
 `;
-export interface IMarkConvAsReadRes {
-	markConversationAsRead: string | null;
-}
-
 
 
 export const MessageMailboxFragment = gql`
@@ -23,17 +19,6 @@ export const MessageMailboxFragment = gql`
 		conversation
 	}
 `;
-export interface IMessageMailboxFrag {
-	_id: string;
-	author: {
-		name: string;
-	};
-	time: string;
-	me: boolean;
-	content: string;
-	conversation: string;
-}
-
 
 
 export const ConvMailboxFragment = gql`
@@ -48,14 +33,6 @@ export const ConvMailboxFragment = gql`
 	}
 	${MessageMailboxFragment}
 `;
-export interface IConvMailboxFrag {
-	_id: string;
-	name: string;
-	seen: boolean;
-	messages: IMessageMailboxFrag[];
-	draft: string;
-}
-
 
 
 export const GET_CONVERSATION = gql`
@@ -66,6 +43,3 @@ export const GET_CONVERSATION = gql`
 	}
 	${ConvMailboxFragment}
 `;
-export interface IGetConvRes {
-	getConversation: IConvMailboxFrag;
-}

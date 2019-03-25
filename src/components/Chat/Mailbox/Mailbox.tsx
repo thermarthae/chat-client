@@ -3,12 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router';
 import Typography from '@material-ui/core/Typography';
 
-import { useApolloClient, useMutation, useQuery } from 'react-apollo-hooks';
-import {
-	GET_CONVERSATION, IGetConvRes,
-	MARK_CONV_AS_READ, IMarkConvAsReadRes
-} from './Mailbox.apollo';
-import { ConvNavFragment } from '@src/components/Chat/Conversations/Conversations.apollo';
+import { useApolloClient } from 'react-apollo-hooks';
+import { useMarkConvAsReadMutation, useGetConvQuery, ConversationNavFragmentDoc } from '@codegen';
 
 import mailboxStyles from './Mailbox.style';
 
@@ -37,12 +33,12 @@ const Mailbox = ({ oponentId }: IMailboxProps) => {
 	const classes = mailboxStyles();
 	const client = useApolloClient();
 
-	const markAsReadMutation = useMutation<IMarkConvAsReadRes>(MARK_CONV_AS_READ, { variables: { id: oponentId } });
+	const markAsReadMutation = useMarkConvAsReadMutation({ variables: { id: oponentId } });
 	const markConvAsRead = async () => {
 		const res = await markAsReadMutation();
 		if (!res.data || !res.data.markConversationAsRead) return;
 
-		const options = { id: oponentId, fragment: ConvNavFragment };
+		const options = { id: oponentId, fragment: ConversationNavFragmentDoc };
 		const conversation = client.readFragment(options)!;
 		client.writeFragment({
 			...options,
@@ -50,7 +46,7 @@ const Mailbox = ({ oponentId }: IMailboxProps) => {
 		});
 	};
 
-	const { loading, error, data, fetchMore } = useQuery<IGetConvRes>(GET_CONVERSATION, {
+	const { loading, error, data, fetchMore } = useGetConvQuery({
 		variables: { id: oponentId },
 		errorPolicy: 'all'
 	});

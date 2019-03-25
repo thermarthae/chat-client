@@ -6,7 +6,7 @@ import {
 	UPDATED_CONV_SUBSCRIPTION, IUpdatedConvSubRes
 } from './ChatSubscriptions.apollo';
 
-import { IConvMailboxFrag, ConvMailboxFragment } from '../Mailbox/Mailbox.apollo';
+import { ConversationMailboxFragment, ConversationMailboxFragmentDoc } from '@codegen';
 import {
 	GET_CONV_ARR, IGetConvArrResponse,
 	ConvNavFragment, IConvNavFragment,
@@ -26,10 +26,10 @@ const ChatSubscriptions = () => {
 				try {
 					const options = {
 						id: newMessageAdded.conversation,
-						fragment: ConvMailboxFragment,
+						fragment: ConversationMailboxFragmentDoc,
 						fragmentName: 'ConversationMailbox'
 					};
-					const { messages, ...rest } = client.readFragment<IConvMailboxFrag>(options)!;
+					const { messages, ...rest } = client.readFragment<ConversationMailboxFragment>(options)!;
 
 					const msgExists = messages.find(msg => msg._id === newMessageAdded._id);
 					if (msgExists) return;
