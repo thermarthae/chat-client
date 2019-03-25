@@ -22,7 +22,8 @@
 		"importHelpers": true,
 		"baseUrl": "./src",
 		"paths": {
-			"@src/*": ["*"]
+			"@src/*": ["*"],
+			"@codegen": ["__generated/codegen"]
 		}
 	},
 	"exclude": ["node_modules", "dist"]

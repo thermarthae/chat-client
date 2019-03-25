@@ -9,6 +9,8 @@ import packageJson from '../../package.json';
 
 const rootPath = path.resolve(__dirname, '../../');
 const srcPath = path.resolve(rootPath, 'src');
+const codegenPath = path.resolve(srcPath, '__generated/codegen.tsx');
+console.log('codegenPath:', codegenPath);
 const tsconfigPath = path.resolve(rootPath, 'tsconfig.json');
 const tslintPath = path.resolve(rootPath, 'tslint.json');
 
@@ -21,7 +23,8 @@ const baseConfig: webpack.Configuration = {
 	resolve: {
 		extensions: ['.mjs', '.js', '.jsx', '.ts', '.tsx', '.json'],
 		alias: {
-			'@src': srcPath
+			'@src': srcPath,
+			'@codegen': codegenPath,
 		}
 	},
 	output: {
