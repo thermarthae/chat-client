@@ -2,7 +2,6 @@ import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloLink } from 'apollo-link';
 import { onError } from 'apollo-link-error';
-import { withClientState } from 'apollo-link-state';
 import { BatchHttpLink } from 'apollo-link-batch-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getOperationAST } from 'graphql/utilities/getOperationAST';
@@ -12,13 +11,17 @@ const cache = new InMemoryCache({
 	dataIdFromObject: (object: any) => object._id,
 });
 
-const stateLink = withClientState({
-	cache,
-	...clientState
-});
+const writeDefaults = () => cache.writeData({ data: clientState.defaults });
+writeDefaults();
+
+const clearStore = async () => {
+	await client.clearStore();
+	writeDefaults();
+};
 
 export const client = new ApolloClient({
 	cache,
+	resolvers: clientState.resolvers,
 	link: ApolloLink.from([
 		onError(({ graphQLErrors, networkError }) => {
 			if (graphQLErrors)
@@ -27,7 +30,6 @@ export const client = new ApolloClient({
 				);
 			if (networkError) console.log(`[Network error (logout)]: ${networkError}`);
 		}),
-		stateLink,
 		ApolloLink.split(
 			operation => {
 				const operationAST = getOperationAST(operation.query, operation.operationName);
@@ -46,4 +48,4 @@ export const client = new ApolloClient({
 		)
 	])
 });
-client.onResetStore(stateLink.writeDefaults as any);
+client.onResetStore(clearStore);
