@@ -1,7 +1,13 @@
-import ApolloClient from 'apollo-client';
 import gql from 'graphql-tag';
+import { IClientState } from '.';
 
-const Chat = {
+interface IChat {
+	__typename: 'Chat';
+	isAsideOpen: boolean;
+	oponentId: string | null;
+}
+
+const Chat: IClientState<'chat', IChat> = {
 	defaults: {
 		chat: {
 			__typename: 'Chat',
@@ -11,7 +17,7 @@ const Chat = {
 	},
 	resolvers: {
 		Mutation: {
-			toggleAside: (_: undefined, { }: any, { cache }: ApolloClient<any>) => {
+			toggleAside: ({ }, { }, { cache }) => {
 				const query = gql`
 					query getAsideStatus {
 						chat @client {
@@ -19,7 +25,8 @@ const Chat = {
 						}
 					}
 				`;
-				const { chat: { isAsideOpen } }: any = cache.readQuery({ query });
+				const { chat: { isAsideOpen } } = cache.readQuery<Record<'chat', IChat>>({ query })!;
+
 				const data = {
 					chat: {
 						__typename: 'Chat',
@@ -30,7 +37,7 @@ const Chat = {
 				cache.writeData({ data });
 				return data.chat;
 			},
-			setOponentId: (_: undefined, { oponentId }: any, { cache }: ApolloClient<any>) => {
+			setOponentId: ({ }, { oponentId }, { cache }) => {
 				const data = {
 					chat: {
 						__typename: 'Chat',

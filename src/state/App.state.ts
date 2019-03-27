@@ -1,6 +1,11 @@
-import ApolloClient from 'apollo-client';
+import { IClientState } from '.';
 
-const App = {
+interface IApp {
+	__typename: 'App';
+	isLoggedIn: boolean;
+}
+
+const App: IClientState<'app', IApp> = {
 	defaults: {
 		app: {
 			__typename: 'App',
@@ -9,7 +14,7 @@ const App = {
 	},
 	resolvers: {
 		Mutation: {
-			setLoginStatus: (_: undefined, { loginStatus }: any, { cache }: ApolloClient<any>) => {
+			setLoginStatus: ({ }, { loginStatus }: { loginStatus: boolean }, { cache }) => {
 				const data = {
 					app: {
 						__typename: 'App',
