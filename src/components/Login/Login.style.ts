@@ -1,8 +1,7 @@
-import { createStyles, WithStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles';
 import { Theme } from '@material-ui/core';
 
-export type TLoginStyles = WithStyles<typeof loginStyles>;
-const loginStyles = ({ palette }: Theme) => createStyles({
+const loginStyles = makeStyles(({ palette }: Theme) => ({
 	root: {
 		backgroundColor: palette.primary.main,
 		width: '100%',
@@ -75,5 +74,5 @@ const loginStyles = ({ palette }: Theme) => createStyles({
 			}
 		},
 	},
-});
+}), { name: 'Login' });
 export default loginStyles;
