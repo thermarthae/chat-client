@@ -1,17 +1,16 @@
 import React from 'react';
-import { useQuery } from 'react-apollo-hooks';
 import classnames from 'classnames';
 
 import asideStyles from './Aside.style';
 
-import { GET_ASIDE_STATUS, IGetAsideStatusRes } from './Aside.apollo';
-
-const Aside = () => {
+interface IAsideProps {
+	open: boolean;
+}
+const Aside = ({ open }: IAsideProps) => {
 	const classes = asideStyles();
-	const { chat: { isAsideOpen } } = useQuery<IGetAsideStatusRes>(GET_ASIDE_STATUS).data!;
 
 	return (
-		<div className={classnames(classes.root, { [classes.active]: isAsideOpen })} />
+		<div className={classnames(classes.root, { [classes.active]: open })} />
 	);
 };
 
