@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RouterProps } from 'react-router';
 
 import { useApolloClient } from 'react-apollo-hooks';
-import { LOG_IN, ILogInResponse, SET_LOGIN_STATUS } from './Login.apollo';
+import { LOG_IN, ILogInResponse } from './Login.apollo';
 
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -17,6 +17,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Logo from '@src/components/Logo/Logo';
 
 import loginStyles from './Login.style';
+import LoginStatusCtx from '@src/context/LoginStatus';
 
 interface ILoginProps extends RouterProps { }
 const Login = ({ history }: ILoginProps) => {
@@ -33,6 +34,7 @@ const Login = ({ history }: ILoginProps) => {
 		usernameErr: false,
 		passwordErr: false
 	});
+	const { setLoginStatus } = useContext(LoginStatusCtx);
 
 	type TEvent = React.ChangeEvent<HTMLInputElement>;
 	const handleUsernameChange = (event: TEvent) => setUsername(event.target.value);
@@ -62,7 +64,7 @@ const Login = ({ history }: ILoginProps) => {
 				if (err.extensions) throw err.extensions.code;
 				throw err;
 			}
-			await client.mutate({ mutation: SET_LOGIN_STATUS });
+			setLoginStatus(true);
 
 			history.push('/');
 		} catch (err) {
