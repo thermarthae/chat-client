@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router';
 import Typography from '@material-ui/core/Typography';
@@ -36,6 +36,9 @@ const Mailbox = ({ oponentId }: IMailboxProps) => {
 
 	const classes = mailboxStyles();
 	const client = useApolloClient();
+
+	const [isAsideOpen, setIsAsideOpen] = useState(false);
+	const toggleAside = () => setIsAsideOpen(!isAsideOpen);
 
 	const markAsReadMutation = useMutation<IMarkConvAsReadRes>(MARK_CONV_AS_READ, { variables: { id: oponentId } });
 	const markConvAsRead = async () => {
@@ -79,7 +82,7 @@ const Mailbox = ({ oponentId }: IMailboxProps) => {
 
 	return (
 		<div className={classes.root}>
-			<Header conversationName={name} />
+			<Header conversationName={name} toggleAside={toggleAside} />
 			<div className={classes.content}>
 				<div className={classes.main}>
 					<Inbox
@@ -91,7 +94,7 @@ const Mailbox = ({ oponentId }: IMailboxProps) => {
 					/>
 					<MessageInput draft={draft} oponentId={oponentId} />
 				</div>
-				<Aside />
+				<Aside open={isAsideOpen} />
 			</div>
 		</div>
 	);
