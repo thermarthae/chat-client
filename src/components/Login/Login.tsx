@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { RouterProps } from 'react-router';
+import { Redirect } from 'react-router';
 
 import { useApolloClient } from 'react-apollo-hooks';
 import { LOG_IN, ILogInResponse } from './Login.apollo';
@@ -19,8 +19,7 @@ import Logo from '@src/components/Logo/Logo';
 import loginStyles from './Login.style';
 import LoginStatusCtx from '@src/context/LoginStatus';
 
-interface ILoginProps extends RouterProps { }
-const Login = ({ history }: ILoginProps) => {
+const Login = () => {
 	const classes = loginStyles();
 	const [t] = useTranslation();
 	const client = useApolloClient();
@@ -34,7 +33,8 @@ const Login = ({ history }: ILoginProps) => {
 		usernameErr: false,
 		passwordErr: false
 	});
-	const { setLoginStatus } = useContext(LoginStatusCtx);
+	const { isLoggedIn, setLoginStatus } = useContext(LoginStatusCtx);
+	if (isLoggedIn) return <Redirect to='/' />;
 
 	type TEvent = React.ChangeEvent<HTMLInputElement>;
 	const handleUsernameChange = (event: TEvent) => setUsername(event.target.value);
@@ -65,8 +65,6 @@ const Login = ({ history }: ILoginProps) => {
 				throw err;
 			}
 			setLoginStatus(true);
-
-			history.push('/');
 		} catch (err) {
 			console.error(err);
 
