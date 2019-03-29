@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from 'react-apollo-hooks';
 import { Link } from 'react-router-dom';
 
 import Menu from '@material-ui/core/Menu';
@@ -9,7 +8,7 @@ import OptionList from '@src/components/OptionList/OptionList';
 import List from './../List';
 import Line from '../Line/Line';
 
-import { GET_OPONENT_ID, IGetOponentIdResponse } from './ConversationList.apollo';
+import ChatOponentIDCtx from '@src/context/ChatOponentID';
 import { IConvNavFragment } from '../Conversations.apollo';
 
 
@@ -19,8 +18,7 @@ interface IConversationListProps {
 
 const ConversationList = ({ conversationArr }: IConversationListProps) => {
 	const [t] = useTranslation();
-	const { data } = useQuery<IGetOponentIdResponse>(GET_OPONENT_ID);
-	const { chat: { oponentId } } = data!;
+	const oponentId = useContext(ChatOponentIDCtx);
 
 	const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLElement | undefined>(undefined);
 	const handleMenuClose = () => setMenuAnchorEl(undefined);
