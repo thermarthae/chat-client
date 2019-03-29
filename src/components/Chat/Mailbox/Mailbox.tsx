@@ -88,7 +88,6 @@ const Mailbox = ({ oponentId }: IMailboxProps) => {
 					<Inbox
 						messages={messages}
 						seen={seen}
-						mgsToFetch={10 /* TODO: Remove soon */}
 						markConvAsRead={markConvAsRead}
 						onLoadMore={loadMore}
 					/>

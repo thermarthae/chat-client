@@ -19,7 +19,6 @@ import ScrollDownInfo from './ScrollDownInfo/ScrollDownInfo';
 
 interface IInboxProps extends TInboxStyles {
 	messages: IMessageMailboxFrag[];
-	mgsToFetch: number;
 	seen: boolean;
 	markConvAsRead: () => Promise<void>;
 	onLoadMore: () => Promise<ApolloQueryResult<IGetConvRes>>;
@@ -98,9 +97,10 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 
 		this.setState({ isFetching: true });
 		const { data: { getConversation: { messages } } } = await this.props.onLoadMore();
+		const mgsToFetch = 10;
 		this.setState(({ }, props) => ({
 			isFetching: false,
-			noMoreMsgToFetch: (!messages || messages.length < props.mgsToFetch) ? true : false
+			noMoreMsgToFetch: (!messages || messages.length < mgsToFetch) ? true : false
 		}));
 	}
 
