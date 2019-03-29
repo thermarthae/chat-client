@@ -5,23 +5,13 @@ import { onError } from 'apollo-link-error';
 import { BatchHttpLink } from 'apollo-link-batch-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getOperationAST } from 'graphql/utilities/getOperationAST';
-import clientState from '../state';
 
 const cache = new InMemoryCache({
 	dataIdFromObject: (object: any) => object._id,
 });
 
-const writeDefaults = () => cache.writeData({ data: clientState.defaults });
-writeDefaults();
-
-const clearStore = async () => {
-	await client.clearStore();
-	writeDefaults();
-};
-
 export const client = new ApolloClient({
 	cache,
-	resolvers: clientState.resolvers,
 	link: ApolloLink.from([
 		onError(({ graphQLErrors, networkError }) => {
 			if (graphQLErrors)
@@ -48,4 +38,7 @@ export const client = new ApolloClient({
 		)
 	])
 });
+const clearStore = async () => {
+	await client.clearStore();
+};
 client.onResetStore(clearStore);
