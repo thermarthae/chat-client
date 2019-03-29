@@ -1,7 +1,6 @@
 import ApolloClient from 'apollo-client';
 import deepmerge from 'deepmerge';
 
-import app from './App.state';
 import chat from './Chat.state';
 
 
@@ -20,8 +19,7 @@ export interface IClientState<T extends string = any, K extends IReturn = any> {
 
 
 const toMerge: IClientState[] = [
-	app,
-	chat,
+	chat
 ];
 
 export default deepmerge.all<IClientState>(toMerge);

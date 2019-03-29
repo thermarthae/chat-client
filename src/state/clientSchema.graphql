@@ -1,19 +1,13 @@
-type App {
-	isLoggedIn: Boolean!
-}
-
 type Chat {
 	isAsideOpen: Boolean!
 	oponentId: String
 }
 
 type Query {
-	app: App!
 	chat: Chat!
 }
 
 type Mutation {
-	setLoginStatus(loginStatus: Boolean!): App!
 	toggleAside: Chat!
 	setOponentId(oponentId: String): Chat!
 }
