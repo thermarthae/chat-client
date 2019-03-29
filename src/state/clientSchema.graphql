@@ -1,11 +1,8 @@
 type Chat {
-	oponentId: String
 }
 
 type Query {
-	chat: Chat!
 }
 
 type Mutation {
-	setOponentId(oponentId: String): Chat!
 }
