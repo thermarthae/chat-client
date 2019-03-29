@@ -1,5 +1,4 @@
 type Chat {
-	isAsideOpen: Boolean!
 	oponentId: String
 }
 
@@ -8,6 +7,5 @@ type Query {
 }
 
 type Mutation {
-	toggleAside: Chat!
 	setOponentId(oponentId: String): Chat!
 }
