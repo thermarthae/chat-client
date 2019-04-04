@@ -20,6 +20,7 @@ import ScrollDownInfo from './ScrollDownInfo/ScrollDownInfo';
 interface IInboxProps extends TInboxStyles {
 	messages: IMessageMailboxFrag[];
 	seen: boolean;
+	noMoreToFetch: boolean;
 	markConvAsRead: () => Promise<void>;
 	onLoadMore: () => Promise<ApolloQueryResult<IGetConvRes>>;
 }
@@ -27,7 +28,6 @@ interface IInboxProps extends TInboxStyles {
 interface IInboxState {
 	menuAnchorEl: HTMLElement | undefined;
 	isFetching: boolean;
-	noMoreMsgToFetch: boolean;
 	scrollDownInfo: boolean;
 }
 
@@ -39,7 +39,6 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 	public state = {
 		menuAnchorEl: undefined,
 		isFetching: false,
-		noMoreMsgToFetch: false,
 		scrollDownInfo: false,
 	};
 
@@ -92,16 +91,11 @@ class Inbox extends React.PureComponent<IInboxProps, IInboxState> {
 	}
 
 	private fetchMoreMsgs = async () => {
-		const { isFetching, noMoreMsgToFetch } = this.state;
-		if (isFetching || noMoreMsgToFetch) return;
+		if (this.state.isFetching || this.props.noMoreToFetch) return;
 
 		this.setState({ isFetching: true });
-		const { data: { getConversation: { messages } } } = await this.props.onLoadMore();
-		const mgsToFetch = 10;
-		this.setState(({ }, props) => ({
-			isFetching: false,
-			noMoreMsgToFetch: (!messages || messages.length < mgsToFetch) ? true : false
-		}));
+		await this.props.onLoadMore();
+		this.setState({ isFetching: false });
 	}
 
 	private handleScroll = async ({ currentTarget }: React.UIEvent<HTMLDivElement>) => {
