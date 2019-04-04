@@ -64,17 +64,19 @@ const Mailbox = ({ oponentId }: IMailboxProps) => {
 		return <Empty i18nID='error.UnknownError' />;
 	}
 
-	const { name, messages, draft, seen } = data.getConversation;
+	const { name, messageFeed: { node }, draft, seen } = data.getConversation;
 	const loadMore = () => fetchMore({
-		variables: { skip: messages.length },
+		variables: { skip: node.length },
 		updateQuery: (prev, { fetchMoreResult }) => {
-			if (!fetchMoreResult || !fetchMoreResult.getConversation.messages) return prev;
+			if (!fetchMoreResult || !fetchMoreResult.getConversation.messageFeed) return prev;
+			const oldMsgs = prev.getConversation.messageFeed.node;
+			const { messageFeed } = fetchMoreResult.getConversation;
 			return {
 				getConversation: Object.assign({}, prev.getConversation, {
-					messages: [
-						...fetchMoreResult.getConversation.messages,
-						...prev.getConversation.messages,
-					]
+					messageFeed: {
+						...messageFeed,
+						node: [...messageFeed.node, ...oldMsgs]
+					}
 				})
 			};
 		}
@@ -86,7 +88,7 @@ const Mailbox = ({ oponentId }: IMailboxProps) => {
 			<div className={classes.content}>
 				<div className={classes.main}>
 					<Inbox
-						messages={messages}
+						messages={node}
 						seen={seen}
 						markConvAsRead={markConvAsRead}
 						onLoadMore={loadMore}

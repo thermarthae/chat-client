@@ -56,16 +56,19 @@ const MessageInput = ({ draft, oponentId }: IMessageInputProps) => {
 					fragmentName: 'ConversationMailbox'
 				};
 				const { sendMessage } = data!;
-				const { messages, ...rest } = proxy.readFragment<IConvMailboxFrag>(options)!;
+				const { messageFeed, ...rest } = proxy.readFragment<IConvMailboxFrag>(options)!;
 
-				const msgExists = messages.find(msg => msg._id === sendMessage._id);
+				const msgExists = messageFeed.node.find(msg => msg._id === sendMessage._id);
 				if (msgExists) return;
 
 				proxy.writeFragment({
 					...options,
 					data: {
 						...rest,
-						messages: [...messages, sendMessage]
+						messageFeed: {
+							...messageFeed,
+							node: [...messageFeed.node, sendMessage]
+						}
 					}
 				});
 			},
