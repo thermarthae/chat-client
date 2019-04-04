@@ -42,17 +42,26 @@ export const ConvMailboxFragment = gql`
 		name
 		seen
 		draft
-		messages(skip: $skip, limit: $limit) {
-			...MessageMailbox
+		messageFeed(skip: $skip, limit: $limit) {
+			cursor
+			noMore
+			node {
+				...MessageMailbox
+			}
 		}
 	}
 	${MessageMailboxFragment}
 `;
+export interface IMailboxMessageFeed {
+	cursor: string;
+	noMore: boolean;
+	node: IMessageMailboxFrag[];
+}
 export interface IConvMailboxFrag {
 	_id: string;
 	name: string;
 	seen: boolean;
-	messages: IMessageMailboxFrag[];
+	messageFeed: IMailboxMessageFeed;
 	draft: string;
 }
 

@@ -29,16 +29,20 @@ const ChatSubscriptions = () => {
 						fragment: ConvMailboxFragment,
 						fragmentName: 'ConversationMailbox'
 					};
-					const { messages, ...rest } = client.readFragment<IConvMailboxFrag>(options)!;
+					const { messageFeed, ...rest } = client.readFragment<IConvMailboxFrag>(options)!;
+					const { node } = messageFeed;
 
-					const msgExists = messages.find(msg => msg._id === newMessageAdded._id);
+					const msgExists = node.find(msg => msg._id === newMessageAdded._id);
 					if (msgExists) return;
 
 					client.writeFragment({
 						...options,
 						data: {
 							...rest,
-							messages: [...messages, newMessageAdded]
+							messageFeed: {
+								...messageFeed,
+								node: [...node, newMessageAdded]
+							}
 						}
 					});
 				} catch (error) {
@@ -51,16 +55,19 @@ const ChatSubscriptions = () => {
 						fragment: ConvNavFragment,
 						fragmentName: 'ConversationNav'
 					};
-					const { messages, ...rest } = client.readFragment<IConvNavFragment>(options)!;
+					const { messageFeed, ...rest } = client.readFragment<IConvNavFragment>(options)!;
 
-					const msgExists = messages[0]._id === newMessageAdded._id;
+					const msgExists = messageFeed.node[0]._id === newMessageAdded._id;
 					if (msgExists) return;
 
 					client.writeFragment({
 						...options,
 						data: {
 							...rest,
-							messages: [newMessageAdded]
+							messageFeed: {
+								...messageFeed,
+								node: [newMessageAdded]
+							}
 						}
 					});
 				} catch (error) {

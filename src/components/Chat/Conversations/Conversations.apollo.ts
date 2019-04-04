@@ -6,12 +6,14 @@ export const ConvNavFragment = gql`
 		name
 		seen
 		draft
-		messages(limit: 1) {
-			_id
-			content
-			time
-			me
-			conversation
+		messageFeed(limit: 1) {
+			node {
+				_id
+				content
+				time
+				me
+				conversation
+			}
 		}
 	}
 `;
@@ -27,7 +29,9 @@ export interface IConvNavFragment {
 	name: string;
 	seen: boolean;
 	draft: string;
-	messages: IMessage[];
+	messageFeed: {
+		node: IMessage[];
+	};
 }
 
 
