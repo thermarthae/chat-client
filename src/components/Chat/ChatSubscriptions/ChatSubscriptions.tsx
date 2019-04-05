@@ -45,7 +45,7 @@ const ChatSubscriptions = () => {
 						}
 					});
 				} catch (error) {
-					if (true || !error.message.includes('Can\'t find field messages')) console.error(error); //TODO
+					console.error(error);
 				}
 			}
 		});
