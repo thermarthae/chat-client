@@ -6,7 +6,7 @@ export const ConvNavFragment = gql`
 		name
 		seen
 		draft
-		messageFeed(limit: 1) {
+		messageFeed(limit: 1) @connection(key: "messageFeed") {
 			node {
 				_id
 				content

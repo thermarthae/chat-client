@@ -42,7 +42,7 @@ export const ConvMailboxFragment = gql`
 		name
 		seen
 		draft
-		messageFeed(skip: $skip, limit: $limit) {
+		messageFeed(skip: $skip, limit: $limit) @connection(key: "messageFeed") {
 			cursor
 			noMore
 			node {
