@@ -9,11 +9,11 @@ import List from './../List';
 import Line from '../Line/Line';
 
 import ChatOponentIDCtx from '@src/context/ChatOponentID';
-import { IConvNavFragment } from '../Conversations.apollo';
+import { IConvMailboxFrag } from '../../Mailbox/Mailbox.apollo';
 
 
 interface IConversationListProps {
-	conversationArr: IConvNavFragment[];
+	conversationArr: IConvMailboxFrag[];
 }
 
 const ConversationList = ({ conversationArr }: IConversationListProps) => {

@@ -1,17 +1,17 @@
 import gql from 'graphql-tag';
-import { ConvNavFragment, IConvNavFragment } from '../Conversations.apollo';
+import { ConvMailboxFragment, IConvMailboxFrag } from '../../Mailbox/Mailbox.apollo';
 
 export const FIND_CONV_AND_USR = gql`
 	query findConvsAndUsers($query: String!) {
 		findConversation(query: $query) {
-			...ConversationNav
+			...ConversationMailbox
 		}
 		findUser(query: $query) {
 			_id
 			name
 		}
 	}
-	${ConvNavFragment}
+	${ConvMailboxFragment}
 `;
 
 export interface IUser {
@@ -19,6 +19,6 @@ export interface IUser {
 	name: string;
 }
 export interface IFindConvAndUsrRes {
-	findConversation: IConvNavFragment[];
+	findConversation: IConvMailboxFrag[];
 	findUser: IUser[];
 }
