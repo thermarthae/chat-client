@@ -1,6 +1,8 @@
 import gql from 'graphql-tag';
-import { MessageMailboxFragment, IMessageMailboxFrag } from '../Mailbox/Mailbox.apollo';
-import { ConvNavFragment, IConvNavFragment } from '../Conversations/Conversations.apollo';
+import {
+	MessageMailboxFragment, IMessageMailboxFrag,
+	ConvMailboxFragment, IConvMailboxFrag
+} from '../Mailbox/Mailbox.apollo';
 
 export const NEW_MSG_SUB = gql`
 	subscription newMessageAdded {
@@ -17,13 +19,13 @@ export interface INewMsgsSubRes {
 
 
 export const UPDATED_CONV_SUBSCRIPTION = gql`
-	subscription updatedConversation {
+	subscription updatedConversation($limit: Int, $skip: Int) {
 		updatedConversation {
-			...ConversationNav
+			...ConversationMailbox
 		}
 	}
-	${ConvNavFragment}
+	${ConvMailboxFragment}
 `;
 export interface IUpdatedConvSubRes {
-	updatedConversation: IConvNavFragment;
+	updatedConversation: IConvMailboxFrag;
 }

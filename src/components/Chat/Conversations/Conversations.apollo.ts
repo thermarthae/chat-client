@@ -1,51 +1,14 @@
 import gql from 'graphql-tag';
-
-export const ConvNavFragment = gql`
-	fragment ConversationNav on Conversation {
-		_id
-		name
-		seen
-		draft
-		messageFeed(limit: 1) @connection(key: "messageFeed") {
-			node {
-				_id
-				content
-				time
-				me
-				conversation
-			}
-		}
-	}
-`;
-export interface IMessage {
-	_id: string;
-	content: string;
-	time: string;
-	me: boolean;
-	conversation: string;
-}
-export interface IConvNavFragment {
-	_id: string;
-	name: string;
-	seen: boolean;
-	draft: string;
-	messageFeed: {
-		node: IMessage[];
-	};
-}
-
-
+import { ConvMailboxFragment, IConvMailboxFrag } from '../Mailbox/Mailbox.apollo';
 
 export const GET_CONV_ARR = gql`
-	query getConvArr {
+	query getConvArr($limit: Int = 1, $skip: Int) {
 		getUserConversations {
-			...ConversationNav
+			...ConversationMailbox
 		}
 	}
-	${ConvNavFragment}
+	${ConvMailboxFragment}
 `;
 export interface IGetConvArrResponse {
-	getUserConversations: IConvNavFragment[];
+	getUserConversations: IConvMailboxFrag[];
 }
-
-

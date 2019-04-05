@@ -9,7 +9,6 @@ import {
 import { IConvMailboxFrag, ConvMailboxFragment } from '../Mailbox/Mailbox.apollo';
 import {
 	GET_CONV_ARR, IGetConvArrResponse,
-	ConvNavFragment, IConvNavFragment,
 } from '../Conversations/Conversations.apollo';
 
 interface ISub<T> {
@@ -46,32 +45,7 @@ const ChatSubscriptions = () => {
 						}
 					});
 				} catch (error) {
-					if (!error.message.includes('Can\'t find field messages({})')) console.error(error);
-				}
-
-				try {
-					const options = {
-						id: newMessageAdded.conversation,
-						fragment: ConvNavFragment,
-						fragmentName: 'ConversationNav'
-					};
-					const { messageFeed, ...rest } = client.readFragment<IConvNavFragment>(options)!;
-
-					const msgExists = messageFeed.node[0]._id === newMessageAdded._id;
-					if (msgExists) return;
-
-					client.writeFragment({
-						...options,
-						data: {
-							...rest,
-							messageFeed: {
-								...messageFeed,
-								node: [newMessageAdded]
-							}
-						}
-					});
-				} catch (error) {
-					if (!error.message.includes('Can\'t find field messages({\"limit\":1})')) console.error(error);
+					if (true || !error.message.includes('Can\'t find field messages')) console.error(error); //TODO
 				}
 			}
 		});

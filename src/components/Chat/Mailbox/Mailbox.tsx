@@ -6,9 +6,9 @@ import Typography from '@material-ui/core/Typography';
 import { useApolloClient, useMutation, useQuery } from 'react-apollo-hooks';
 import {
 	GET_CONVERSATION, IGetConvRes,
-	MARK_CONV_AS_READ, IMarkConvAsReadRes
+	MARK_CONV_AS_READ, IMarkConvAsReadRes,
+	ConvMailboxFragment, IConvMailboxFrag
 } from './Mailbox.apollo';
-import { ConvNavFragment } from '@src/components/Chat/Conversations/Conversations.apollo';
 
 import mailboxStyles from './Mailbox.style';
 
@@ -45,8 +45,8 @@ const Mailbox = ({ oponentId }: IMailboxProps) => {
 		const res = await markAsReadMutation();
 		if (!res.data || !res.data.markConversationAsRead) return;
 
-		const options = { id: oponentId, fragment: ConvNavFragment };
-		const conversation = client.readFragment(options)!;
+		const options = { id: oponentId, fragment: ConvMailboxFragment, fragmentName: 'ConversationMailbox' };
+		const conversation = client.readFragment<IConvMailboxFrag>(options)!;
 		client.writeFragment({
 			...options,
 			data: Object.assign(conversation, { seen: true })
