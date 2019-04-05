@@ -34,7 +34,7 @@ const ConversationList = ({ conversationArr }: IConversationListProps) => {
 					<Line
 						avatar={item.name[0]}
 						name={item.name}
-						message={item.messageFeed.node[0].content}
+						message={item.messageFeed.node[item.messageFeed.node.length - 1].content}
 						isActive={item._id === oponentId}
 						isUnseen={!item.seen}
 						handleMenuClick={handleMenuClick}
