@@ -53,7 +53,7 @@ export const ConvMailboxFragment = gql`
 	${MessageMailboxFragment}
 `;
 export interface IMailboxMessageFeed {
-	cursor: string;
+	cursor: string | null;
 	noMore: boolean;
 	node: IMessageMailboxFrag[];
 }
