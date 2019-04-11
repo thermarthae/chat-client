@@ -19,7 +19,7 @@ export interface INewMsgsSubRes {
 
 
 export const UPDATED_CONV_SUBSCRIPTION = gql`
-	subscription updatedConversation($limit: Int, $skip: Int) {
+	subscription updatedConversation($limit: Int, $cursor: ID) {
 		updatedConversation {
 			...ConversationMailbox
 		}
