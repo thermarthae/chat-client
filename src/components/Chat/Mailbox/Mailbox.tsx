@@ -64,9 +64,9 @@ const Mailbox = ({ oponentId }: IMailboxProps) => {
 		return <Empty i18nID='error.UnknownError' />;
 	}
 
-	const { name, messageFeed: { node, noMore }, draft, seen } = data.getConversation;
+	const { name, messageFeed: { node, noMore, cursor }, draft, seen } = data.getConversation;
 	const loadMore = () => fetchMore({
-		variables: { skip: node.length },
+		variables: { cursor },
 		updateQuery: (prev, { fetchMoreResult }) => {
 			if (!fetchMoreResult || !fetchMoreResult.getConversation.messageFeed) return prev;
 			const oldMsgs = prev.getConversation.messageFeed.node;

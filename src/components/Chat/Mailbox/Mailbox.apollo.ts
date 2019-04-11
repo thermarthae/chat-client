@@ -42,7 +42,7 @@ export const ConvMailboxFragment = gql`
 		name
 		seen
 		draft
-		messageFeed(skip: $skip, limit: $limit) @connection(key: "messageFeed") {
+		messageFeed(limit: $limit, cursor: $cursor) @connection(key: "messageFeed") {
 			cursor
 			noMore
 			node {
@@ -68,7 +68,7 @@ export interface IConvMailboxFrag {
 
 
 export const GET_CONVERSATION = gql`
-	query getConv($id: ID!, $skip: Int, $limit: Int) {
+	query getConv($id: ID!, $limit: Int, $cursor: ID) {
 		getConversation(id: $id) {
 			...ConversationMailbox
 		}
