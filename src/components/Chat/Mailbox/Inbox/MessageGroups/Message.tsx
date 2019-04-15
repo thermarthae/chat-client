@@ -18,7 +18,7 @@ const Message = React.memo(({ message, me, handleMenuClick }: IMessageProps) => 
 	return (
 		<div className={classes.root + (me ? ' ' + classes.me : '')}>
 			<div className={classes.content}>
-				<TweTypography text={message.content} color='inherit' />
+				<TweTypography text={message.content} color='inherit' variant='body2' />
 			</div>
 			<div className={classes.options}>
 				<IconButton className={classes.btn} onClick={handleMenuClick}>
