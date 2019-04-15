@@ -1,14 +1,16 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, NavLinkProps } from 'react-router-dom';
 import IconButton, { IconButtonProps } from '@material-ui/core/IconButton';
 
-interface ILinkIconButtonProps extends IconButtonProps {
-	to: string;
-	activeClassName?: string;
-	exact?: boolean;
-}
-const LinkIconButton = (props: ILinkIconButtonProps) => (
-	<IconButton color='inherit' {...props} component={NavLink as any} />
+const NavLinkRef = React.forwardRef<HTMLAnchorElement, NavLinkProps>(
+	(props, ref) => <NavLink {...props} innerRef={ref} />
+);
+
+type PartialNavLinkProps = Pick<NavLinkProps, 'to' | 'activeClassName' | 'exact' | 'innerRef' | 'strict'>;
+type TLinkButtonProps = IconButtonProps & PartialNavLinkProps;
+
+const LinkIconButton = (props: TLinkButtonProps) => (
+	<IconButton color='inherit' {...props} component={NavLinkRef as any} />
 );
 
 export default LinkIconButton;
