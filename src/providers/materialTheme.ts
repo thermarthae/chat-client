@@ -30,7 +30,6 @@ declare module '@material-ui/core/styles/createTypography' {
 
 export default createMuiTheme({
 	typography: {
-		useNextVariants: true,
 		fontSize: 14,
 		htmlFontSize: 16,
 		fontFamily: 'Roboto, sans-serif',
