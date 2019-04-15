@@ -12,7 +12,7 @@ const Error = () => {
 		<Typography
 			variant={'h2'}
 			className={classes.root}
-			inline
+			display='inline'
 			children={t('error.404') + ' - ' + location.pathname}
 		/>
 	);
