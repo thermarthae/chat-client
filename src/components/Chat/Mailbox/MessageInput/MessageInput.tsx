@@ -127,7 +127,9 @@ const MessageInput = ({ draft, oponentId }: IMessageInputProps) => {
 					/>
 				</div>
 				<Slide direction='up' in={emojiPickerIsOpen} mountOnEnter unmountOnExit>
-					<EmojiPicker className={classes.emojiPicker} onSelect={handleOnEmojiSelect} />
+					<div className={classes.emojiPicker}>
+						<EmojiPicker onSelect={handleOnEmojiSelect} />
+					</div>
 				</Slide>
 				<IconButton className={classes.btn} onClick={handleEmojiPickerToggle}>
 					<InsertEmoticon fontSize='inherit' />
