@@ -17,7 +17,7 @@ const Cluster = React.memo(({ group, handleMenuClick }: IClusterProps) => {
 
 	return (
 		<div className={me ? classes.me : ''} >
-			<Time time={time} color='textSecondary' variant='subtitle2' align='center' />
+			<Time time={time} color='textSecondary' variant='subtitle2' align='center' display='block' />
 			<div className={classes.container}>
 				{!me && <div className={classes.author}>
 					<Avatar>{author.name[0]}</Avatar>
