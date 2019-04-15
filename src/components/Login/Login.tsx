@@ -129,7 +129,7 @@ const Login = () => {
 						/>
 						<TextField
 							required
-							style={{ width: '100%' }} // TODO: wait for fullWidth fix
+							fullWidth
 							type={showPassword ? 'text' : 'password'}
 							name='password'
 							autoComplete='password'
