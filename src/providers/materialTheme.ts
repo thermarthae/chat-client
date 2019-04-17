@@ -5,7 +5,6 @@ declare module '@material-ui/core/styles/createPalette' {
 	interface IPalette {
 		textLight: TypeText;
 		minorColors: {
-			online: string;
 			unseen: string;
 			paleSky: string;
 		};
@@ -68,7 +67,6 @@ export default createMuiTheme({
 			hint: 'rgba(255, 255, 255, 0.12)'
 		},
 		minorColors: {
-			online: '#2dd505',
 			unseen: '#0084ff',
 			paleSky: '#6E7783'
 		},
