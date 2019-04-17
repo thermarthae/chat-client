@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
@@ -22,10 +22,10 @@ const ConversationList = ({ conversationArr }: IConversationListProps) => {
 
 	const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLElement | undefined>(undefined);
 	const handleMenuClose = () => setMenuAnchorEl(undefined);
-	const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+	const handleMenuClick = useCallback((event: React.MouseEvent<HTMLElement>) => {
 		event.preventDefault();
 		setMenuAnchorEl(event.currentTarget);
-	};
+	}, []);
 
 	return (
 		<List>

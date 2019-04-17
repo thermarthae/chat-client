@@ -50,5 +50,5 @@ const Line = ({ avatar, name, message, isActive, isUnseen, isOnline, handleMenuC
 	);
 };
 
-export default Line;
+export default React.memo(Line);
 
