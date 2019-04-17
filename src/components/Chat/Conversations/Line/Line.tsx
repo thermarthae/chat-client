@@ -16,12 +16,11 @@ interface ILineProps {
 	name: string;
 	message?: string;
 	isActive?: boolean;
-	isOnline?: boolean;
 	isUnseen?: boolean;
 	handleMenuClick?: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
-const Line = ({ avatar, name, message, isActive, isUnseen, isOnline, handleMenuClick }: ILineProps) => {
+const Line = ({ avatar, name, message, isActive, isUnseen, handleMenuClick }: ILineProps) => {
 	const classes = lineStyles();
 	const [t] = useTranslation();
 
@@ -32,7 +31,6 @@ const Line = ({ avatar, name, message, isActive, isUnseen, isOnline, handleMenuC
 		>
 			<div className={classes.left}>
 				<div className={classes.avatar}>
-					{isOnline && <div className={classes.online} />}
 					<Avatar>{avatar || ''}</Avatar>
 				</div>
 			</div>

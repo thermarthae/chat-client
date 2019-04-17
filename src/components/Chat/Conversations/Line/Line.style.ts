@@ -23,15 +23,6 @@ const lineStyles = makeStyles(({ palette, typography }: Theme) => ({
 			backgroundColor: lighten(0.05, palette.background.paper)
 		}
 	},
-	online: {
-		height: 5,
-		width: 5,
-		backgroundColor: palette.minorColors.online,
-		borderRadius: '50%',
-		position: 'absolute',
-		top: 0,
-		left: 0
-	},
 	unseen: {
 		boxShadow: `inset 3px 0 0 0 ${palette.minorColors.unseen}`,
 		'& $convName': {
