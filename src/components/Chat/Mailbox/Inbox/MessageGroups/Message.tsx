@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVert from '@material-ui/icons/MoreVert';
 
@@ -16,7 +17,7 @@ const Message = React.memo(({ message, me, handleMenuClick }: IMessageProps) => 
 	const classes = messageStyles();
 
 	return (
-		<div className={classes.root + (me ? ' ' + classes.me : '')}>
+		<div className={clsx(classes.root, me && classes.me)}>
 			<div className={classes.content}>
 				<TweTypography text={message.content} color='inherit' variant='body2' />
 			</div>
