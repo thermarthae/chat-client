@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 
 import logoStyles from './Logo.style';
 import logo from '@src/public/logo.png';
@@ -18,7 +18,7 @@ const Logo = React.memo((props: ILogo) => {
 
 	return (
 		<img
-			className={classNames(classes.root, props.className)}
+			className={clsx(classes.root, props.className)}
 			src={logo}
 			alt='Logo'
 			width={width}

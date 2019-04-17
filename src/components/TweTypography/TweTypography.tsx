@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import twemoji from 'twemoji';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 import tweTypoStyles from './TweTypography.style';
 
@@ -14,7 +14,7 @@ const TweTypography = memo(({ text, textCursor, ...props }: ITweTypography) => {
 	const parsedText = twemoji.parse(text, {
 		folder: 'svg',
 		ext: '.svg',
-		className: classNames(classes.emoji, textCursor && classes.cursor)
+		className: clsx(classes.emoji, textCursor && classes.cursor)
 	});
 	return <Typography {...props} dangerouslySetInnerHTML={{ __html: parsedText }} />;
 });

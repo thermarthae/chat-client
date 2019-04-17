@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { useTheme } from '@material-ui/styles';
 import { Theme } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -60,7 +60,7 @@ const EmojiPicker = ({ onSelect, className }: IEmojiPickerProps) => {
 	const groupIcons = makeGroupIcons(emojiLargeSize);
 
 	return (
-		<div className={classNames(classes.root, className)}>
+		<div className={clsx(classes.root, className)}>
 			<div className={classes.loading}>
 				<CircularProgress />
 			</div>

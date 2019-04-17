@@ -1,5 +1,5 @@
 import React from 'react';
-import classnames from 'classnames';
+import clsx from 'clsx';
 
 import asideStyles from './Aside.style';
 
@@ -10,7 +10,7 @@ const Aside = ({ open }: IAsideProps) => {
 	const classes = asideStyles();
 
 	return (
-		<div className={classnames(classes.root, { [classes.active]: open })} />
+		<div className={clsx(classes.root, open && classes.active)} />
 	);
 };
 
