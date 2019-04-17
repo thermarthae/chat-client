@@ -34,6 +34,9 @@ const lineStyles = makeStyles(({ palette, typography }: Theme) => ({
 	},
 	unseen: {
 		boxShadow: `inset 3px 0 0 0 ${palette.minorColors.unseen}`,
+		'& $convName': {
+			fontWeight: typography.fontWeightMedium
+		},
 	},
 	left: { flexShrink: 0 },
 	avatar: { position: 'relative' },
@@ -51,6 +54,7 @@ const lineStyles = makeStyles(({ palette, typography }: Theme) => ({
 			overflow: 'hidden'
 		}
 	},
+	convName: {},
 	btn: {
 		fontSize: typography.emToPx(1.5),
 		padding: typography.emToPx(0.15),

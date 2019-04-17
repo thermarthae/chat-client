@@ -38,6 +38,7 @@ const Line = ({ avatar, name, message, isActive, isUnseen, isOnline, handleMenuC
 			</div>
 			<div className={classes.center}>
 				<Typography
+					className={classes.convName}
 					variant='body2'
 					children={name || t('chat.conversations.conversationName')}
 				/>
