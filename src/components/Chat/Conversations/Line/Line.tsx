@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import clsx from 'clsx';
 
 import ListItem from '@material-ui/core/ListItem';
 import Avatar from '@material-ui/core/Avatar';
@@ -27,11 +28,7 @@ const Line = ({ avatar, name, message, isActive, isUnseen, isOnline, handleMenuC
 	return (
 		<ListItem
 			component='div'
-			className={
-				classes.root
-				+ (isActive ? ' ' + classes.active : '')
-				+ (isUnseen ? ' ' + classes.unseen : '')
-			}
+			className={clsx(classes.root, isActive && classes.active, isUnseen && classes.unseen)}
 		>
 			<div className={classes.left}>
 				<div className={classes.avatar}>
