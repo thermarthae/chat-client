@@ -14,8 +14,11 @@ const searchboxStyles = makeStyles(({ palette, typography, shadows }: Theme) => 
 		display: 'flex',
 		alignItems: 'center',
 		width: '100%',
-		color: palette.text.disabled,
+		color: palette.text.secondary,
 
+		'&.filled, &:focus-within': {
+			color: palette.text.primary,
+		},
 		'&.filled $cancelBtn, &:focus-within $cancelBtn': {
 			pointerEvents: 'all',
 			opacity: 1,
@@ -46,13 +49,14 @@ const searchboxStyles = makeStyles(({ palette, typography, shadows }: Theme) => 
 	input: {
 		padding: '6px ' + typography.emToPx(1.85),
 		borderRadius: '1em',
-		backgroundColor: 'rgba(0, 0, 0, 0.07)',
+		backgroundColor: palette.background.default,
 		transition: '0.2s',
-		'&:placeholder': {
-			color: 'rgba(255, 255, 255, 0.1)'
+		boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.1)',
+		'&::placeholder': {
+			color: palette.text.secondary,
+			opacity: 1,
 		},
 		'&:focus': {
-			color: palette.text.primary,
 			backgroundColor: palette.background.default,
 			boxShadow: shadows[3],
 		}
