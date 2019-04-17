@@ -37,7 +37,10 @@ const Line = ({ avatar, name, message, isActive, isUnseen, isOnline, handleMenuC
 				</div>
 			</div>
 			<div className={classes.center}>
-				<Typography variant='subtitle2' children={name || t('chat.conversations.conversationName')} />
+				<Typography
+					variant='body2'
+					children={name || t('chat.conversations.conversationName')}
+				/>
 				<TweTypography text={message} variant='caption' />
 			</div>
 			<IconButton className={classes.btn} onClick={handleMenuClick}>
