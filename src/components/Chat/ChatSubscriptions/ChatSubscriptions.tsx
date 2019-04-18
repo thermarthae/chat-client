@@ -38,6 +38,7 @@ const ChatSubscriptions = () => {
 						...options,
 						data: {
 							...rest,
+							seen: newMessageAdded.me,
 							messageFeed: {
 								...messageFeed,
 								node: [...node, newMessageAdded]
