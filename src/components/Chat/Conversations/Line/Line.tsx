@@ -40,7 +40,7 @@ const Line = ({ avatar, name, message, isActive, isUnseen, handleMenuClick }: IL
 					variant='body2'
 					children={name || t('chat.conversations.conversationName')}
 				/>
-				<TweTypography text={message} variant='caption' />
+				<TweTypography text={message} variant='caption' color='textSecondary' />
 			</div>
 			<IconButton className={classes.btn} onClick={handleMenuClick}>
 				<MoreHoriz className={classes.btnIcon} />
