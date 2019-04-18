@@ -24,6 +24,9 @@ const lineStyles = makeStyles(({ palette, typography }: Theme) => ({
 		},
 		'*:first-child > &': {
 			boxShadow: 'inset 0 -1px hsla(0, 0%, 0%, 0.1)',
+			'&$unseen': {
+				boxShadow: [`inset 3px 0 0 0 ${palette.minorColors.unseen}`, 'inset 0 -1px hsla(0, 0%, 0%, 0.1)'] as any
+			}
 		}
 	},
 	unseen: {
