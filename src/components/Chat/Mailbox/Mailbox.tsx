@@ -46,6 +46,8 @@ const Mailbox = ({ oponentId }: IMailboxProps) => {
 
 			const options = { id: oponentId, fragment: ConvMailboxFragment, fragmentName: 'ConversationMailbox' };
 			const conversation = proxy.readFragment<IConvMailboxFrag>(options)!;
+			if (conversation.seen) return;
+			
 			proxy.writeFragment({
 				...options,
 				data: Object.assign(conversation, { seen: true })
