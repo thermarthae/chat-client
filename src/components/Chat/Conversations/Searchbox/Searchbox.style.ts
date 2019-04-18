@@ -9,6 +9,8 @@ const searchboxStyles = makeStyles(({ palette, typography, shadows }: Theme) => 
 		flex: '0 0',
 		position: 'relative',
 		padding: '16px',
+		boxShadow: '0px 1px hsla(0, 0%, 0%, 0.1)',
+		zIndex: 1,
 	},
 	searchbar: {
 		display: 'flex',

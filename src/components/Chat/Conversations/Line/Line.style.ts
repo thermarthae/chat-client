@@ -21,6 +21,9 @@ const lineStyles = makeStyles(({ palette, typography }: Theme) => ({
 		boxShadow: 'inset 0 -1px hsla(0, 0%, 0%, 0.1), inset 0 1px hsla(0, 0%, 0%, 0.1)',
 		'&:hover': {
 			backgroundColor: lighten(0.05, palette.background.paper)
+		},
+		'*:first-child > &': {
+			boxShadow: 'inset 0 -1px hsla(0, 0%, 0%, 0.1)',
 		}
 	},
 	unseen: {
