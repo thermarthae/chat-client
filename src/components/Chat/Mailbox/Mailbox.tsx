@@ -51,6 +51,10 @@ const Mailbox = ({ oponentId }: IMailboxProps) => {
 				data: Object.assign(conversation, { seen: true })
 			});
 		},
+		optimisticResponse: {
+			__typename: 'Mutation',
+			markConversationAsRead: 'Success!'
+		}
 	});
 	const markConvAsRead = async () => {
 		await markAsReadMutation();
