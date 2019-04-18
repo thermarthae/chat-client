@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router';
 import Typography from '@material-ui/core/Typography';
 
-import { useApolloClient, useMutation, useQuery } from 'react-apollo-hooks';
+import { useMutation, useQuery } from 'react-apollo-hooks';
 import {
 	GET_CONVERSATION, IGetConvRes,
 	MARK_CONV_AS_READ, IMarkConvAsReadRes,
@@ -35,22 +35,25 @@ const Mailbox = ({ oponentId }: IMailboxProps) => {
 	if (!oponentId) return <Empty i18nID='chat.mailbox.nothingSelected' />;
 
 	const classes = mailboxStyles();
-	const client = useApolloClient();
 
 	const [isAsideOpen, setIsAsideOpen] = useState(false);
 	const toggleAside = () => setIsAsideOpen(!isAsideOpen);
 
-	const markAsReadMutation = useMutation<IMarkConvAsReadRes>(MARK_CONV_AS_READ, { variables: { id: oponentId } });
-	const markConvAsRead = async () => {
-		const res = await markAsReadMutation();
-		if (!res.data || !res.data.markConversationAsRead) return;
+	const markAsReadMutation = useMutation<IMarkConvAsReadRes>(MARK_CONV_AS_READ, {
+		variables: { id: oponentId },
+		update: (proxy, res) => {
+			if (!res.data || !res.data.markConversationAsRead) return;
 
-		const options = { id: oponentId, fragment: ConvMailboxFragment, fragmentName: 'ConversationMailbox' };
-		const conversation = client.readFragment<IConvMailboxFrag>(options)!;
-		client.writeFragment({
-			...options,
-			data: Object.assign(conversation, { seen: true })
-		});
+			const options = { id: oponentId, fragment: ConvMailboxFragment, fragmentName: 'ConversationMailbox' };
+			const conversation = proxy.readFragment<IConvMailboxFrag>(options)!;
+			proxy.writeFragment({
+				...options,
+				data: Object.assign(conversation, { seen: true })
+			});
+		},
+	});
+	const markConvAsRead = async () => {
+		await markAsReadMutation();
 	};
 
 	const { loading, error, data, fetchMore } = useQuery<IGetConvRes>(GET_CONVERSATION, {
@@ -82,7 +85,7 @@ const Mailbox = ({ oponentId }: IMailboxProps) => {
 		}
 	});
 
-	return (
+	return ( //TODO: fix memo args
 		<div className={classes.root}>
 			<Header conversationName={name} toggleAside={toggleAside} />
 			<div className={classes.content}>
