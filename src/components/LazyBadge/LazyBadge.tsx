@@ -9,18 +9,14 @@ interface ILazyBadgeProps extends BadgeProps {
 }
 const LazyBadge = ({ loading, ...props }: ILazyBadgeProps) => {
 	const classes = lazyBadgeStyles();
+	const lazyProps = !loading ? {} : {
+		classes: {
+			badge: classes.root
+		},
+		badgeContent: undefined
+	};
 
-	if (loading) return (
-		<Badge
-			{...props}
-			classes={{
-				badge: classes.root
-			}}
-			badgeContent={<div className={classes.loader} />}
-		/>
-	);
-
-	return <Badge {...props} />;
+	return <Badge {...props} {...lazyProps} />;
 };
 
 export default LazyBadge;
