@@ -1,14 +1,14 @@
 import gql from 'graphql-tag';
 
-export const UNREAD_COUNT = gql`
-	query unreadCount {
-		getChatJewels {
-			unreadCount
+export const GET_CONV_SEEN = gql`
+	query getConvSeen {
+		getUserConversations {
+			seen
 		}
 	}
 `;
-export interface IUnreadCount {
-	getChatJewels: {
-		unreadCount: number;
-	};
+export interface IGetConvSeenRes {
+	getUserConversations: Array<{
+		seen: string;
+	}>;
 }

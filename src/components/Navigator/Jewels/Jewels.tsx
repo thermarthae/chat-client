@@ -9,16 +9,22 @@ import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew';
 import LinkIconButton from '@src/components/LinkButtons/LinkIconButton';
 import LazyBadge from '@src/components/LazyBadge/LazyBadge';
 
-import { UNREAD_COUNT, IUnreadCount } from './Jewels.apollo';
+import { IGetConvSeenRes, GET_CONV_SEEN } from './Jewels.apollo';
 
 interface IJewelsProps {
 	onLogout: () => Promise<void>;
 }
 const Jewels = ({ onLogout }: IJewelsProps) => {
-	let unreadCount = -1;
-	const { loading, error, data } = useQuery<IUnreadCount>(UNREAD_COUNT);
+	let unreadCount: number | string = ':(';
 
-	if (!loading && !error && data) ({ getChatJewels: { unreadCount } } = data);
+	const { loading, error, data } = useQuery<IGetConvSeenRes>(GET_CONV_SEEN);
+
+	if (error) console.error(error);
+	else if (!loading && data) {
+		let count = 0;
+		data.getUserConversations.forEach(c => !c.seen && count++);
+		unreadCount = count;
+	}
 
 	return (
 		<div>
