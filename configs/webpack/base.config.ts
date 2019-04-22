@@ -32,23 +32,14 @@ const baseConfig: webpack.Configuration = {
 			{
 				test: /\.tsx?$/,
 				exclude: /node_modules/,
-				use: [
-					'cache-loader',
-					{
-						loader: 'thread-loader',
-						options: {
-							workers: require('os').cpus().length - 1
-						}
-					},
-					{
-						loader: 'ts-loader',
-						options: {
-							getCustomTransformers: () => ({ before: [getTransformer()] }),
-							configFile: tsconfigPath,
-							happyPackMode: true
-						}
+				use: {
+					loader: 'ts-loader',
+					options: {
+						getCustomTransformers: () => ({ before: [getTransformer()] }),
+						configFile: tsconfigPath,
+						transpileOnly: true
 					}
-				]
+				}
 			},
 			{
 				test: /\.(jpe?g|png|gif|svg)$/i,
