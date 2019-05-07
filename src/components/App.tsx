@@ -11,6 +11,7 @@ import Error from './Error/Error';
 import Navigator from './Navigator/Navigator';
 import Chat from './Chat/Chat';
 import Login from './Login/Login';
+import Register from './Register/Register';
 import MainPage from './MainPage/MainPage';
 
 import appStyles from './App.style';
@@ -33,6 +34,7 @@ const App = () => {
 						<Route exact from='/' component={MainPage} />
 						<PrivateRoute auth={isLoggedIn} path='/chat/:oponentId?' component={Chat} />
 						<PrivateRoute auth={isLoggedIn} path='/login' component={Login} whenUnlogged />
+						<PrivateRoute auth={isLoggedIn} path='/register' component={Register} whenUnlogged />
 						<Route component={Error} />
 					</Switch>
 				</div>

@@ -27,6 +27,17 @@
 		"registerRedirectBtn": "Register",
 		"loginButton": "Login"
 	},
+	"register": {
+		"title": "Sign up",
+		"subtitle": "Create new account",
+		"username": "Name",
+		"email": "Email",
+		"password": "Password",
+		"confirmPassword": "Confirm password",
+		"agreementTerms": "By clicking Register button, you agree to our terms and privacy policy.",
+		"loginRedirectBtn": "Login",
+		"registerBtn": "Register"
+	},
 	"chat": {
 		"menu": {
 			"title": "Inbox",

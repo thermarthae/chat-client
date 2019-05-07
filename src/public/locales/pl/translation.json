@@ -27,6 +27,17 @@
 		"registerRedirectBtn": "Zarejestruj się",
 		"loginButton": "Zaloguj"
 	},
+	"register": {
+		"title": "Rejestracja",
+		"subtitle": "Utwórz nowe konto",
+		"username": "Imię",
+		"email": "Email",
+		"password": "Hasło",
+		"confirmPassword": "Potwierdź hasło",
+		"agreementTerms": "Klikając przycisk Zarejestruj się, akceptujesz nasz Regulamin i politykę prywatności.",
+		"loginRedirectBtn": "Zaloguj się",
+		"signBtn": "Zarejestruj się"
+	},
 	"chat": {
 		"menu": {
 			"title": "Poczta",
