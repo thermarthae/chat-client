@@ -2,15 +2,11 @@ import { createMuiTheme } from '@material-ui/core/styles';
 
 // tslint:disable:interface-name
 declare module '@material-ui/core/styles/createPalette' {
-	interface IPalette {
-		textLight: TypeText;
-		minorColors: {
-			unseen: string;
-			paleSky: string;
-		};
-	}
-	interface Palette extends IPalette { }
-	interface PaletteOptions extends IPalette { }
+	type TPalette<T = typeof theme.palette> = {
+		[P in keyof T]: T[P];
+	};
+	interface Palette extends TPalette { }
+	interface PaletteOptions extends Partial<TPalette> { }
 
 	interface IPaletteColor {
 		lighter?: string;
@@ -21,13 +17,13 @@ declare module '@material-ui/core/styles/createPalette' {
 
 declare module '@material-ui/core/styles/createTypography' {
 	interface ITypography {
-		emToPx: (em: number, base?: number) => string;
+		emToPx: (em: number, base?: number) => string; //TODO: depreciate
 	}
 	interface Typography extends ITypography { }
 	interface TypographyOptions extends ITypography { }
 }
 
-export default createMuiTheme({
+const theme = {
 	typography: {
 		fontSize: 14,
 		htmlFontSize: 16,
@@ -71,4 +67,6 @@ export default createMuiTheme({
 			paleSky: '#6E7783'
 		},
 	}
-});
+};
+
+export default createMuiTheme(theme);
