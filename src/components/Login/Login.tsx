@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Redirect } from 'react-router';
+import { Redirect, RouteComponentProps } from 'react-router';
 
 import { useApolloClient } from 'react-apollo-hooks';
 import { LOG_IN, ILogInResponse } from './Login.apollo';
@@ -19,7 +19,7 @@ import Logo from '@src/components/Logo/Logo';
 import loginStyles from './Login.style';
 import LoginStatusCtx from '@src/context/LoginStatus';
 
-const Login = () => {
+const Login = ({ history }: RouteComponentProps) => {
 	const classes = loginStyles();
 	const [t] = useTranslation();
 	const client = useApolloClient();
@@ -155,7 +155,8 @@ const Login = () => {
 						<Button
 							variant='text'
 							color='primary'
-							children={t('login.forgotPasswordButton')}
+							children={t('login.registerRedirectBtn')}
+							onClick={() => history.push('/register')}
 						/>
 						<div className={classes.btnWrapper}>
 							<Button

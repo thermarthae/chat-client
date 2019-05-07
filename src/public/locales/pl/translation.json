@@ -23,7 +23,7 @@
 		"subtitle": "Zaloguj się aby kontynuować",
 		"username": "Email",
 		"password": "Hasło",
-		"forgotPasswordButton": "Zapomniałem hasła",
+		"registerRedirectBtn": "Zarejestruj się",
 		"loginButton": "Zaloguj"
 	},
 	"chat": {

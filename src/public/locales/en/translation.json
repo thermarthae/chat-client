@@ -23,7 +23,7 @@
 		"subtitle": "Login to continue",
 		"username": "Email",
 		"password": "Password",
-		"forgotPasswordButton": "Forgot password",
+		"registerRedirectBtn": "Register",
 		"loginButton": "Login"
 	},
 	"chat": {
