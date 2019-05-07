@@ -11,7 +11,7 @@ const PrivateRoute = ({ auth, component: Component, whenUnlogged, ...rest }: IPr
 	return (
 		<Route
 			{...rest}
-			render={props => { // tslint:disable-line:jsx-no-lambda
+			render={props => {
 				if (whenUnlogged) {
 					if (!auth) return <Component {...props} />;
 					return <Redirect to={{ pathname: '/', state: { from: props.location } }} />;
