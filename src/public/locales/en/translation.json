@@ -2,7 +2,7 @@
 	"error": {
 		"404": "Error 404",
 		"UnknownError": "Something went wrong!",
-		"UserExistsError": "User with the given username is already registered",
+		"UserExistsError": "User with the given email is already registered",
 		"UserNotExistsError": "User not exist",
 		"MissingUsernameError": "No username was given",
 		"IncorrectUsernameError": "The specified user does not exist",
@@ -13,7 +13,8 @@
 		"NotLoggedInForbidden": "Access forbidden. You must be logged in",
 		"RightsForbidden": "Access denied",
 		"UsernameIsTooShort": "Username is too short (min 3 characters)",
-		"PasswordIsTooShort": "Password is too short (min 8 characters)"
+		"PasswordIsTooShort": "Password is too short (min 8 characters)",
+		"PasswordsAreNotEqual": "Passwords are not equal"
 	},
 	"optionList": {
 		"delete": "Delete"

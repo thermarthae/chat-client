@@ -2,7 +2,7 @@
 	"error": {
 		"404": "Błąd 404",
 		"UnknownError": "Coś poszło nie tak!",
-		"UserExistsError": "Użytkownik z podaną nazwą już istnieje",
+		"UserExistsError": "Użytkownik z podanym adresem email już istnieje",
 		"UserNotExistsError": "Użytkownik nie istnieje",
 		"MissingUsernameError": "Nie podano nazwy użytkownika",
 		"IncorrectUsernameError": "Użytkownik z podaną nazwą nie istnieje",
@@ -13,7 +13,8 @@
 		"NotLoggedInForbidden": "Brak dostępu. Musisz być zalogowany",
 		"RightsForbidden": "Odmowa dostępu",
 		"UsernameIsTooShort": "Nazwa użytkownika za krótka (minimum 3 znaki)",
-		"PasswordIsTooShort": "Hasło za krótkie (minimum 8 znaków)"
+		"PasswordIsTooShort": "Hasło za krótkie (minimum 8 znaków)",
+		"PasswordsAreNotEqual": "Hasła nie są takie same"
 	},
 	"optionList": {
 		"delete": "Usuń"
