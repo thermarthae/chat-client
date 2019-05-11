@@ -170,7 +170,7 @@ const Login = ({ history, location: { state: { justRegistred = false } = {} } }:
 								disabled={waitingForServer === true}
 								children={t('login.loginButton')}
 							/>
-							{waitingForServer ? <CircularProgress size='1.5em' className={classes.progress} /> : ''}
+							{waitingForServer && <CircularProgress size='1.5em' className={classes.progress} />}
 						</div>
 					</div>
 				</Card>
