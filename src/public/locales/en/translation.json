@@ -22,6 +22,7 @@
 	"login": {
 		"title": "Login",
 		"subtitle": "Login to continue",
+		"justRegistred": "Your account has been created. You can now log in.",
 		"username": "Email",
 		"password": "Password",
 		"registerRedirectBtn": "Register",

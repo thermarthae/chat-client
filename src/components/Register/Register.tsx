@@ -84,7 +84,7 @@ const Register = ({ history }: RouteComponentProps) => {
 		});
 
 		setWaitingForServer(false);
-		history.push('/login');
+		history.push('/login', { justRegistred: true });
 	};
 	const handleOnChange = ({ target: { name, value } }: React.ChangeEvent<HTMLInputElement>) => {
 		fieldsDispatch({ type: name as any, value });
@@ -141,7 +141,7 @@ const Register = ({ history }: RouteComponentProps) => {
 							color='primary'
 							variant='text'
 							children={t('register.loginRedirectBtn')}
-							onClick={() => history.push('/login')}
+							onClick={() => history.push('/login', { justRegistred: false })}
 						/>
 						<div className={classes.btnWrapper}>
 							<Button

@@ -22,6 +22,7 @@
 	"login": {
 		"title": "Zaloguj się",
 		"subtitle": "Zaloguj się aby kontynuować",
+		"justRegistred": "Twoje konto zostało utworzone. Możesz się już na nie zalogować.",
 		"username": "Email",
 		"password": "Hasło",
 		"registerRedirectBtn": "Zarejestruj się",

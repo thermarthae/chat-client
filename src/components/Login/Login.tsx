@@ -19,7 +19,8 @@ import Logo from '@src/components/Logo/Logo';
 import loginStyles from './Login.style';
 import LoginStatusCtx from '@src/context/LoginStatus';
 
-const Login = ({ history }: RouteComponentProps) => {
+type TRouteProps = RouteComponentProps<{}, {}, { justRegistred?: boolean } | undefined>;
+const Login = ({ history, location: { state: { justRegistred = false } = {} } }: TRouteProps) => {
 	const classes = loginStyles();
 	const [t] = useTranslation();
 	const client = useApolloClient();
@@ -113,6 +114,9 @@ const Login = ({ history }: RouteComponentProps) => {
 						children={t('login.subtitle')}
 					/>
 					<div className={classes.textFields}>
+						{justRegistred && <div className={classes.justRegistred}>
+							<Typography variant='caption' children={t('login.justRegistred')} />
+						</div>}
 						<TextField
 							required
 							fullWidth

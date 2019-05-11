@@ -35,6 +35,12 @@ const loginStyles = makeStyles(({ palette }: Theme) => ({
 		alignSelf: 'center',
 		marginBottom: 16,
 	},
+	justRegistred: {
+		margin: '8px -36px 16px -36px',
+		padding: '16px 36px',
+		background: palette.secondary.main,
+		color: palette.textLight.primary
+	},
 	textFields: {
 		margin: '16px 0'
 	},
@@ -55,6 +61,9 @@ const loginStyles = makeStyles(({ palette }: Theme) => ({
 	'@media (max-width: 425px)': {
 		root: {
 			backgroundColor: palette.background.paper,
+		},
+		form: {
+			width: '100%',
 		},
 		container: {
 			width: '100%',
