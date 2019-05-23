@@ -28,11 +28,11 @@ const Empty = ({ i18nID }: { i18nID: string; }) => {
 };
 
 interface IMailboxProps {
-	oponentId?: string;
+	friendlyConvID?: string;
 }
 
-const Mailbox = ({ oponentId }: IMailboxProps) => {
-	if (!oponentId) return <Empty i18nID='chat.mailbox.nothingSelected' />;
+const Mailbox = ({ friendlyConvID }: IMailboxProps) => {
+	if (!friendlyConvID) return <Empty i18nID='chat.mailbox.nothingSelected' />;
 
 	const classes = mailboxStyles();
 
@@ -40,14 +40,13 @@ const Mailbox = ({ oponentId }: IMailboxProps) => {
 	const toggleAside = () => setIsAsideOpen(!isAsideOpen);
 
 	const markAsReadMutation = useMutation<IMarkConvAsReadRes>(MARK_CONV_AS_READ, {
-		variables: { id: oponentId },
 		update: (proxy, res) => {
 			if (!res.data || !res.data.markConversationAsRead) return;
 
-			const options = { id: oponentId, fragment: ConvMailboxFragment, fragmentName: 'ConversationMailbox' };
+			const options = { id: realConvID, fragment: ConvMailboxFragment, fragmentName: 'ConversationMailbox' };
 			const conversation = proxy.readFragment<IConvMailboxFrag>(options)!;
 			if (conversation.seen) return;
-			
+
 			proxy.writeFragment({
 				...options,
 				data: Object.assign(conversation, { seen: true })
@@ -58,11 +57,11 @@ const Mailbox = ({ oponentId }: IMailboxProps) => {
 		}
 	});
 	const markConvAsRead = async () => {
-		await markAsReadMutation();
+		await markAsReadMutation({ variables: { id: realConvID } });
 	};
 
 	const { loading, error, data, fetchMore } = useQuery<IGetConvRes>(GET_CONVERSATION, {
-		variables: { id: oponentId },
+		variables: { id: friendlyConvID },
 		errorPolicy: 'all'
 	});
 
@@ -72,6 +71,7 @@ const Mailbox = ({ oponentId }: IMailboxProps) => {
 		return <Empty i18nID='error.UnknownError' />;
 	}
 
+	const realConvID = data.getConversation._id;
 	const { name, messageFeed: { node, noMore, cursor }, draft, seen } = data.getConversation;
 	const loadMore = () => fetchMore({
 		variables: { cursor },
@@ -102,7 +102,7 @@ const Mailbox = ({ oponentId }: IMailboxProps) => {
 						markConvAsRead={markConvAsRead}
 						onLoadMore={loadMore}
 					/>
-					<MessageInput draft={draft} oponentId={oponentId} />
+					<MessageInput draft={draft} realConvID={realConvID} />
 				</div>
 				<Aside open={isAsideOpen} />
 			</div>
