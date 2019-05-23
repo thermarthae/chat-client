@@ -54,7 +54,6 @@ const Mailbox = ({ oponentId }: IMailboxProps) => {
 			});
 		},
 		optimisticResponse: {
-			__typename: 'Mutation',
 			markConversationAsRead: 'Success!'
 		}
 	});

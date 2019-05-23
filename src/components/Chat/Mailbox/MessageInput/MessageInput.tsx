@@ -73,10 +73,9 @@ const MessageInput = ({ draft, oponentId }: IMessageInputProps) => {
 				});
 			},
 			optimisticResponse: {
-				__typename: 'Mutation',
 				sendMessage: {
 					__typename: 'Message',
-					_id: Date.now(),
+					_id: Date.now().toString(),
 					me: true,
 					author: {
 						__typename: 'User',

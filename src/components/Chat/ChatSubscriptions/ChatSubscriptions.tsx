@@ -11,18 +11,15 @@ import {
 	GET_CONV_ARR, IGetConvArrResponse,
 } from '../Conversations/Conversations.apollo';
 
-interface ISub<T> {
-	data: T;
-}
-
 //Fake component -> doesnt return anything, just subscribe data
 const ChatSubscriptions = () => {
 	const client = useApolloClient();
 
 	useEffect(() => {
-		const sub = client.subscribe<ISub<INewMsgsSubRes>>({ query: NEW_MSG_SUB }).subscribe({
-			next({ data: { newMessageAdded } }) {
+		const sub = client.subscribe<INewMsgsSubRes>({ query: NEW_MSG_SUB }).subscribe({
+			next({ data }) {
 				try {
+					const { newMessageAdded } = data!;
 					const options = {
 						id: newMessageAdded.conversation,
 						fragment: ConvMailboxFragment,
@@ -57,10 +54,11 @@ const ChatSubscriptions = () => {
 
 
 	useEffect(() => {
-		const sub = client.subscribe<ISub<IUpdatedConvSubRes>>({ query: UPDATED_CONV_SUBSCRIPTION }).subscribe({
-			next({ data: { updatedConversation } }) {
+		const sub = client.subscribe<IUpdatedConvSubRes>({ query: UPDATED_CONV_SUBSCRIPTION }).subscribe({
+			next({ data }) {
 				try {
 					//TODO: handle conversation edit (change of name, etc.)
+					const { updatedConversation } = data!;
 					const query = GET_CONV_ARR;
 					const queryRes = client.readQuery<IGetConvArrResponse>({ query });
 					if (!queryRes) return;
