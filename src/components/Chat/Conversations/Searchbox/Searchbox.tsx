@@ -76,6 +76,7 @@ const Searchbox = ({ searchStatus, setSearchStatus }: ISearchboxProps) => {
 		const { data } = await client.query<IFindConvAndUsrRes>({
 			query: FIND_CONV_AND_USR,
 			variables: { query },
+			fetchPolicy: 'no-cache',
 		});
 		setResult(data);
 
