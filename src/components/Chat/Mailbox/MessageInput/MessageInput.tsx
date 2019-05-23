@@ -21,9 +21,9 @@ import EmojiPicker, { EmojiData } from '@src/components/EmojiPicker/EmojiPicker'
 
 interface IMessageInputProps {
 	draft: string;
-	oponentId: string;
+	realConvID: string;
 }
-const MessageInput = ({ draft, oponentId }: IMessageInputProps) => {
+const MessageInput = ({ draft, realConvID }: IMessageInputProps) => {
 	const messageEditor = useRef<Editor | null>(null);
 
 	const [emojiPickerIsOpen, setEmojiPickerIsOpen] = useState(false);
@@ -48,10 +48,10 @@ const MessageInput = ({ draft, oponentId }: IMessageInputProps) => {
 		setDraftjsState(clearedState);
 
 		sendMsgMutation({
-			variables: { conversationId: oponentId, message },
+			variables: { conversationId: realConvID, message },
 			update: (proxy, { data }) => {
 				const options = {
-					id: oponentId,
+					id: realConvID,
 					fragment: ConvMailboxFragment,
 					fragmentName: 'ConversationMailbox'
 				};
@@ -82,7 +82,7 @@ const MessageInput = ({ draft, oponentId }: IMessageInputProps) => {
 						name: ''
 					},
 					content: message,
-					conversation: oponentId,
+					conversation: realConvID,
 					time: new Date().toISOString()
 				}
 			}

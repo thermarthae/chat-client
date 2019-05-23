@@ -8,7 +8,7 @@ import OptionList from '@src/components/OptionList/OptionList';
 import List from './../List';
 import Line from '../Line/Line';
 
-import ChatOponentIDCtx from '@src/context/ChatOponentID';
+import ChatFriendlyConvIDCtx from '@src/context/ChatFriendlyConvID';
 import { IConvMailboxFrag } from '../../Mailbox/Mailbox.apollo';
 
 
@@ -18,7 +18,7 @@ interface IConversationListProps {
 
 const ConversationList = ({ conversationArr }: IConversationListProps) => {
 	const [t] = useTranslation();
-	const oponentId = useContext(ChatOponentIDCtx);
+	const friendlyConvID = useContext(ChatFriendlyConvIDCtx);
 
 	const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLElement | undefined>(undefined);
 	const handleMenuClose = () => setMenuAnchorEl(undefined);
@@ -30,12 +30,12 @@ const ConversationList = ({ conversationArr }: IConversationListProps) => {
 	return (
 		<List>
 			{conversationArr.map(item =>
-				<Link to={'/chat/' + item._id} key={item._id}>
+				<Link to={'/chat/' + item.friendlyID} key={item._id}>
 					<Line
 						avatar={item.name[0]}
 						name={item.name}
 						message={item.messageFeed.node[item.messageFeed.node.length - 1].content}
-						isActive={item._id === oponentId}
+						isActive={item.friendlyID === friendlyConvID}
 						isUnseen={!item.seen}
 						handleMenuClick={handleMenuClick}
 					/>

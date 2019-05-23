@@ -5,24 +5,23 @@ import Conversations from './Conversations/Conversations';
 import Mailbox from './Mailbox/Mailbox';
 import ChatSubscriptions from './ChatSubscriptions/ChatSubscriptions';
 
-import ChatOponentIDCtx from '@src/context/ChatOponentID';
+import ChatFriendlyConvIDCtx from '@src/context/ChatFriendlyConvID';
 import chatStyles from './Chat.style';
 
-interface IChatProps extends RouteComponentProps<{ oponentId?: string }> { }
+interface IChatProps extends RouteComponentProps<{ friendlyConvID?: string }> { }
 
 const Chat = ({ match }: IChatProps) => {
-	const oponentId = match.params.oponentId;
+	const { friendlyConvID } = match.params;
 	const classes = chatStyles();
 
-
 	return (
-		<ChatOponentIDCtx.Provider value={oponentId}>
+		<ChatFriendlyConvIDCtx.Provider value={friendlyConvID}>
 			<div className={classes.root}>
 				<Conversations />
-				<Mailbox oponentId={oponentId} />
+				<Mailbox friendlyConvID={friendlyConvID} />
 				<ChatSubscriptions />
 			</div>
-		</ChatOponentIDCtx.Provider>
+		</ChatFriendlyConvIDCtx.Provider>
 	);
 };
 

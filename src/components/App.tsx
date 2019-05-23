@@ -32,7 +32,7 @@ const App = () => {
 					<Navigator locationHref={locationHref} />
 					<Switch>
 						<Route exact from='/' component={MainPage} />
-						<PrivateRoute auth={isLoggedIn} path='/chat/:oponentId?' component={Chat} />
+						<PrivateRoute auth={isLoggedIn} path='/chat/:friendlyConvID?' component={Chat} />
 						<PrivateRoute auth={isLoggedIn} path='/login' component={Login} whenUnlogged />
 						<PrivateRoute auth={isLoggedIn} path='/register' component={Register} whenUnlogged />
 						<Route component={Error} />
