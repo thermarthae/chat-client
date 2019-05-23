@@ -39,6 +39,7 @@ export interface IMessageMailboxFrag {
 export const ConvMailboxFragment = gql`
 	fragment ConversationMailbox on Conversation {
 		_id
+		friendlyID
 		name
 		seen
 		draft
@@ -59,6 +60,7 @@ export interface IMailboxMessageFeed {
 }
 export interface IConvMailboxFrag {
 	_id: string;
+	friendlyID: string;
 	name: string;
 	seen: boolean;
 	messageFeed: IMailboxMessageFeed;
