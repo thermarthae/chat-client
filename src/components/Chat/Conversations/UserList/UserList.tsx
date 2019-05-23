@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 import Menu from '@material-ui/core/Menu';
 import Typography from '@material-ui/core/Typography';
@@ -25,13 +26,15 @@ const UserList = ({ userArr }: IUserListProps) => {
 
 	return (
 		<List>
-			{userArr.map(
-				item => <Line
-					key={item._id}
-					avatar={item.name[0]}
-					name={item.name}
-					handleMenuClick={handleMenuClick}
-				/>
+			{userArr.map(item =>
+				<Link to={'/chat/' + item._id} key={item._id}>
+					<Line
+						key={item._id}
+						avatar={item.name[0]}
+						name={item.name}
+						handleMenuClick={handleMenuClick}
+					/>
+				</Link>
 			)}
 			<Menu open={!!menuAnchorEl} anchorEl={menuAnchorEl} onClose={handleMenuClose}>
 				<OptionList onClick={handleMenuClose}>
