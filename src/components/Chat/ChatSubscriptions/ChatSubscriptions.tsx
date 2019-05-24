@@ -42,6 +42,21 @@ const ChatSubscriptions = () => {
 							}
 						}
 					});
+
+					client.writeFragment({
+						...options,
+						variables: { limit: 1 },
+						data: {
+							...rest,
+							seen: newMessageAdded.me,
+							messageFeed: {
+								...messageFeed,
+								cursor: newMessageAdded._id,
+								noMore: false,
+								node: [newMessageAdded]
+							}
+						}
+					});
 				} catch (error) {
 					console.error(error);
 				}
