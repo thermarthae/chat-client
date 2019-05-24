@@ -15,7 +15,8 @@ const UserConversations = () => {
 	if (error) return <EmptyItem msg={error.message} />;
 
 	const { getUserConversations } = data!;
-	if (getUserConversations.length === 0) return <EmptyItem msg={t('chat.conversations.nothingToShow')} />;
+	if (!getUserConversations || getUserConversations.length === 0)
+		return <EmptyItem msg={t('chat.conversations.nothingToShow')} />;
 
 	return <ConversationList conversationArr={getUserConversations} />;
 };
