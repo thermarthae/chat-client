@@ -2,11 +2,17 @@ import gql from 'graphql-tag';
 
 export const MARK_CONV_AS_READ = gql`
 	mutation markConvAsRead($id: ID!) {
-		markConversationAsRead(conversationId: $id)
+		markConversationAsRead(conversationId: $id) {
+			_id
+			seen
+		}
 	}
 `;
 export interface IMarkConvAsReadRes {
-	markConversationAsRead: string | null;
+	markConversationAsRead: {
+		_id: string;
+		seen: boolean;
+	};
 }
 
 

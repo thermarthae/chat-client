@@ -6,8 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import { useMutation, useQuery } from 'react-apollo-hooks';
 import {
 	GET_CONVERSATION, IGetConvRes,
-	MARK_CONV_AS_READ, IMarkConvAsReadRes,
-	ConvMailboxFragment, IConvMailboxFrag
+	MARK_CONV_AS_READ, IMarkConvAsReadRes
 } from './Mailbox.apollo';
 
 import mailboxStyles from './Mailbox.style';
@@ -39,23 +38,7 @@ const Mailbox = ({ friendlyConvID }: IMailboxProps) => {
 	const [isAsideOpen, setIsAsideOpen] = useState(false);
 	const toggleAside = () => setIsAsideOpen(!isAsideOpen);
 
-	const markAsReadMutation = useMutation<IMarkConvAsReadRes>(MARK_CONV_AS_READ, {
-		update: (proxy, res) => {
-			if (!res.data || !res.data.markConversationAsRead) return;
-
-			const options = { id: realConvID, fragment: ConvMailboxFragment, fragmentName: 'ConversationMailbox' };
-			const conversation = proxy.readFragment<IConvMailboxFrag>(options)!;
-			if (conversation.seen) return;
-
-			proxy.writeFragment({
-				...options,
-				data: Object.assign(conversation, { seen: true })
-			});
-		},
-		optimisticResponse: {
-			markConversationAsRead: 'Success!'
-		}
-	});
+	const markAsReadMutation = useMutation<IMarkConvAsReadRes>(MARK_CONV_AS_READ);
 	const markConvAsRead = async () => {
 		await markAsReadMutation({ variables: { id: realConvID } });
 	};
