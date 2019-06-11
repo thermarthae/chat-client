@@ -6,3 +6,5 @@ Thumbs.db
 dist
 cdn
 concept
+private.key
+server.crt

@@ -26,13 +26,13 @@ export const client = new ApolloClient({
 				return !!operationAST && operationAST.operation === 'subscription';
 			},
 			new WebSocketLink({
-				uri: `ws://localhost:3000/graphql`,
+				uri: 'wss://lvh.me:3000/graphql',
 				options: {
 					reconnect: true
 				}
 			}),
 			new BatchHttpLink({
-				uri: 'http://localhost:3000/graphql',
+				uri: 'https://lvh.me:3000/graphql',
 				credentials: 'include'
 			}),
 		)
